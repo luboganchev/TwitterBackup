@@ -57,8 +57,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="scripts\angular.min.js.map" />
+    <Content Include="css\bootstrap-theme.css" />
+    <Content Include="css\bootstrap-theme.min.css" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\toastr.css" />
+    <Content Include="css\toastr.min.css" />
+    <Content Include="index.html" />
+    <Content Include="libs\angular\angular.min.js.map" />
     <Content Include="packages.config" />
+    <Content Include="css\bootstrap-theme.css.map" />
+    <Content Include="css\bootstrap.css.map" />
+    <Content Include="libs\toastr\toastr.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -67,16 +77,31 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="scripts\angular-mocks.js" />
-    <None Include="scripts\angular.intellisense.js" />
-    <Content Include="scripts\angular.js" />
-    <Content Include="scripts\angular.min.js" />
-    <None Include="scripts\_references.js" />
+    <Content Include="libs\angular\angular-mocks.js" />
+    <None Include="libs\angular\angular.intellisense.js" />
+    <Content Include="libs\angular\angular.js" />
+    <Content Include="libs\angular\angular.min.js" />
+    <None Include="_references.js" />
+    <Content Include="js\app.js" />
+    <Content Include="js\common\notifier.js" />
+    <Content Include="js\controllers\my-controller1.js" />
+    <Content Include="js\controllers\my-controller2.js" />
+    <Content Include="js\identity\auth.js" />
+    <Content Include="js\identity\authorization.js" />
+    <Content Include="js\identity\identity.js" />
+    <Content Include="js\identity\login-controller.js" />
+    <Content Include="js\identity\register-controller.js" />
+    <Content Include="libs\bootstrap\bootstrap.js" />
+    <Content Include="libs\bootstrap\bootstrap.min.js" />
+    <Content Include="libs\jquery\jquery.min.js" />
+    <Content Include="libs\toastr\toastr.js" />
+    <Content Include="libs\toastr\toastr.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
