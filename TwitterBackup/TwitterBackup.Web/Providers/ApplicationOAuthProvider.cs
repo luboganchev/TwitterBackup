@@ -75,12 +75,14 @@ namespace TwitterBackup.Web.Providers
         {
             if (context.ClientId == _publicClientId)
             {
-                Uri expectedRootUri = new Uri(context.Request.Uri, "/");
+                //Uri expectedRootUri = new Uri(context.Request.Uri, "/");
 
-                if (expectedRootUri.AbsoluteUri == context.RedirectUri)
-                {
-                    context.Validated();
-                }
+                //if (expectedRootUri.AbsoluteUri == context.RedirectUri)
+                //{
+                    
+                //}
+                context.Validated();
+
             }
 
             return Task.FromResult<object>(null);

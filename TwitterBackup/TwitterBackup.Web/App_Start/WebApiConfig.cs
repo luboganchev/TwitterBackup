@@ -27,7 +27,7 @@ namespace TwitterBackup.Web
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
+            //config.EnableCors(new EnableCorsAttribute("*", "*", "*"));
         }
     }
 }

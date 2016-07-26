@@ -19,15 +19,43 @@
             },
             login: function (user) {
                 var deferred = $q.defer();
-                
-                $http.get(baseServiceUrl + '/api/Account/ExternalLogin', { params: {provider: 'Twitter'}, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-                    .then(function (response) {
-                        debugger;
-                        if (response.data["access_token"]) {
-                            identity.setCurrentUser(response.data);
-                            deferred.resolve(true);
+
+
+                //ngAuthSettings.apiServiceBaseUri + "api/Account/ExternalLogin?provider=" + provider
+                //+ "&response_type=token&client_id=" + ngAuthSettings.clientId
+                //+ "&redirect_uri=" + redirectUri;
+
+                //$http.get(baseServiceUrl + '/api/Account/ExternalLogin', { params: {provider: 'Twitter', response_type: 'token',client_id:'self', redirect_uri:'/' }, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+
+                //?returnUrl=%2F&generateState=true
+                //First get externalLogins
+                var redirectUri = location.protocol + '//' + location.host + '/';
+                $http.get(baseServiceUrl + '/api/Account/ExternalLogins', { params: { returnUrl: redirectUri, generateState: true, }, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+                    .then(function (providersResponse) {
+                        //Search twitter provider
+                        var twitterProvider = null;
+                        for (var index in providersResponse.data) {
+                            var currentProvider = providersResponse.data[index];
+                            if (providersResponse.data[index].Name == 'Twitter') {
+                                twitterProvider = currentProvider;
+                                break;
+                            }
                         }
-                        else {
+                        if (twitterProvider) {
+                            window.open(baseServiceUrl + twitterProvider.Url, "Authenticate Account", "location=0,status=0,width=600,height=750");
+
+                            //$http.get(baseServiceUrl + twitterProvider.Url)
+                            //    .then(function (response) {
+                            //        debugger;
+                            //        if (response.data["access_token"]) {
+                            //            identity.setCurrentUser(response.data);
+                            //            deferred.resolve(true);
+                            //        }
+                            //        else {
+                            //            deferred.resolve(false);
+                            //        }
+                            //    });
+                        } else {
                             deferred.resolve(false);
                         }
                     });

@@ -2,8 +2,6 @@
     'use strict';
 
     function config($routeProvider) {
-        $httpProvider.defaults.useXDomain = true;
-        delete $httpProvider.defaults.headers.common['X-Requested-With'];
         $routeProvider
             .when('/login', {
                 templateUrl: 'views/partials/twitter-login.html',

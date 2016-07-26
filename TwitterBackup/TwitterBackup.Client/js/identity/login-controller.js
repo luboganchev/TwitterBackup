@@ -5,7 +5,6 @@
         $scope.identity = identity;
 
         $scope.login = function () {
-            debugger;
             auth.login().then(function (success) {
                 if (success) {
                     notifier.success('Successful login!');

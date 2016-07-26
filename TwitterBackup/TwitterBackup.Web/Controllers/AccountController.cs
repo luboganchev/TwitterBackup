@@ -21,6 +21,7 @@ using System.Web.Http.Cors;
 namespace TwitterBackup.Web.Controllers
 {
     [Authorize]
+    [EnableCors("*", "*", "*", SupportsCredentials = true)]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
@@ -226,7 +227,6 @@ namespace TwitterBackup.Web.Controllers
         [HostAuthentication(DefaultAuthenticationTypes.ExternalCookie)]
         [AllowAnonymous]
         [Route("ExternalLogin", Name = "ExternalLogin")]
-        [EnableCors("*", "*", "*", SupportsCredentials = true)]
         public async Task<IHttpActionResult> GetExternalLogin(string provider, string error = null)
         {
             if (error != null)
@@ -282,7 +282,6 @@ namespace TwitterBackup.Web.Controllers
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         [AllowAnonymous]
         [Route("ExternalLogins")]
-        [EnableCors("*", "*", "*", SupportsCredentials = true)]
         public IEnumerable<ExternalLoginViewModel> GetExternalLogins(string returnUrl, bool generateState = false)
         {
             IEnumerable<AuthenticationDescription> descriptions = Authentication.GetExternalAuthenticationTypes();
