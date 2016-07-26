@@ -4,21 +4,34 @@
     function LoginController($scope, $location, notifier, identity, auth) {
         $scope.identity = identity;
 
-        $scope.login = function (user, loginForm) {
-            if (loginForm.$valid) {
-                auth.login(user).then(function (success) {
-                    if (success) {
-                        notifier.success('Successful login!');
-                    }
-                    else {
-                        notifier.error('Username/Password combination is not valid!');
-                    }
-                });
-            }
-            else {
-                notifier.error('Username and password are required fields!')
-            }
+        $scope.login = function () {
+            debugger;
+            auth.login().then(function (success) {
+                if (success) {
+                    notifier.success('Successful login!');
+                }
+                else {
+                    notifier.error('Username/Password combination is not valid!');
+                }
+            });
         }
+
+        //$scope.login = function (user, loginForm) {
+        //    debugger;
+        //    if (loginForm.$valid) {
+        //        auth.login(user).then(function (success) {
+        //            if (success) {
+        //                notifier.success('Successful login!');
+        //            }
+        //            else {
+        //                notifier.error('Username/Password combination is not valid!');
+        //            }
+        //        });
+        //    }
+        //    else {
+        //        notifier.error('Username and password are required fields!')
+        //    }
+        //}
 
         $scope.logout = function () {
             auth.logout().then(function () {
@@ -36,5 +49,5 @@
     }
 
     angular.module('myApp.controllers')
-        .controller('LoginCtrl', ['$scope', '$location', 'notifier', 'identity', 'auth', LoginController]);
+        .controller('LoginController', ['$scope', '$location', 'notifier', 'identity', 'auth', LoginController]);
 }());

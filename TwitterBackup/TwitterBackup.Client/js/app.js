@@ -2,20 +2,14 @@
     'use strict';
 
     function config($routeProvider) {
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
         $routeProvider
-            .when('/register', {
-                templateUrl: 'views/partials/register.html',
-                controller: 'SignUpCtrl'
+            .when('/login', {
+                templateUrl: 'views/partials/twitter-login.html',
+                controller: 'LoginController'
             })
-            .when('/partial1', {
-                templateUrl: 'views/partials/partial1.html',
-                controller: 'MyCtrl1'
-            })
-            .when('/partial2', {
-                templateUrl: 'views/partials/partial2.html',
-                controller: 'MyCtrl2'
-            })
-            .otherwise({ redirectTo: '/partial1' });
+            .otherwise({ redirectTo: '/' });
     }
     
     angular.module('myApp.services', []);
@@ -23,5 +17,5 @@
     angular.module('myApp', ['ngRoute', 'ngCookies', 'myApp.controllers']).
         config(['$routeProvider', config])
         .value('toastr', toastr)
-        .constant('baseServiceUrl', 'http://spa2014.bgcoder.com');
+        .constant('baseServiceUrl', 'http://localhost:19169');
 }());

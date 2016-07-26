@@ -19,9 +19,10 @@
             },
             login: function (user) {
                 var deferred = $q.defer();
-                user['grant_type'] = 'password';
-                $http.post(usersApi + '/login', 'username=' + user.username + '&password=' + user.password + '&grant_type=password', { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+                
+                $http.get(baseServiceUrl + '/api/Account/ExternalLogin', { params: {provider: 'Twitter'}, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
                     .then(function (response) {
+                        debugger;
                         if (response.data["access_token"]) {
                             identity.setCurrentUser(response.data);
                             deferred.resolve(true);
@@ -30,6 +31,17 @@
                             deferred.resolve(false);
                         }
                     });
+                //user['grant_type'] = 'password';
+                //$http.post(usersApi + '/login', 'username=' + user.username + '&password=' + user.password + '&grant_type=password', { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+                //    .then(function (response) {
+                //        if (response.data["access_token"]) {
+                //            identity.setCurrentUser(response.data);
+                //            deferred.resolve(true);
+                //        }
+                //        else {
+                //            deferred.resolve(false);
+                //        }
+                //    });
 
                 return deferred.promise;
             },
