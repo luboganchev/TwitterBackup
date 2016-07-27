@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function LoginController($scope, $location, $window, notifier, identity, auth) {
+    function LoginController($scope, $location, $window, notifier, identity, auth, authConstants) {
         $scope.identity = identity;
 
         $scope.login = function () {
@@ -57,68 +57,43 @@
             })
         }
 
-        $scope.checkAuthStatus = function () {
+        $scope.authExternalProvider = function (provider) {
+            var redirectUri = location.protocol + '//' + location.host + '/authcomplete.html';
+            var externalProviderUrl = authConstants.apiServiceBaseUri + "api/Account/ExternalLogin?provider=" + provider
+                                                                        + "&response_type=token&client_id=" + authConstants.clientId
+                                                                        + "&redirect_uri=" + redirectUri;
+            window.$windowScope = $scope;
 
-            //check popup window url
-            try {
-                //console.log($scope.socialAuthWindow.location.href);
-                //console.log($scope.socialAuthWindow.document.domain);
-                //console.log($scope.socialAuthWindow.document.domain);
-                //console.log(document.domain);
-                //if ($scope.socialAuthWindow.document.domain === document.domain) {
-                // console.log($scope.socialAuthWindow.document.URL);
-                var credentialData = $scope.getUrlParameters($scope.socialAuthWindow.location.href, true);
-                //when auth is complete the code param will be present from facebook
-                if (credentialData) {
-                    debugger;
-                    localStorage.setItem('credentials', JSON.stringify(credentialData));
-                    console.log('AUTH COMPLETE.');
-                    $scope.socialAuthWindow.close();
+            var oauthWindow = window.open(externalProviderUrl, "Authenticate Account", "location=0,status=0,width=600,height=750");
+        };
+
+        $scope.authCompletedCB = function (fragment) {
+            $scope.$apply(function () {
+                if (fragment.haslocalaccount == 'False') {
+                    authService.logOut();
+
+                    authService.externalAuthData = {
+                        provider: fragment.provider,
+                        userName: fragment.external_user_name,
+                        externalAccessToken: fragment.external_access_token
+                    };
+
+                    $location.path('/associate');
                 }
-                //}
-            } catch (e) {
-                //domain mismatch catch
-                console.log('Checking auth...');
-            }
-
-            //on window close
-            if ($scope.socialAuthWindow.closed) {
-                console.log('AUTH WINDOW CLOSED.');
-                $scope.authEnd();
-            }
-            else setTimeout($scope.checkAuthStatus, 200);
-
-        };
-
-        /**
-         * socialAuth Popup Window Handler.
-         */
-        $scope.authEnd = function () {
-            //AuthService.login();
-        };
-
-        /**
-        * Get the value of URL parameters either from current URL or static URL
-        */
-        $scope.getUrlParameters = function (staticURL, decode) {
-            var currLocation = (staticURL.length) ? staticURL : window.location.search;
-            var parArr = currLocation.split("#")[1].split("&");
-
-            var credentialsObject = {};
-            for (var i = 0; i < parArr.length; i++) {
-                var parr = parArr[i].split("=");
-                credentialsObject[parr[0]] = parr[1];
-            }
-
-            if ('access_token' in credentialsObject)
-            {
-                return credentialsObject;
-            }
-
-            return null;
-        };
+                else {
+                    //Obtain access token and redirect to home
+                    var externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
+                    authService.obtainAccessToken(externalData).then(function (response) {
+                        $location.path('/');
+                    },
+                 function (error) {
+                     notifier.error(error.error_description);
+                 });
+                }
+            });
+        }
     }
 
     angular.module('myApp.controllers')
-        .controller('LoginController', ['$scope', '$location', '$window', 'notifier', 'identity', 'auth', LoginController]);
+        .controller('LoginController', ['$scope', '$location', '$window', 'notifier', 'identity', 'auth', 'authConstants', LoginController]);
 }());

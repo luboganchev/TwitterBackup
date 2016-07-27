@@ -7,6 +7,15 @@
                 return {
                     'Authorization': 'Bearer ' + identity.getCurrentUser()['access_token']
                 }
+            },
+            getAuthorizationToken: function () {
+                var currentAuthData = identity.getCurrentUser();
+
+                if (!currentAuthData) {
+                    return null;
+                }
+                
+                return currentAuthData['access_token'];
             }
         }
     }

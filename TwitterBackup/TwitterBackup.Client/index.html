@@ -52,20 +52,28 @@
         Powered by:<strong> <a href="http://angularjs.org/" target="_blank">AngularJS</a> and <a href="http://getbootstrap.com/" target="_blank">Twitter Bootstrap</a></strong>
     </footer>
     <hr />
+
+    <!-- Third party libraries -->
     <script src="libs/jquery/jquery.min.js"></script>
     <script src="libs/toastr/toastr.min.js"></script>
     <script src="libs/bootstrap/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-route.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-cookies.min.js"></script>
+
+    <!-- Load twitter backup main script -->
     <script src="js/app.js"></script>
+
+    <!-- Load services -->
+    <script src="js/identity/authInterceptorService.js"></script>
     <script src="js/common/notifier.js"></script>
-    <script src="js/controllers/my-controller1.js"></script>
-    <script src="js/controllers/my-controller2.js"></script>
     <script src="js/identity/auth.js"></script>
     <script src="js/identity/authorization.js"></script>
     <script src="js/identity/identity.js"></script>
     <script src="js/identity/login-controller.js"></script>
     <script src="js/identity/register-controller.js"></script>
+
+    <!-- Load controllers -->
+    <script src="js/login/associateController.js"></script>
 </body>
 </html>

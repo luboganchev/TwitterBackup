@@ -103,9 +103,9 @@
                                     //deferred.resolve(true);
                                 }
 
-                                var headersObject = authorization.getAuthorizationHeader();
+                                //var headersObject = authorization.getAuthorizationHeader();
                                 //Check if user is authenticated
-                                $http.get(accountApi + '/UserInfo', { headers: headersObject })
+                                $http.get(accountApi + '/UserInfo')
                                     .then(function (response) {
                                         debugger;
                                     });
@@ -141,15 +141,50 @@
 
                 return deferred.promise;
             },
+            obtainAccessToken : function (externalData) {
+                var deferred = $q.defer();
+
+                $http.get(accountApi + '/ObtainLocalAccessToken', { params: { provider: externalData.provider, externalAccessToken: externalData.externalAccessToken } }).success(function (response) {
+                    localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: "", useRefreshTokens: false });
+
+                    _authentication.isAuth = true;
+                    _authentication.userName = response.userName;
+                    _authentication.useRefreshTokens = false;
+
+                    deferred.resolve(response);
+
+                }).error(function (err, status) {
+                    _logOut();
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+            },
             logout: function () {
                 var deferred = $q.defer();
 
-                var headers = authorization.getAuthorizationHeader();
-                $http.post(usersApi + '/logout', {}, { headers: headers })
+                //var headers = authorization.getAuthorizationHeader();
+                $http.post(accountApi + '/logout', {}, { headers: headers })
                     .then(function () {
                         identity.setCurrentUser(undefined);
                         deferred.resolve();
                     });
+
+                return deferred.promise;
+            },
+            registerExternal: function (registerExternalData) {
+                var deferred = $q.defer();
+
+                $http.post(accountApi + '/RegisterExternal', registerExternalData).success(function (response) {
+                    //localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: "", useRefreshTokens: false });
+                    identity.setCurrentUser({ token: response.access_token, userName: response.userName });
+                    //authentication.isAuth = true;
+                    //authentication.userName = response.userName;
+                    deferred.resolve(response);
+                }).error(function (err, status) {
+                    logOut();
+                    deferred.reject(err);
+                });
 
                 return deferred.promise;
             },
@@ -160,6 +195,15 @@
                 else {
                     return $q.reject('not authorized');
                 }
+            },
+            externalAuthData: {
+                provider: "",
+                userName: "",
+                externalAccessToken: ""
+            },
+            authentication: {
+                isAuth: false,
+                userName: ""
             }
         }
     }
