@@ -16,3 +16,4 @@
 /// <reference path="../libs/toastr/toastr.js" />
 /// <reference path="angular-mocks.js" />
 /// <reference path="angular.js" />
+/// <reference path="../js/identity/twitter-login-directive.js" />

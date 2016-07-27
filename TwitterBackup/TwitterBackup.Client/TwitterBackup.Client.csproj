@@ -65,6 +65,7 @@
     <Content Include="css\toastr.css" />
     <Content Include="css\toastr.min.css" />
     <Content Include="index.html" />
+    <Content Include="js\identity\twitter-login-directive.js" />
     <Content Include="libs\angular\angular.min.js.map" />
     <Content Include="css\bootstrap-theme.css.map" />
     <Content Include="css\bootstrap.css.map" />

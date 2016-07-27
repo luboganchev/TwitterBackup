@@ -10,7 +10,8 @@
             .otherwise({ redirectTo: '/' });
     }
     
-    angular.module('myApp.services', [])
+    angular.module('myApp.services', []);
+    angular.module('myApp.directives', []);
     angular.module('myApp.controllers', ['myApp.services']);
     angular.module('myApp', ['ngRoute', 'ngCookies', 'myApp.controllers'])
         .config(['$routeProvider', config])
