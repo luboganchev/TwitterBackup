@@ -10,10 +10,10 @@
             .otherwise({ redirectTo: '/' });
     }
     
-    angular.module('myApp.services', []);
+    angular.module('myApp.services', [])
     angular.module('myApp.controllers', ['myApp.services']);
-    angular.module('myApp', ['ngRoute', 'ngCookies', 'myApp.controllers']).
-        config(['$routeProvider', config])
+    angular.module('myApp', ['ngRoute', 'ngCookies', 'myApp.controllers'])
+        .config(['$routeProvider', config])
         .value('toastr', toastr)
         .constant('baseServiceUrl', 'http://localhost:19169');
 }());

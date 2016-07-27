@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function auth($http, $q, identity, authorization, baseServiceUrl) {
+    function auth($http, $q, $window, identity, authorization, baseServiceUrl) {
         var usersApi = baseServiceUrl + '/api/users'
 
         return {
@@ -42,7 +42,20 @@
                             }
                         }
                         if (twitterProvider) {
-                            window.open(baseServiceUrl + twitterProvider.Url, "Authenticate Account", "location=0,status=0,width=600,height=750");
+                            deferred.resolve(baseServiceUrl + twitterProvider.Url);
+                            //$window.open(baseServiceUrl + twitterProvider.Url, "Authenticate Account", "location=0,status=0,width=600,height=750");
+
+                            //$window.$windowScope = $scope;
+                            //$scope.socialAuthWindow = $window.open(baseServiceUrl + twitterProvider.Url, "Authenticate Account", "location=0,status=0,width=600,height=750"); //window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
+
+                            ////check the status of the popup window.
+                            //$scope.checkAuthStatus();
+
+                            ////puts focus on the newWindow
+                            //if (window.focus) {
+                            //    $scope.socialAuthWindow.focus();
+                            //}
+
 
                             //$http.get(baseServiceUrl + twitterProvider.Url)
                             //    .then(function (response) {
@@ -97,5 +110,5 @@
     }
 
     angular.module('myApp.services')
-        .factory('auth', ['$http', '$q', 'identity', 'authorization', 'baseServiceUrl', auth]);
+        .factory('auth', ['$http', '$q', '$window', 'identity', 'authorization', 'baseServiceUrl', auth]);
 }());
