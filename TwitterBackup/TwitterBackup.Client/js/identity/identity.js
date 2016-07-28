@@ -2,11 +2,11 @@
     'use strict';
 
     function identity($cookieStore) {
-        var cookieStorageUserKey = 'currentApplicationUser';
+        var cookieStorageUserKey = 'currentApplicationUserData';
 
-        var currentUser;
+        var currentUser = null;
         return {
-            getCurrentUser: function () {
+            getCurrentUserData: function () {
                 var savedUser = $cookieStore.get(cookieStorageUserKey);
                 if (savedUser) {
                     return savedUser;
@@ -14,7 +14,7 @@
 
                 return currentUser;
             },
-            setCurrentUser: function (user) {
+            setCurrentUserData: function (user) {
                 if (user) {
                     $cookieStore.put(cookieStorageUserKey, user);
                 }
@@ -25,7 +25,7 @@
                 currentUser = user;
             },
             isAuthenticated: function () {
-                return !!this.getCurrentUser();
+                return this.getCurrentUser() ? true : false;
             }
         }
     }

@@ -371,7 +371,7 @@ namespace TwitterBackup.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var info = await Authentication.GetExternalLoginInfoAsync();
+            var info = await AuthenticationManagerGetExternalLoginInfoAsyncWithExternalBearer();
             if (info == null)
             {
                 return InternalServerError();
@@ -405,6 +405,27 @@ namespace TwitterBackup.Web.Controllers
         }
 
         #region Helpers
+
+        private async Task<ExternalLoginInfo> AuthenticationManagerGetExternalLoginInfoAsyncWithExternalBearer()
+        {
+            ExternalLoginInfo loginInfo = null;
+
+            var result = await Authentication.AuthenticateAsync(DefaultAuthenticationTypes.ExternalBearer);
+
+            if (result != null && result.Identity != null)
+            {
+                var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
+                if (idClaim != null)
+                {
+                    loginInfo = new ExternalLoginInfo()
+                    {
+                        DefaultUserName = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", ""),
+                        Login = new UserLoginInfo(idClaim.Issuer, idClaim.Value)
+                    };
+                }
+            }
+            return loginInfo;
+        }
 
         private string GetQueryString(HttpRequestMessage request, string key)
         {
@@ -455,14 +476,11 @@ namespace TwitterBackup.Web.Controllers
 
         private class ExternalLoginData
         {
-            public string ExternalAccessToken { get; set; }
-
             public string LoginProvider { get; set; }
 
             public string ProviderKey { get; set; }
 
             public string UserName { get; set; }
-
 
             public IList<Claim> GetClaims()
             {
@@ -501,8 +519,7 @@ namespace TwitterBackup.Web.Controllers
                 {
                     LoginProvider = providerKeyClaim.Issuer,
                     ProviderKey = providerKeyClaim.Value,
-                    UserName = identity.FindFirstValue(ClaimTypes.Name),
-                    ExternalAccessToken = identity.FindFirstValue("ExternalAccessToken")
+                    UserName = identity.FindFirstValue(ClaimTypes.Name)
                 };
             }
         }

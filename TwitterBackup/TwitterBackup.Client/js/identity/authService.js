@@ -8,7 +8,7 @@
         //    //AuthService.login();
         //};
 
-        function getUrlParameters (staticURL, decode) {
+        function getUrlParameters(staticURL, decode) {
             var currLocation = (staticURL.length) ? staticURL : window.location.search;
             var parArr = currLocation.split("#")[1].split("&");
 
@@ -57,7 +57,6 @@
 
             return deferred.promise;
         };
-
         return {
             signup: function (user) {
                 var deferred = $q.defer();
@@ -141,7 +140,18 @@
 
                 return deferred.promise;
             },
-            obtainAccessToken : function (externalData) {
+            getUserInfo: function (externalToken) {
+                var deferred = $q.defer();
+
+                $http.get(accountApi + '/UserInfo', { headers: { 'Authorization': 'Bearer ' + externalToken } }).then(function (response) {
+                    deferred.resolve(response);
+                }, function (error) {
+                    deferred.reject(error);
+                });
+
+                return deferred.promise;
+            },
+            obtainAccessToken: function (externalData) {
                 var deferred = $q.defer();
 
                 $http.get(accountApi + '/ObtainLocalAccessToken', { params: { provider: externalData.provider, externalAccessToken: externalData.externalAccessToken } }).success(function (response) {
@@ -154,35 +164,37 @@
                     deferred.resolve(response);
 
                 }).error(function (err, status) {
-                    logout();
+                    this.logout();
                     deferred.reject(err);
                 });
 
                 return deferred.promise;
             },
             logout: function () {
-                var deferred = $q.defer();
+                identity.setCurrentUserData(undefined);
 
-                //var headers = authorization.getAuthorizationHeader();
-                $http.post(accountApi + '/logout', {})
-                    .then(function () {
-                        identity.setCurrentUser(undefined);
-                        deferred.resolve();
-                    });
+                //var deferred = $q.defer();
 
-                return deferred.promise;
+                ////var headers = authorization.getAuthorizationHeader();
+                //$http.post(accountApi + '/logout', {})
+                //    .then(function () {
+                //        identity.setCurrentUser(undefined);
+                //        deferred.resolve();
+                //    });
+
+                //return deferred.promise;
             },
-            registerExternal: function (registerExternalData) {
+            registerExternal: function (externalAuthData) {
                 var deferred = $q.defer();
 
-                $http.post(accountApi + '/RegisterExternal', registerExternalData).success(function (response) {
+                $http.post(accountApi + '/RegisterExternal', { 'Email': externalAuthData.userName }, { headers: { 'Authorization': 'Bearer ' + externalAuthData.externalAccessToken } }).success(function (response) {
                     //localStorageService.set('authorizationData', { token: response.access_token, userName: response.userName, refreshToken: "", useRefreshTokens: false });
-                    identity.setCurrentUser({ token: response.access_token, userName: response.userName });
+                    identity.setCurrentUserData({ token: response.access_token, userName: response.userName });
                     //authentication.isAuth = true;
                     //authentication.userName = response.userName;
                     deferred.resolve(response);
                 }).error(function (err, status) {
-                    logout();
+                    this.logout();
                     deferred.reject(err);
                 });
 
@@ -205,7 +217,7 @@
                 isAuth: false,
                 userName: ""
             }
-        }
+        };
     }
 
     angular.module('myApp.services')

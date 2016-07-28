@@ -69,37 +69,29 @@
 
         $scope.authCompletedCB = function (fragment) {
             $scope.$apply(function () {
-                //authService.logout();
+                authService.getUserInfo(fragment.access_token).then(function (userInfo) {
+                    if (userInfo.data.HasRegistered === false) {
+                        authService.logout();
 
-                authService.externalAuthData = {
-                    provider: fragment.provider,
-                    userName: fragment.external_user_name,
-                    externalAccessToken: fragment.external_access_token
-                };
+                        authService.externalAuthData = {
+                            provider: userInfo.data.LoginProvider,
+                            userName: userInfo.data.Email,// fragment.external_user_name,
+                            externalAccessToken: fragment.access_token
+                        };
 
-                $location.path('/associate');
-
-                //if (fragment.haslocalaccount == 'False') {
-                //    authService.logout();
-
-                //    authService.externalAuthData = {
-                //        provider: fragment.provider,
-                //        userName: fragment.external_user_name,
-                //        externalAccessToken: fragment.external_access_token
-                //    };
-
-                //    $location.path('/associate');
-                //}
-                //else {
-                //    //Obtain access token and redirect to home
-                //    var externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
-                //    authService.obtainAccessToken(externalData).then(function (response) {
-                //        $location.path('/');
-                //    },
-                // function (error) {
-                //     notifier.error(error.error_description);
-                // });
-                //}
+                        $location.path('/associate');
+                    } else {
+                        //Obtain access token and redirect to home
+                        var externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
+                        authService.obtainAccessToken(externalData).then(function (response) {
+                            $location.path('/');
+                        }, function (error) {
+                            notifier.error(error.error_description);
+                        });
+                    }
+                }, function () {
+                    notifier.error(error.error_description);
+                });
             });
         }
     }

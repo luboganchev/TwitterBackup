@@ -5,11 +5,11 @@
         return {
             getAuthorizationHeader: function () {
                 return {
-                    'Authorization': 'Bearer ' + identity.getCurrentUser()['access_token']
+                    'Authorization': 'Bearer ' + identity.getCurrentUserData()['access_token']
                 }
             },
             getAuthorizationToken: function () {
-                var currentAuthData = identity.getCurrentUser();
+                var currentAuthData = identity.getCurrentUserData();
 
                 if (!currentAuthData) {
                     return null;
