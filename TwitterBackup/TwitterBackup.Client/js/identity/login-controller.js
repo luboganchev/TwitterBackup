@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    function LoginController($scope, $location, $window, notifier, identity, auth, authConstants) {
+    function LoginController($scope, $location, $window, notifier, identity, authService, authConstants) {
         $scope.identity = identity;
 
         $scope.login = function () {
-            auth.login().then(function (success) {
+            authService.login().then(function (success) {
                 if (success) {
                     $window.$windowScope = $scope;
                     $scope.socialAuthWindow = $window.open(success, "Authenticate Account", "location=0,status=0,width=600,height=750"); //window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
@@ -29,7 +29,7 @@
         //$scope.login = function (user, loginForm) {
         //    debugger;
         //    if (loginForm.$valid) {
-        //        auth.login(user).then(function (success) {
+        //        authService.login(user).then(function (success) {
         //            if (success) {
         //                notifier.success('Successful login!');
         //            }
@@ -44,7 +44,7 @@
         //}
 
         $scope.logout = function () {
-            auth.logout().then(function () {
+            authService.logout().then(function () {
                 notifier.success('Successful logout!');
                 if ($scope.user) {
                     $scope.user.email = '';
@@ -59,7 +59,7 @@
 
         $scope.authExternalProvider = function (provider) {
             var redirectUri = location.protocol + '//' + location.host + '/authcomplete.html';
-            var externalProviderUrl = authConstants.apiServiceBaseUri + "api/Account/ExternalLogin?provider=" + provider
+            var externalProviderUrl = authConstants.apiServiceBaseUrl + "/api/Account/ExternalLogin?provider=" + provider
                                                                         + "&response_type=token&client_id=" + authConstants.clientId
                                                                         + "&redirect_uri=" + redirectUri;
             window.$windowScope = $scope;
@@ -69,31 +69,41 @@
 
         $scope.authCompletedCB = function (fragment) {
             $scope.$apply(function () {
-                if (fragment.haslocalaccount == 'False') {
-                    authService.logOut();
+                //authService.logout();
 
-                    authService.externalAuthData = {
-                        provider: fragment.provider,
-                        userName: fragment.external_user_name,
-                        externalAccessToken: fragment.external_access_token
-                    };
+                authService.externalAuthData = {
+                    provider: fragment.provider,
+                    userName: fragment.external_user_name,
+                    externalAccessToken: fragment.external_access_token
+                };
 
-                    $location.path('/associate');
-                }
-                else {
-                    //Obtain access token and redirect to home
-                    var externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
-                    authService.obtainAccessToken(externalData).then(function (response) {
-                        $location.path('/');
-                    },
-                 function (error) {
-                     notifier.error(error.error_description);
-                 });
-                }
+                $location.path('/associate');
+
+                //if (fragment.haslocalaccount == 'False') {
+                //    authService.logout();
+
+                //    authService.externalAuthData = {
+                //        provider: fragment.provider,
+                //        userName: fragment.external_user_name,
+                //        externalAccessToken: fragment.external_access_token
+                //    };
+
+                //    $location.path('/associate');
+                //}
+                //else {
+                //    //Obtain access token and redirect to home
+                //    var externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
+                //    authService.obtainAccessToken(externalData).then(function (response) {
+                //        $location.path('/');
+                //    },
+                // function (error) {
+                //     notifier.error(error.error_description);
+                // });
+                //}
             });
         }
     }
 
     angular.module('myApp.controllers')
-        .controller('LoginController', ['$scope', '$location', '$window', 'notifier', 'identity', 'auth', 'authConstants', LoginController]);
+        .controller('LoginController', ['$scope', '$location', '$window', 'notifier', 'identity', 'authService', 'authConstants', LoginController]);
 }());

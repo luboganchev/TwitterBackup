@@ -10,8 +10,8 @@
                 controller: 'LoginController'
             })
             .when("/associate", {
-                templateUrl: "/app/views/associate.html",
-                controller: "associateController",
+                templateUrl: "/views/partials/associate.html",
+                controller: "AssociateController",
             })
             .otherwise({ redirectTo: '/' });
     }

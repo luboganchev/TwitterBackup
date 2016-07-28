@@ -38,5 +38,5 @@
     }
 
     angular.module('myApp.controllers')
-        .controller('AssociateController', ['$scope', '$location', '$timeout', 'auth', AssociateController]);
+        .controller('AssociateController', ['$scope', '$location', '$timeout', 'authService', AssociateController]);
 }());

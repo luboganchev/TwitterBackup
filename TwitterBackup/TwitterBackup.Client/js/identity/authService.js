@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function auth($http, $q, $window, identity, authorization, baseServiceUrl) {
+    function authService($http, $q, $window, identity, authorization, baseServiceUrl) {
         var accountApi = baseServiceUrl + '/api/Account';
         var socialAuthWindow = null;
         //$scope.authEnd = function() {
@@ -154,7 +154,7 @@
                     deferred.resolve(response);
 
                 }).error(function (err, status) {
-                    _logOut();
+                    logout();
                     deferred.reject(err);
                 });
 
@@ -164,7 +164,7 @@
                 var deferred = $q.defer();
 
                 //var headers = authorization.getAuthorizationHeader();
-                $http.post(accountApi + '/logout', {}, { headers: headers })
+                $http.post(accountApi + '/logout', {})
                     .then(function () {
                         identity.setCurrentUser(undefined);
                         deferred.resolve();
@@ -182,7 +182,7 @@
                     //authentication.userName = response.userName;
                     deferred.resolve(response);
                 }).error(function (err, status) {
-                    logOut();
+                    logout();
                     deferred.reject(err);
                 });
 
@@ -209,5 +209,5 @@
     }
 
     angular.module('myApp.services')
-        .factory('auth', ['$http', '$q', '$window', 'identity', 'authorization', 'baseServiceUrl', auth]);
+        .factory('authService', ['$http', '$q', '$window', 'identity', 'authorization', 'baseServiceUrl', authService]);
 }());

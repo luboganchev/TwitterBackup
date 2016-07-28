@@ -93,7 +93,7 @@
     <None Include="_references.js" />
     <Content Include="js\app.js" />
     <Content Include="js\common\notifier.js" />
-    <Content Include="js\identity\auth.js" />
+    <Content Include="js\identity\authService.js" />
     <Content Include="js\identity\authorization.js" />
     <Content Include="js\identity\identity.js" />
     <Content Include="js\identity\login-controller.js" />

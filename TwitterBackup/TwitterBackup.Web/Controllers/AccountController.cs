@@ -17,6 +17,7 @@ using TwitterBackup.Web.Models;
 using TwitterBackup.Web.Providers;
 using TwitterBackup.Web.Results;
 using System.Web.Http.Cors;
+using System.Linq;
 
 namespace TwitterBackup.Web.Controllers
 {
@@ -260,9 +261,9 @@ namespace TwitterBackup.Web.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -277,6 +278,23 @@ namespace TwitterBackup.Web.Controllers
             }
 
             return Ok();
+
+            //Uri requestedRedirectUrl = null;
+            //bool validUri = Uri.TryCreate(this.GetQueryString(this.Request, "redirect_uri"), UriKind.Absolute, out requestedRedirectUrl);
+
+            //if (!validUri)
+            //{
+            //    return BadRequest("redirect_uri is invalid");
+            //}
+
+            //string redirectUri = string.Format("{0}#external_access_token={1}&provider={2}&haslocalaccount={3}&external_user_name={4}",
+            //                                requestedRedirectUrl,
+            //                                externalLogin.ExternalAccessToken,
+            //                                externalLogin.LoginProvider,
+            //                                hasRegistered.ToString(),
+            //                                externalLogin.UserName);
+
+            //return Redirect(redirectUri);
         }
 
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
@@ -388,6 +406,19 @@ namespace TwitterBackup.Web.Controllers
 
         #region Helpers
 
+        private string GetQueryString(HttpRequestMessage request, string key)
+        {
+            var queryStrings = request.GetQueryNameValuePairs();
+
+            if (queryStrings == null) return null;
+
+            var match = queryStrings.FirstOrDefault(keyValue => string.Compare(keyValue.Key, key, true) == 0);
+
+            if (string.IsNullOrEmpty(match.Value)) return null;
+
+            return match.Value;
+        }
+
         private IAuthenticationManager Authentication
         {
             get { return Request.GetOwinContext().Authentication; }
@@ -424,9 +455,14 @@ namespace TwitterBackup.Web.Controllers
 
         private class ExternalLoginData
         {
+            public string ExternalAccessToken { get; set; }
+
             public string LoginProvider { get; set; }
+
             public string ProviderKey { get; set; }
+
             public string UserName { get; set; }
+
 
             public IList<Claim> GetClaims()
             {
@@ -465,7 +501,8 @@ namespace TwitterBackup.Web.Controllers
                 {
                     LoginProvider = providerKeyClaim.Issuer,
                     ProviderKey = providerKeyClaim.Value,
-                    UserName = identity.FindFirstValue(ClaimTypes.Name)
+                    UserName = identity.FindFirstValue(ClaimTypes.Name),
+                    ExternalAccessToken = identity.FindFirstValue("ExternalAccessToken")
                 };
             }
         }
