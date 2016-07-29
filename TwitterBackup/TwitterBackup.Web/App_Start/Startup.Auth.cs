@@ -73,7 +73,21 @@ namespace TwitterBackup.Web
                          "4eb6d578499b1ccf5f581ead56be3d9b6744a5e5", // VeriSign Class 3 Primary CA - G5
                          "5168FF90AF0207753CCCD9656462A212B859723B", // DigiCert SHA2 High Assurance Server C‎A 
                          "B13EC36903F8BF4701D498261A0802EF63642BC3" // DigiCert High Assurance EV Root CA
-                     })
+                     }),
+                 Provider = new TwitterAuthenticationProvider 
+                 {
+                     OnAuthenticated = async context =>
+                     {
+                         // Retrieve the OAuth access token to store for subsequent API calls
+                         string accessToken = context.AccessToken;
+
+                         // Retrieve the screen name (e.g. @jerriepelser)
+                         string twitterScreenName = context.ScreenName;
+
+                         // Retrieve the user ID
+                         var twitterUserId = context.UserId;
+                     }
+                 }
              });
 
             //app.UseFacebookAuthentication(

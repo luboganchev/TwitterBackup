@@ -18,6 +18,7 @@ using TwitterBackup.Web.Providers;
 using TwitterBackup.Web.Results;
 using System.Web.Http.Cors;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace TwitterBackup.Web.Controllers
 {
@@ -128,7 +129,7 @@ namespace TwitterBackup.Web.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -388,10 +389,114 @@ namespace TwitterBackup.Web.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }
+
+        // POST api/Account/RegisterExternalToken
+        [OverrideAuthentication]
+        [AllowAnonymous]
+        [Route("RegisterExternalToken")]
+        public async Task<IHttpActionResult> RegisterExternalToken(RegisterExternalTokenBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //validate token
+            ExternalLoginData externalLogin = await ExternalLoginData.FromToken(model.Provider, model.Token);
+
+            if (externalLogin == null)
+            {
+                return InternalServerError();
+            }
+
+            if (externalLogin.LoginProvider != model.Provider)
+            {
+                Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                return InternalServerError();
+            }
+            //if we reached this point then token is valid
+            ApplicationUser user = await UserManager.FindByEmailAsync(model.Email);
+
+            bool hasRegistered = user != null;
+            IdentityResult result;
+
+            if (!hasRegistered)
+            {
+                //create user here and add records to db
+            }
+
+            //authenticate
+            var identity = await UserManager.CreateIdentityAsync(user, OAuthDefaults.AuthenticationType);
+            IEnumerable<Claim> claims = externalLogin.GetClaims();
+            identity.AddClaims(claims);
+            Authentication.SignIn(identity);
+
+            ClaimsIdentity oAuthIdentity = new ClaimsIdentity(Startup.OAuthOptions.AuthenticationType);
+
+            oAuthIdentity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            oAuthIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+
+            AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, new AuthenticationProperties());
+
+            DateTime currentUtc = DateTime.UtcNow;
+            ticket.Properties.IssuedUtc = currentUtc;
+            ticket.Properties.ExpiresUtc = currentUtc.Add(Startup.OAuthOptions.AccessTokenExpireTimeSpan);
+
+            string accessToken = Startup.OAuthOptions.AccessTokenFormat.Protect(ticket);
+            Request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+
+
+            // Create the response building a JSON object that mimics exactly the one issued by the default /Token endpoint
+            JObject token = new JObject(
+            new JProperty("userName", user.UserName),
+            new JProperty("userId", user.Id),
+            new JProperty("access_token", accessToken),
+            new JProperty("token_type", "bearer"),
+            new JProperty("expires_in", Startup.OAuthOptions.AccessTokenExpireTimeSpan.TotalSeconds.ToString()),
+            new JProperty("issued", currentUtc.ToString("ddd, dd MMM yyyy HH':'mm':'ss 'GMT'")),
+            new JProperty("expires", currentUtc.Add(Startup.OAuthOptions.AccessTokenExpireTimeSpan).ToString("ddd, dd MMM yyyy HH:mm:ss 'GMT'"))
+            );
+
+            return Ok(token);
+        }
+
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[Route("LocalAccessToken")]
+        //public async Task<IHttpActionResult> GetLocalAccessToken(string provider, string externalAccessToken)
+        //{
+
+        //    if (string.IsNullOrWhiteSpace(provider) || string.IsNullOrWhiteSpace(externalAccessToken))
+        //    {
+        //        return BadRequest("Provider or external access token is not sent");
+        //    }
+
+        //    var verifiedAccessToken = await VerifyExternalAccessToken(provider, externalAccessToken);
+        //    if (verifiedAccessToken == null)
+        //    {
+        //        return BadRequest("Invalid Provider or External Access Token");
+        //    }
+
+        //    IdentityUser user = await UserManager.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
+
+        //    bool hasRegistered = user != null;
+
+        //    if (!hasRegistered)
+        //    {
+        //        return BadRequest("External user is not registered");
+        //    }
+
+        //    //generate access token response
+        //    var accessTokenResponse = GenerateLocalAccessTokenResponse(user.UserName);
+
+        //    return Ok(accessTokenResponse);
+
+        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -474,6 +579,38 @@ namespace TwitterBackup.Web.Controllers
             return null;
         }
 
+        //private JObject GenerateLocalAccessTokenResponse(string userName)
+        //{
+
+        //    var tokenExpiration = TimeSpan.FromDays(1);
+
+        //    ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
+
+        //    identity.AddClaim(new Claim(ClaimTypes.Name, userName));
+        //    identity.AddClaim(new Claim("role", "user"));
+
+        //    var props = new AuthenticationProperties()
+        //    {
+        //        IssuedUtc = DateTime.UtcNow,
+        //        ExpiresUtc = DateTime.UtcNow.Add(tokenExpiration),
+        //    };
+
+        //    var ticket = new AuthenticationTicket(identity, props);
+
+        //    var accessToken = Startup.OAuthBearerOptions.AccessTokenFormat.Protect(ticket);
+
+        //    JObject tokenResponse = new JObject(
+        //                                new JProperty("userName", userName),
+        //                                new JProperty("access_token", accessToken),
+        //                                new JProperty("token_type", "bearer"),
+        //                                new JProperty("expires_in", tokenExpiration.TotalSeconds.ToString()),
+        //                                new JProperty(".issued", ticket.Properties.IssuedUtc.ToString()),
+        //                                new JProperty(".expires", ticket.Properties.ExpiresUtc.ToString())
+        //);
+
+        //    return tokenResponse;
+        //}
+
         private class ExternalLoginData
         {
             public string LoginProvider { get; set; }
@@ -515,6 +652,64 @@ namespace TwitterBackup.Web.Controllers
                     return null;
                 }
 
+                return new ExternalLoginData
+                {
+                    LoginProvider = providerKeyClaim.Issuer,
+                    ProviderKey = providerKeyClaim.Value,
+                    UserName = identity.FindFirstValue(ClaimTypes.Name)
+                };
+            }
+
+            public static async Task<ExternalLoginData> FromToken(string provider, string accessToken)
+            {
+                string verifyTokenEndPoint = string.Empty;
+                string verifyAppEndpoint = string.Empty;
+                HttpClient client = new HttpClient();
+
+                if (provider == "Twitter")
+                {
+                    verifyTokenEndPoint = string.Format("https://api.twitter.com/1.1/account/verify_credentials.json");
+                    // don't need verifyAppEndPoint as our twitter app automatically gets verified. The token will be invalid if it was issues by some other spoofing app.
+                    client.DefaultRequestHeaders.Add("Authorization", string.Format("your authorizations here&access_Token={0}&other stuff", accessToken));
+                }
+                else
+                {
+                    return null;
+                }
+
+                Uri uri = new Uri(verifyTokenEndPoint);
+                HttpResponseMessage response = await client.GetAsync(uri);
+                ClaimsIdentity identity = null;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    dynamic iObj = (Newtonsoft.Json.Linq.JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(content);
+
+                    identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
+
+                    if (provider == "Twitter")
+                    {
+                        identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, iObj["id"].ToString(), ClaimValueTypes.String, "Twitter", "Twitter"));
+                    }
+                }
+
+                if (identity == null)
+                {
+                    return null;
+                }
+
+                Claim providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer) || String.IsNullOrEmpty(providerKeyClaim.Value))
+                {
+                    return null;
+                }
+
+                if (providerKeyClaim.Issuer == ClaimsIdentity.DefaultIssuer)
+                {
+                    return null;
+                }
                 return new ExternalLoginData
                 {
                     LoginProvider = providerKeyClaim.Issuer,
