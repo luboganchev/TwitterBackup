@@ -1,0 +1,41 @@
+﻿<div class="row">
+    <div class="col-md-12 jumbotron">
+        <div class="col-md-6">
+            <h1>Twitter Backup</h1>
+            <p class="lead">Connect with your friends — and other fascinating people. Get in-the-moment updates on the things that interest you.</p>
+        </div>
+        <div class="col-md-6">
+            <img class="img-responsive img-rounded" src="http://growingsocialmedia.com/wp-content/uploads/2013/10/Twitter-Logo.png">
+        </div>
+    </div>
+</div>
+//TODO add angular UI typeahead
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title text-center">Favorite friends</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="friend in friendsData.users">
+                <div class="thumbnail">
+                    <a href="User/Details/id={{friend.id}}" title="Dark">
+                        <div class="ratio img-rounded" style="background-image: url('{{friend.profile_image_url}}"></div>
+                    </a>
+                    <div class="caption">
+                        <h4 class="truncate" style="height: 40px">
+                            <a href="User/Details/id={{friend.id}}">
+                                {{friend.name}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div>
+                        <p class="truncate">
+                            {{friend.description}}
+                        </p>
+                    </div>
+                    <a href="#" class="btn btn-success btn-block">Unfollow</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

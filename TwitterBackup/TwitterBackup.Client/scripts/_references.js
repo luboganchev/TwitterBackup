@@ -18,3 +18,6 @@
 /// <reference path="authcomplete.js" />
 /// <reference path="../js/login/associatecontroller.js" />
 /// <reference path="../js/identity/authservice.js" />
+/// <reference path="../js/home/homecontroller.js" />
+/// <reference path="angular-ui/ui-bootstrap-tpls.min.js" />
+/// <reference path="angular-ui/ui-bootstrap.js" />

@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="authComplete.html" />
+    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="css\app.css" />
     <Content Include="css\bootstrap-theme.css" />
     <Content Include="css\bootstrap-theme.min.css" />
@@ -66,6 +67,7 @@
     <Content Include="css\toastr.css" />
     <Content Include="css\toastr.min.css" />
     <Content Include="index.html" />
+    <Content Include="js\home\homeController.js" />
     <Content Include="js\identity\authInterceptorService.js" />
     <Content Include="js\identity\twitter-login-directive.js" />
     <Content Include="js\login\associateController.js" />
@@ -74,6 +76,10 @@
     <Content Include="css\bootstrap.css.map" />
     <Content Include="libs\toastr\toastr.min.js.map" />
     <None Include="scripts\angular.intellisense.js" />
+    <Content Include="scripts\angular-ui\ui-bootstrap-tpls.js" />
+    <Content Include="scripts\angular-ui\ui-bootstrap-tpls.min.js" />
+    <Content Include="scripts\angular-ui\ui-bootstrap.js" />
+    <Content Include="scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="scripts\angular.js" />
     <Content Include="scripts\angular.min.js" />
     <Content Include="scripts\angular.min.js.map" />
@@ -107,6 +113,7 @@
     <None Include="scripts\_references.js" />
     <Content Include="scripts\authComplete.js" />
     <Content Include="views\partials\associate.html" />
+    <Content Include="views\partials\home.html" />
     <Content Include="views\partials\twitter-login.html" />
     <Content Include="Web.config" />
   </ItemGroup>

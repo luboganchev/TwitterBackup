@@ -5,6 +5,10 @@
         $httpProvider.interceptors.push('authInterceptorService');
 
         $routeProvider
+            .when('/', {
+                templateUrl: 'views/partials/home.html',
+                controller: 'HomeController'
+            })
             .when('/login', {
                 templateUrl: 'views/partials/twitter-login.html',
                 controller: 'LoginController'
