@@ -731,10 +731,13 @@
         };
     }
 
-    function HomeController($scope) {
-        $scope.friendsData = getTwitterFriends();
+    function HomeController($scope, $http) {
+        $http.get('http://localhost:19169/api/Twitter/GetFriends')
+            .then(function (response) {
+                $scope.friends = JSON.parse(response.data);
+            });
     }
 
     angular.module('myApp.controllers')
-        .controller('HomeController', ['$scope', HomeController]);
+        .controller('HomeController', ['$scope', '$http', HomeController]);
 }());

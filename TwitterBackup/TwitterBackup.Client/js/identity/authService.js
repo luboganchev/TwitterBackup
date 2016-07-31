@@ -3,6 +3,7 @@
 
     function authService($http, $q, $window, identity, authorization, baseServiceUrl) {
         var accountApi = baseServiceUrl + '/api/Account';
+        var twitterApi = baseServiceUrl + '/api/Twitter';
         var socialAuthWindow = null;
         //$scope.authEnd = function() {
         //    //AuthService.login();
@@ -58,6 +59,7 @@
             return deferred.promise;
         };
         return {
+
             signup: function (user) {
                 var deferred = $q.defer();
 
@@ -171,7 +173,7 @@
                 return deferred.promise;
             },
             logout: function () {
-                identity.setCurrentUserData(undefined);
+                identity.setAuthorizationData(null);
 
                 //var deferred = $q.defer();
 
@@ -200,13 +202,20 @@
 
                 return deferred.promise;
             },
-            isAuthenticated: function () {
-                if (identity.isAuthenticated()) {
-                    return true;
-                }
-                else {
-                    return $q.reject('not authorized');
-                }
+            isAuthorized: function () {
+                var authorizationData = identity.getAuthorizationData();
+
+                return !authorizationData.VerifierCode;
+            },
+            authorize: function () {
+                return $http.get(twitterApi + '/Authorize', {
+                    withCredentials: true,
+                    params: {
+                        redirectUrl: location.protocol + '//' + location.host + '/authComplete.html'
+                    }
+                }).then(function (response) {
+                    identity.setAuthorizationData(JSON.parse(response.data));
+                });
             },
             externalAuthData: {
                 provider: "",

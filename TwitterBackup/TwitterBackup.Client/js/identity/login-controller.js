@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function LoginController($scope, $location, $window, notifier, identity, authService, authConstants) {
+    function LoginController($scope, $location, $window, $timeout, notifier, identity, authService, authConstants) {
         $scope.identity = identity;
 
         $scope.login = function () {
@@ -43,59 +43,64 @@
         //    }
         //}
 
-        $scope.logout = function () {
-            authService.logout().then(function () {
-                notifier.success('Successful logout!');
-                if ($scope.user) {
-                    $scope.user.email = '';
-                    $scope.user.username = '';
-                    $scope.user.password = '';
-                }
-
-                $scope.loginForm.$setPristine();
-                $location.path('/');
-            })
-        }
-
         $scope.authExternalProvider = function (provider) {
-            var redirectUri = location.protocol + '//' + location.host + '/authcomplete.html';
-            var externalProviderUrl = authConstants.apiServiceBaseUrl + "/api/Account/ExternalLogin?provider=" + provider
-                                                                        + "&response_type=token&client_id=" + authConstants.clientId
-                                                                        + "&redirect_uri=" + redirectUri;
-            window.$windowScope = $scope;
+            authService.authorize()
+                .then(function () {
+                    var twitterData = identity.getAuthorizationData();
+                    if (twitterData) {
+                        window.$windowScope = $scope;
 
-            var oauthWindow = window.open(externalProviderUrl, "Authenticate Account", "location=0,status=0,width=600,height=750");
+                        var authorizationUrl = twitterData.AuthorizationURL;
+                        window.open(authorizationUrl, "Authenticate Account", "location=0,status=0,width=800,height=900");
+                    }
+            });
+
+            //var redirectUri = location.protocol + '//' + location.host + '/authcomplete.html';
+            //var externalProviderUrl = authConstants.apiServiceBaseUrl + "/api/Account/ExternalLogin?provider=" + provider
+            //                                                            + "&response_type=token&client_id=" + authConstants.clientId
+            //                                                            + "&redirect_uri=" + redirectUri;
         };
 
-        $scope.authCompletedCB = function (fragment) {
-            $scope.$apply(function () {
-                authService.getUserInfo(fragment.access_token).then(function (userInfo) {
-                    if (userInfo.data.HasRegistered === false) {
-                        authService.logout();
+        $scope.authCompletedCB = function (queryParams) {
+            var authorizationData = identity.getAuthorizationData();
+            authorizationData.VerifierCode = /oauth_verifier=(\w+)/.exec(queryParams)[1];
+            identity.setAuthorizationData(authorizationData);
 
-                        authService.externalAuthData = {
-                            provider: userInfo.data.LoginProvider,
-                            userName: userInfo.data.Email,// fragment.external_user_name,
-                            externalAccessToken: fragment.access_token
-                        };
-
-                        $location.path('/associate');
-                    } else {
-                        //Obtain access token and redirect to home
-                        var externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
-                        authService.obtainAccessToken(externalData).then(function (response) {
-                            $location.path('/');
-                        }, function (error) {
-                            notifier.error(error.error_description);
-                        });
-                    }
-                }, function () {
-                    notifier.error(error.error_description);
-                });
+            $timeout(function () {
+                $location.path('/');
             });
+
+            //authService.authorize(queryParams).then(function () {
+            //});
+
+            //$scope.$apply(function () {
+            //    authService.getUserInfo(fragment.access_token).then(function (userInfo) {
+            //        if (userInfo.data.HasRegistered === false) {
+            //            authService.logout();
+
+            //            authService.externalAuthData = {
+            //                provider: userInfo.data.LoginProvider,
+            //                userName: userInfo.data.Email,// fragment.external_user_name,
+            //                externalAccessToken: fragment.access_token
+            //            };
+
+            //            $location.path('/associate');
+            //        } else {
+            //            //Obtain access token and redirect to home
+            //            var externalData = { provider: fragment.provider, externalAccessToken: fragment.external_access_token };
+            //            authService.obtainAccessToken(externalData).then(function (response) {
+            //                $location.path('/');
+            //            }, function (error) {
+            //                notifier.error(error.error_description);
+            //            });
+            //        }
+            //    }, function () {
+            //        notifier.error(error.error_description);
+            //    });
+            //});
         }
     }
 
     angular.module('myApp.controllers')
-        .controller('LoginController', ['$scope', '$location', '$window', 'notifier', 'identity', 'authService', 'authConstants', LoginController]);
+        .controller('LoginController', ['$scope', '$location', '$window', '$timeout', 'notifier', 'identity', 'authService', 'authConstants', LoginController]);
 }());

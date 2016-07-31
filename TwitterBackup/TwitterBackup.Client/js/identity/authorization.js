@@ -3,20 +3,20 @@
 
     function authorization(identity) {
         return {
-            getAuthorizationHeader: function () {
-                return {
-                    'Authorization': 'Bearer ' + identity.getCurrentUserData()['access_token']
-                }
-            },
-            getAuthorizationToken: function () {
-                var currentAuthData = identity.getCurrentUserData();
+            //getAuthorizationHeader: function () {
+            //    return {
+            //        'Authorization': 'Bearer ' + identity.getTwitterCookieData()['access_token']
+            //    }
+            //},
+            //getAuthorizationToken: function () {
+            //    var currentAuthData = identity.getTwitterCookieData();
 
-                if (!currentAuthData) {
-                    return null;
-                }
+            //    if (!currentAuthData) {
+            //        return null;
+            //    }
                 
-                return currentAuthData['access_token'];
-            }
+            //    return currentAuthData['access_token'];
+            //}
         }
     }
 

@@ -16,7 +16,7 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="friend in friendsData.users">
+            <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="friend in friends">
                 <div class="thumbnail">
                     <a href="User/Details/id={{friend.id}}" title="Dark">
                         <div class="ratio img-rounded" style="background-image: url('{{friend.profile_image_url}}"></div>
@@ -24,13 +24,13 @@
                     <div class="caption">
                         <h4 class="truncate" style="height: 40px">
                             <a href="User/Details/id={{friend.id}}">
-                                {{friend.name}}
+                                {{friend.Name}}
                             </a>
                         </h4>
                     </div>
                     <div>
                         <p class="truncate">
-                            {{friend.description}}
+                            {{friend.Description}}
                         </p>
                     </div>
                     <a href="#" class="btn btn-success btn-block">Unfollow</a>

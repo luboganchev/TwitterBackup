@@ -1,28 +1,27 @@
 (function () {
     'use strict';
 
-    function identity($cookieStore) {
-        var cookieStorageUserKey = 'currentApplicationUserData';
+    function identity() {
+        var twitterAuthorizationName = 'twitter-authorization';
 
-        var currentUser = null;
         return {
-            getCurrentUserData: function () {
-                var savedUser = $cookieStore.get(cookieStorageUserKey);
-                if (savedUser) {
-                    return savedUser;
+            getAuthorizationData: function () {
+                var authorizationDataJson = localStorage.getItem(twitterAuthorizationName),
+                    authorizationData = {};
+
+                if (authorizationDataJson) {
+                    authorizationData = JSON.parse(authorizationDataJson);
                 }
 
-                return currentUser;
+                return authorizationData;
             },
-            setCurrentUserData: function (user) {
-                if (user) {
-                    $cookieStore.put(cookieStorageUserKey, user);
+            setAuthorizationData: function (authorizationData) {
+                if (authorizationData) {
+                    localStorage.setItem(twitterAuthorizationName, JSON.stringify(authorizationData));
                 }
                 else {
-                    $cookieStore.remove(cookieStorageUserKey);
+                    localStorage.removeItem(twitterAuthorizationName);
                 }
-
-                currentUser = user;
             },
             isAuthenticated: function () {
                 return this.getCurrentUser() ? true : false;
@@ -30,5 +29,5 @@
         }
     }
 
-    angular.module('myApp.services').factory('identity', ['$cookieStore', identity]);
+    angular.module('myApp.services').factory('identity', [identity]);
 }());

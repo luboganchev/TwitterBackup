@@ -6,6 +6,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Tweetinvi;
+using TwitterBackup.Web.Helpers;
 
 namespace TwitterBackup.Web
 {
@@ -14,6 +16,13 @@ namespace TwitterBackup.Web
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
             Response.Headers.Add("Access-Control-Allow-Origin", "*");
+
+            TwitterAuth.SetAuthenticatedUser(Request);
+        }
+
+        protected void Application_EndRequest(object sender, EventArgs e)
+        {
+            TwitterAuth.RemoveAuthenticatedUser();
         }
 
         protected void Application_Start()

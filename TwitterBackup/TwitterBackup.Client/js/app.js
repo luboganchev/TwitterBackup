@@ -13,6 +13,15 @@
                 templateUrl: 'views/partials/twitter-login.html',
                 controller: 'LoginController'
             })
+            .when('/logout', {
+                template: '',
+                controller: ['$timeout', '$location', 'authService', function ($timeout, $location, authService) {
+                    $timeout(function () {
+                        authService.logout();
+                        $location.path('/login');
+                    });
+                }]
+            })
             .when("/associate", {
                 templateUrl: "/views/partials/associate.html",
                 controller: "AssociateController",
@@ -21,7 +30,10 @@
     }
     var baseServiceUrl = 'http://localhost:19169';
     angular.module('myApp.services', []);
-    angular.module('myApp.directives', []);
+        //.factory('applicationAuthorization', ['authService', function (authService) {
+        //    return authService.authorize();
+        //}]);
+    //angular.module('myApp.directives', []);
     angular.module('myApp.controllers', ['myApp.services']);
     angular.module('myApp', ['ngRoute', 'ngCookies', 'myApp.controllers'])
         .config(['$routeProvider', '$httpProvider', config])
@@ -30,5 +42,6 @@
         .constant('authConstants', {
             apiServiceBaseUrl: baseServiceUrl,
             clientId: 'Progress'
-        });
+        })
+        //.run(['applicationAuthorization', function () { }])
 }());
