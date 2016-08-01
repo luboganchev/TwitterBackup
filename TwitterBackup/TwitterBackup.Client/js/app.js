@@ -1,8 +1,10 @@
 (function () {
     'use strict';
 
-    function config($routeProvider, $httpProvider) {
+    function config($routeProvider, $httpProvider, $locationProvider) {
         $httpProvider.interceptors.push('authInterceptorService');
+
+        $locationProvider.html5Mode({enabled: true});
 
         $routeProvider
             .when('/', {
@@ -23,8 +25,12 @@
                 }]
             })
             .when("/associate", {
-                templateUrl: "/views/partials/associate.html",
+                templateUrl: "views/partials/associate.html",
                 controller: "AssociateController",
+            })
+            .when('/user/profile/:id', {
+                templateUrl: 'views/partials/user-profile.html',
+                controller: 'UserProfileController'
             })
             .otherwise({ redirectTo: '/' });
     }
@@ -36,7 +42,7 @@
     //angular.module('myApp.directives', []);
     angular.module('myApp.controllers', ['myApp.services']);
     angular.module('myApp', ['ngRoute', 'ngCookies', 'myApp.controllers'])
-        .config(['$routeProvider', '$httpProvider', config])
+        .config(['$routeProvider', '$httpProvider', '$locationProvider', config])
         .value('toastr', toastr)
         .constant('baseServiceUrl', baseServiceUrl)
         .constant('authConstants', {

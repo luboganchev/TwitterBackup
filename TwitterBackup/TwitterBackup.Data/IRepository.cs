@@ -1,11 +1,11 @@
 ﻿namespace TwitterBackup.Data
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using TwitterBackup.Models;
 
-    public interface IRepository<T> : IDisposable
-        where T : class
+    public interface IRepository<T>
+        where T : IEntity
     {
         IQueryable<T> All();
 
@@ -13,12 +13,12 @@
 
         T Add(T entity);
 
-        void BulkInsert(IEnumerable<T> entities);
+        void Add(IEnumerable<T> entities);
 
-        void Update(T entity);
+        T Update(T entity);
 
         void Delete(T entity);
 
-        void DeleteById(object id);
+        void Delete(object id);
     }
 }

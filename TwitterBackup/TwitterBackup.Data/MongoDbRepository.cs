@@ -1,49 +1,28 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitterBackup.Models;
-
-namespace TwitterBackup.Data
+﻿namespace TwitterBackup.Data
 {
+    using MongoDB.Bson;
+    using MongoDB.Bson.Serialization;
+    using MongoDB.Driver;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using TwitterBackup.Models;
+
     public class MongoDbRepository<T> : IRepository<T>
            where T : IEntity
     {
         private IMongoDatabase database;
-        public IMongoCollection<T> collection;
+        private IMongoCollection<BsonDocument> collection;
 
-
-        //    public static IMongoDatabase _database;
-        //public static IMongoCollection<T> _collection;
-
-        public MongoDbRepository(IMongoDatabase db)
+        public MongoDbRepository(IMongoDatabase database)
         {
             GetDatabase();
-            GetCollection();
-            //this.db = db;
+            this.collection = database.GetCollection<BsonDocument>(typeof(T).Name);
         }
 
-        public async Task<IQueryable<T>> All()
+        public IQueryable<T> All()
         {
-            //return this.collection.AsQueryable();// database.GetCollection<T>(typeof(T).Name);
-            //var bsonValues = collection.Find(new BsonDocument()).ToListAsync();
-            //var values = bsonValues.Select(bsonValue => BsonSerializer.Deserialize<T>(bsonValue));
-
-            //return values.AsQueryable();
-
-            //var collection = db.GetCollection<BsonDocument>(this.collectionName);
-            //var bsonValues = this.collection.Find(new BsonDocument()).ToList();
-            //var values = bsonValues.Select(bsonValue => BsonSerializer.Deserialize<T>(bsonValue));
-
-            //return values.AsQueryable();
-
-
-            var collection = database.GetCollection<BsonDocument>(typeof(T).Name);
-            var bsonValues = await collection.Find(new BsonDocument()).ToListAsync();
+            var bsonValues = collection.Find(new BsonDocument()).ToList();
             var values = bsonValues.Select(bsonValue => BsonSerializer.Deserialize<T>(bsonValue));
 
             return values.AsQueryable();
@@ -52,37 +31,37 @@ namespace TwitterBackup.Data
         public T GetById(object id)
         {
             throw new NotImplementedException();
-            //return this.collection.Find<T>(id);
         }
 
         public T Add(T entity)
         {
-            throw new NotImplementedException();
+            var valueAsBson = entity.ToBsonDocument();
+            collection.InsertOne(valueAsBson);
+            var values = valueAsBson.Select(bsonValue => BsonSerializer.Deserialize<T>(valueAsBson)).FirstOrDefault();
+
+            return values;
         }
 
-        public void BulkInsert(IEnumerable<T> entities)
+        public void Add(IEnumerable<T> entities)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(T entity)
+        T IRepository<T>.Update(T entity)
         {
             throw new NotImplementedException();
+        }
+
+        public void Delete(object id)
+        {
+            var objectId = new ObjectId(id.ToString());
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", objectId);
+            this.collection.DeleteOneAsync(filter);
         }
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteById(object id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            this.Delete(entity.Id);
         }
 
         private void GetDatabase()
@@ -96,26 +75,26 @@ namespace TwitterBackup.Data
             database = client.GetDatabase(_dbName);
         }
 
-        private void GetCollection()
-        {
-            collection = database.GetCollection<T>(typeof(T).Name);
-        }
+        //private void GetCollection()
+        //{
+        //    collection = database.GetCollection<T>(typeof(T).Name);
+        //}
 
-        private MongoCollectionBase<T> GetCollection<T>()
-        {
-            return database.GetCollection<T>(typeof(T).Name) as MongoCollectionBase<T>;
-        }
+        //private MongoCollectionBase<T> GetCollection<T>()
+        //{
+        //    return database.GetCollection<BsonDocument>(typeof(T).Name) as MongoCollectionBase<T>;
+        //}
 
-        public IEnumerable<T> List()
-        {
-            var _result = GetCollection<T>().AsQueryable<T>().ToList(); ;
+        //public IEnumerable<T> List()
+        //{
+        //    var _result = GetCollection<T>().AsQueryable<T>().ToList(); ;
 
-            return _result;
-        }
+        //    return _result;
+        //}
 
-        public async Task<IEnumerable<T>> GetAllAsync(IMongoCollection<T> collection)
-        {
-            return await collection.Find(f => true).ToListAsync();
-        }
+        //public async Task<IEnumerable<T>> GetAllAsync(IMongoCollection<T> collection)
+        //{
+        //    return await collection.Find(f => true).ToListAsync();
+        //}
     }
 }

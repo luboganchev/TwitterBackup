@@ -21,3 +21,6 @@
 /// <reference path="../js/home/homecontroller.js" />
 /// <reference path="angular-ui/ui-bootstrap-tpls.min.js" />
 /// <reference path="angular-ui/ui-bootstrap.js" />
+/// <reference path="../js/user/userservice.js" />
+/// <reference path="../js/user/userprofilecontroller.js" />
+/// <reference path="../js/common/dataservice.js" />

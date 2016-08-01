@@ -18,12 +18,12 @@
         <div class="row">
             <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="friend in friends">
                 <div class="thumbnail">
-                    <a href="User/Details/id={{friend.id}}" title="Dark">
+                    <a href="/user/profile/{{friend.Id}}" title="Dark">
                         <div class="ratio img-rounded" style="background-image: url('{{friend.profile_image_url}}"></div>
                     </a>
                     <div class="caption">
                         <h4 class="truncate" style="height: 40px">
-                            <a href="User/Details/id={{friend.id}}">
+                            <a href="user/profile/{{friend.Id}}">
                                 {{friend.Name}}
                             </a>
                         </h4>

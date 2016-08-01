@@ -13,25 +13,25 @@ using TwitterBackup.Web.Models.Users;
 
 namespace TwitterBackup.Web.Controllers
 {
+    [TwitterAuthorization]
     public class TwitterController : ApiController
     {
+        [AllowAnonymous]
         [HttpGet]
         public IHttpActionResult Authorize()
         {
             return this.Ok(TwitterAuth.GetAuthorizationData(this.Request));
         }
 
-        [TwitterAuthorization]
+        [HttpGet]
         public IHttpActionResult GetFriends()
         {
             var friends = TwitterAuth.User.GetFriends();
+            var friendsDTO = friends.Select(friend => new { friend.Name, friend.Description, friend.Id });
 
-            var friendsDTO = friends.Select(friend => new { friend.Name, friend.Description });
-
-            return Content(HttpStatusCode.OK, JsonConvert.SerializeObject(friendsDTO));
+            return Ok(JsonConvert.SerializeObject(friendsDTO));
         }
 
-        [TwitterAuthorization]
         [HttpPost]
         public IHttpActionResult UnfollowFriend(long userId)
         {
@@ -45,7 +45,6 @@ namespace TwitterBackup.Web.Controllers
             return this.BadRequest("This user doesn't exist or it's already unfollowed");
         }
 
-        [TwitterAuthorization]
         [HttpPost]
         public IHttpActionResult FollowFriend(long userId)
         {
@@ -59,9 +58,13 @@ namespace TwitterBackup.Web.Controllers
             return this.BadRequest("This user doesn't exist or it's already followed");
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public IHttpActionResult UserDetails(long userId)
         {
-            var userDetails = TwitterAuth.User.Friends.FirstOrDefault(user => user.Id == userId);
+            var userDetails = Tweetinvi.User.GetUserFromId(userId);
+
+            //var userDetails = TwitterAuth.User.GetF Friends.FirstOrDefault(user => user.Id == userId);
 
             if (userDetails != null)
             {
@@ -69,18 +72,21 @@ namespace TwitterBackup.Web.Controllers
                 {
                     Name = userDetails.Name,
                     Description = userDetails.Description,
-                    Tweets = userDetails.Timeline.Select(tweet => new TweetViewModel
-                    {
-                        CreatedAt = tweet.CreatedAt,
-                        CreatedByName = tweet.CreatedBy.Name,
-                        FavoriteCount = tweet.FavoriteCount,
-                        FullText = tweet.FullText,
-                        //Retweet = tweet.RetweetedTweet.e,
-                        RetweetCount = tweet.RetweetCount,
-                        Retweeted = tweet.Retweeted,
-                        Text = tweet.Text
-                    }).ToArray()
+                    ProfileImageUrl = userDetails.ProfileImageUrl
                 };
+
+                var tweetCollection = Tweetinvi.Timeline.GetUserTimeline(userId);
+                userDTO.Tweets = tweetCollection.Select(tweet => new TweetViewModel
+                {
+                    CreatedAt = tweet.CreatedAt,
+                    CreatedByName = tweet.CreatedBy.Name,
+                    FavoriteCount = tweet.FavoriteCount,
+                    FullText = tweet.FullText,
+                    //Retweet = tweet.RetweetedTweet.e,
+                    RetweetCount = tweet.RetweetCount,
+                    Retweeted = tweet.Retweeted,
+                    Text = tweet.Text
+                }).ToArray();
 
                 return Ok(JsonConvert.SerializeObject(userDTO));
             }
@@ -88,6 +94,7 @@ namespace TwitterBackup.Web.Controllers
             return this.BadRequest("This user doesn't exist");
         }
 
+        [HttpPost]
         public IHttpActionResult Retweet(long tweetId)
         {
             //Check retweet string length

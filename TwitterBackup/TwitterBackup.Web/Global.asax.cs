@@ -20,10 +20,10 @@ namespace TwitterBackup.Web
             TwitterAuth.SetAuthenticatedUser(Request);
         }
 
-        protected void Application_EndRequest(object sender, EventArgs e)
-        {
-            TwitterAuth.RemoveAuthenticatedUser();
-        }
+        //protected void Application_EndRequest(object sender, EventArgs e)
+        //{
+        //    TwitterAuth.RemoveAuthenticatedUser();
+        //}
 
         protected void Application_Start()
         {

@@ -7,6 +7,7 @@
     <!--<link rel="stylesheet" href="../css/bootstrap-theme.min.css" />-->
     <link rel="stylesheet" href="../css/toastr.min.css" />
     <link rel="stylesheet" href="../css/app.css" />
+    <base href="/">
 </head>
 <body ng-app="myApp" ng-cloak>
     <div class="navbar navbar-default navbar-static-top">
@@ -88,15 +89,18 @@
 
     <!-- Load services -->
     <script src="js/identity/authInterceptorService.js"></script>
+    <script src="js/common/dataService.js"></script>
     <script src="js/common/notifier.js"></script>
     <script src="js/identity/authService.js"></script>
     <script src="js/identity/authorization.js"></script>
     <script src="js/identity/identity.js"></script>
     <script src="js/identity/login-controller.js"></script>
     <script src="js/identity/register-controller.js"></script>
+    <script src="js/user/userService.js"></script>
 
     <!-- Load controllers -->
     <script src="js/login/associateController.js"></script>
     <script src="js/home/homeController.js"></script>
+    <script src="js/user/userProfileController.js"></script>
 </body>
 </html>

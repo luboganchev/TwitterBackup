@@ -61,6 +61,7 @@ namespace TwitterBackup.Web.Helpers
 
         public static void RemoveAuthenticatedUser()
         {
+            //Auth.InvalidateCredentials()
             TwitterAuth.User = null;
         }
 

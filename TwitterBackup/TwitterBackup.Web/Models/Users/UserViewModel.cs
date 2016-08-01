@@ -17,6 +17,8 @@ namespace TwitterBackup.Web.Models.Users
 
         public string Description { get; set; }
 
+        public string ProfileImageUrl { get; set; }
+
         public ICollection<TweetViewModel> Tweets { get; set; }
     }
 }
