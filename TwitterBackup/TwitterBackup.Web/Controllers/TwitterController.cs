@@ -1,21 +1,23 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Tweetinvi;
-using Tweetinvi.Models;
-using TwitterBackup.Web.Helpers;
-using TwitterBackup.Web.Models.Tweets;
-using TwitterBackup.Web.Models.Users;
-
-namespace TwitterBackup.Web.Controllers
+﻿namespace TwitterBackup.Web.Controllers
 {
+    using Newtonsoft.Json;
+    using System;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using Tweetinvi;
+    using Tweetinvi.Models;
+    using TwitterBackup.Web.Helpers;
+    using TwitterBackup.Web.Models.Tweets;
+    using TwitterBackup.Web.Models.Users;
+
     [TwitterAuthorization]
     public class TwitterController : ApiController
     {
+        internal static IAuthenticatedUser authUser;
+
         [AllowAnonymous]
         [HttpGet]
         public IHttpActionResult Authorize()
@@ -23,10 +25,21 @@ namespace TwitterBackup.Web.Controllers
             return this.Ok(TwitterAuth.GetAuthorizationData(this.Request));
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public IHttpActionResult VerifyUser()
+        {
+            var context = new HttpContextWrapper(HttpContext.Current);
+            HttpRequestBase request = context.Request;
+            TwitterAuth.SetAuthenticatedUserNew(request);
+            //TwitterAuth.TrackRateLimits();
+            return this.Ok();
+        }
+
         [HttpGet]
         public IHttpActionResult GetFriends()
         {
-            var friends = TwitterAuth.User.GetFriends();
+            var friends = authUser.GetFriends();
             var friendsDTO = friends.Select(friend => new { friend.Name, friend.Description, friend.Id });
 
             return Ok(JsonConvert.SerializeObject(friendsDTO));
@@ -35,7 +48,7 @@ namespace TwitterBackup.Web.Controllers
         [HttpPost]
         public IHttpActionResult UnfollowFriend(long userId)
         {
-            var hasUnfollowed = TwitterAuth.User.UnFollowUser(userId);
+            var hasUnfollowed = authUser.UnFollowUser(userId);
 
             if (hasUnfollowed)
             {
@@ -48,7 +61,7 @@ namespace TwitterBackup.Web.Controllers
         [HttpPost]
         public IHttpActionResult FollowFriend(long userId)
         {
-            var hasFollowed = TwitterAuth.User.FollowUser(userId);
+            var hasFollowed = authUser.FollowUser(userId);
 
             if (hasFollowed)
             {
@@ -59,7 +72,6 @@ namespace TwitterBackup.Web.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IHttpActionResult UserDetails(long userId)
         {
             var userDetails = Tweetinvi.User.GetUserFromId(userId);
@@ -119,9 +131,57 @@ namespace TwitterBackup.Web.Controllers
 
         public class TwitterAuthorization : AuthorizeAttribute
         {
+            private const int TWITTER_API_RATE_EXCEEDED_CODE = 88;
+            private bool isTwitterApiRateExceeded = false;
+            
+
             protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
             {
-                return TwitterAuth.User != null;
+                try
+                {
+                    var authenticatedUser = Tweetinvi.User.GetAuthenticatedUser();
+                    if (authenticatedUser == null)
+                    {
+                        var latestException = ExceptionHandler.GetLastException();
+                        if (latestException != null)
+                        {
+                            var exceptionCore = latestException.TwitterExceptionInfos.FirstOrDefault().Code;
+                            switch (exceptionCore)
+                            {
+                                case TWITTER_API_RATE_EXCEEDED_CODE:
+                                    //Rate limit of twitter is exceeded https://dev.twitter.com/rest/public/rate-limiting
+                                    isTwitterApiRateExceeded = true;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        return false;
+                    }
+                    else
+                    {
+                        authUser = authenticatedUser;
+
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+
+            protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
+            {
+                if (isTwitterApiRateExceeded)
+                {
+                    actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
+                }
+                else
+                {
+                    base.HandleUnauthorizedRequest(actionContext);
+                }
             }
         }
     }

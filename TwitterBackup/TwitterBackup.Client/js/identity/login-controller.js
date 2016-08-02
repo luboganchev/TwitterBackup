@@ -66,9 +66,12 @@
             authorizationData.VerifierCode = /oauth_verifier=(\w+)/.exec(queryParams)[1];
             identity.setAuthorizationData(authorizationData);
 
-            $timeout(function () {
-                $location.path('/');
+            authService.authenticate().then(function () {
+                $timeout(function () {
+                    $location.path('/');
+                });
             });
+
 
             //authService.authorize(queryParams).then(function () {
             //});

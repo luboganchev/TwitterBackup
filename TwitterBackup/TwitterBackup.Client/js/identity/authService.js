@@ -217,6 +217,9 @@
                     identity.setAuthorizationData(JSON.parse(response.data));
                 });
             },
+            authenticate: function(){
+                return $http.get(twitterApi + '/VerifyUser');
+            },
             externalAuthData: {
                 provider: "",
                 userName: "",

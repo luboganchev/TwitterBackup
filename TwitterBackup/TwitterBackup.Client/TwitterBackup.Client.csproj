@@ -73,7 +73,7 @@
     <Content Include="js\home\homeController.js" />
     <Content Include="js\identity\authInterceptorService.js" />
     <Content Include="js\identity\twitter-login-directive.js" />
-    <Content Include="js\login\associateController.js" />
+    <Content Include="js\user\rateExceededController.js" />
     <Content Include="js\user\userProfileController.js" />
     <Content Include="js\user\userService.js" />
     <Content Include="libs\angular\angular.min.js.map" />
@@ -117,7 +117,7 @@
     <Content Include="scripts\angular-mocks.js" />
     <None Include="scripts\_references.js" />
     <Content Include="scripts\authComplete.js" />
-    <Content Include="views\partials\associate.html" />
+    <Content Include="views\partials\rate-exceeded.html" />
     <Content Include="views\partials\home.html" />
     <Content Include="views\partials\tweet.html" />
     <Content Include="views\partials\twitter-login.html" />
@@ -127,7 +127,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="js\login\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

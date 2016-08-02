@@ -24,6 +24,14 @@
                     });
                 }
 
+                if (response.status === 403) {
+                    identity.setAuthorizationData(null);
+
+                    $timeout(function () {
+                        $location.path('/rate-exceeded');
+                    });
+                }
+
                 return $q.reject(response);
             }
         };

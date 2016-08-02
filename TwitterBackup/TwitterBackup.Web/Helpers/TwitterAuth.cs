@@ -1,26 +1,20 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web;
-using Tweetinvi;
-using Tweetinvi.Credentials.Models;
-using Tweetinvi.Models;
-
-namespace TwitterBackup.Web.Helpers
+﻿namespace TwitterBackup.Web.Helpers
 {
+    using Newtonsoft.Json;
+    using System;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Web;
+    using Tweetinvi;
+    using Tweetinvi.Models;
+
     public static class TwitterAuth
     {
-        [ThreadStatic]
-        public static IAuthenticatedUser User;
-
         private const string ConsumerKey = "tU2Hn3puJlsS5h5er6j5WTRzf";
         private const string ConsumerSecret = "83M4WmrFbDon009CbAtECREU9jGWplIxdigFxmFmd5mbD97BLO";
 
-        private static IAuthenticationContext authenticationContext;
-
+        //private static IAuthenticationContext authenticationContext;
+        //private static ITwitterCredentials creds = new TwitterCredentials(ConsumerKey, ConsumerSecret, "757545439130509312-JiRdKd3PncbtEDX3kThqt3sButW8syn", "8UsBdoDEcFyeCgN8SqlNXCxqtQCng1Yyqmg8jWQRlH85h");
 
         public static string GetAuthorizationData(HttpRequestMessage request)
         {
@@ -28,7 +22,7 @@ namespace TwitterBackup.Web.Helpers
             var redirectUrl = queryParams.Get("redirectUrl");
 
             var appCreds = new ConsumerCredentials(ConsumerKey, ConsumerSecret);
-            authenticationContext = AuthFlow.InitAuthentication(appCreds, callbackURL: redirectUrl);
+            var authenticationContext = AuthFlow.InitAuthentication(appCreds, callbackURL: redirectUrl);
 
             var authorizationData = new AuthorizationData()
             {
@@ -40,7 +34,28 @@ namespace TwitterBackup.Web.Helpers
             return JsonConvert.SerializeObject(authorizationData);
         }
 
-        public static void SetAuthenticatedUser(HttpRequest request)
+        //public static void TrackRateLimits()
+        //{
+        //    TweetinviEvents.QueryBeforeExecute += (sender, args) =>
+        //    {
+        //        var queryRateLimits = RateLimit.GetQueryRateLimit(args.QueryURL);
+
+        //        // Some methods are not RateLimited. Invoking such a method will result in the queryRateLimits to be null
+        //        if (queryRateLimits != null)
+        //        {
+                    
+        //            if (queryRateLimits.Remaining > 0)
+        //            {
+        //                // We have enough resource to execute the query
+        //                return;
+        //            }
+
+        //            args.Cancel = true;
+        //        }
+        //    };
+        //}
+
+        public static void SetAuthenticatedUserNew(HttpRequestBase request)
         {
             if (request.Headers.AllKeys.Any(key => key == "AuthorizationData"))
             {
@@ -48,76 +63,18 @@ namespace TwitterBackup.Web.Helpers
 
                 if (authorizationDataJson != null)
                 {
+
                     var authorizationData = JsonConvert.DeserializeObject<AuthorizationData>(authorizationDataJson);
                     var userCredentials = AuthFlow.CreateCredentialsFromVerifierCode(authorizationData.VerifierCode, authorizationData.AuthorizationKey, authorizationData.AuthorizationSecret, ConsumerKey, ConsumerSecret);
                     if (userCredentials != null)
                     {
-                        User = Tweetinvi.User.GetAuthenticatedUser(userCredentials);
                         Auth.SetCredentials(userCredentials);
+                        // When a new thread is created, the default credentials will be the Application Credentials
+                        Auth.ApplicationCredentials = userCredentials;
                     }
                 }
             }
         }
-
-        public static void RemoveAuthenticatedUser()
-        {
-            //Auth.InvalidateCredentials()
-            TwitterAuth.User = null;
-        }
-
-        //public static void SetAuthorizationCookies(HttpRequestMessage request, HttpResponseMessage response)
-        //{
-        //    var queryParams = request.RequestUri.ParseQueryString();
-        //    var cookieHost = queryParams.Get("cookieHostUrl");
-        //    var verifierCode = queryParams.Get("oauth_verifier");
-
-        //    var authorizationDataJson = GetAuthorizationCookie(request);
-        //    if (authorizationDataJson != null)
-        //    {
-        //        var authorizationData = JsonConvert.DeserializeObject<AuthorizationData>(authorizationDataJson);
-        //        authorizationData.VerifierCode = verifierCode;
-        //        AddCookie(request, response, authorizationData, cookieHost);
-        //    }
-        //}
-
-        //public static void SetAuthenticatedUser(HttpRequest request)
-        //{
-        //    // Get some information back from the URL
-        //    var verifierCode = request.Url.ParseQueryString().Get("oauth_verifier");
-
-        //    // Create the user credentials
-        //    var userCreds = AuthFlow.CreateCredentialsFromVerifierCode(verifierCode, authenticationContext);
-
-        //    // Do whatever you want with the user now!
-        //    //ViewBag.User = Tweetinvi.User.GetAuthenticatedUser(userCreds);
-        //    //return View();
-        //}
-
-        //private static string GetAuthorizationCookie(HttpRequestMessage request)
-        //{
-        //    var authorizationDataCookie = request.Headers.GetCookies("twitter-authorization").FirstOrDefault();
-        //    if (authorizationDataCookie != null)
-        //    {
-        //        var authorizationDataJson = authorizationDataCookie["twitter-authorization"].Value;
-
-        //        return authorizationDataJson;
-        //    }
-
-        //    return null;
-        //}
-
-        //private static void AddCookie(HttpRequestMessage request, HttpResponseMessage response, AuthorizationData authorizationData, string cookieHost)
-        //{
-        //    var authorizationDataJson = JsonConvert.SerializeObject(authorizationData);
-
-        //    var cookie = new CookieHeaderValue("twitter-authorization", authorizationDataJson);
-        //    cookie.Expires = DateTimeOffset.Now.AddDays(30);
-        //    // Fix cookie domain after deploy
-        //    cookie.Domain = "127.0.0.1";
-        //    cookie.Path = "/";
-
-        //    response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
-        //}
 
         private class AuthorizationData
         {

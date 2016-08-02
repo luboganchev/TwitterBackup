@@ -4,8 +4,6 @@
     function config($routeProvider, $httpProvider, $locationProvider) {
         $httpProvider.interceptors.push('authInterceptorService');
 
-        $locationProvider.html5Mode({enabled: true});
-
         $routeProvider
             .when('/', {
                 templateUrl: 'views/partials/home.html',
@@ -24,9 +22,9 @@
                     });
                 }]
             })
-            .when("/associate", {
-                templateUrl: "views/partials/associate.html",
-                controller: "AssociateController",
+            .when("/rate-exceeded", {
+                templateUrl: "views/partials/rate-exceeded.html",
+                controller: "RateExceededController",
             })
             .when('/user/profile/:id', {
                 templateUrl: 'views/partials/user-profile.html',
