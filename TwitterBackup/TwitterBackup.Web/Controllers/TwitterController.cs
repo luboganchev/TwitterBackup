@@ -71,8 +71,14 @@ namespace TwitterBackup.Web.Controllers
                 var userDTO = new UserViewModel
                 {
                     Name = userDetails.Name,
+                    ScreenName = userDetails.ScreenName,
                     Description = userDetails.Description,
-                    ProfileImageUrl = userDetails.ProfileImageUrl
+                    ProfileImageUrl = userDetails.ProfileImageUrl,
+                    ProfileBannerUrl = userDetails.ProfileBannerURL,
+                    ProfileLinkColor = userDetails.ProfileLinkColor,
+                    FollowersCount = userDetails.FollowersCount,
+                    FriendsCount = userDetails.FriendsCount,
+                    StatusesCount = userDetails.StatusesCount
                 };
 
                 var tweetCollection = Tweetinvi.Timeline.GetUserTimeline(userId);

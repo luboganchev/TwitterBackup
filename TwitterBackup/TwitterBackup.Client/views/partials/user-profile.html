@@ -1,50 +1,41 @@
 ﻿<div class="container">
     <div class="row">
-        <h1>Twitter Profile Card</h1>
-        <p>You can use with Twitter API, bot or manual.</p>
+        <h1>Twitter Profile</h1>
         <!-- code start -->
         <div class="twPc-div">
-            <a class="twPc-bg twPc-block"></a>
-
+            <a class="twPc-bg twPc-block" ng-style="{'background': bannerValue}"></a>
             <div>
-                <div class="twPc-button">
-                    <!-- Twitter Button | you can get from: https://about.twitter.com/tr/resources/buttons#follow -->
-                    <a href="https://twitter.com/mertskaplan" class="twitter-follow-button" data-show-count="false" data-size="large" data-show-screen-name="false" data-dnt="true">Follow @mertskaplan</a>
-                    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
-                    <!-- Twitter Button -->
-                </div>
-
-                <a title="Mert Salih Kaplan" href="https://twitter.com/mertskaplan" class="twPc-avatarLink">
-                    <img alt="Mert Salih Kaplan" src="{{userProfile.ProfileImageUrl}}" class="twPc-avatarImg">
+                <a title="{{userProfile.Name}}" href="https://twitter.com/{{userProfile.ScreenName}}" class="twPc-avatarLink">
+                    <img alt="{{userProfile.Name}}" src="{{userProfile.ProfileImageUrl}}" class="twPc-avatarImg">
                 </a>
 
                 <div class="twPc-divUser">
                     <div class="twPc-divName">
-                        <a href="https://twitter.com/mertskaplan">{{userProfile.Name}}</a>
+                        <a href="https://twitter.com/{{userProfile.ScreenName}}">{{userProfile.Name}}</a>
                     </div>
                     <span>
-                        <a href="https://twitter.com/mertskaplan">@<span>mertskaplan</span></a>
+                        <a href="https://twitter.com/{{userProfile.ScreenName}}">@<span>{{userProfile.ScreenName}}</span></a>
                     </span>
                 </div>
 
                 <div class="twPc-divStats">
                     <ul class="twPc-Arrange">
                         <li class="twPc-ArrangeSizeFit">
-                            <a href="https://twitter.com/mertskaplan" title="9.840 Tweet">
+                            <a href="https://twitter.com/{{userProfile.ScreenName}}" title="{{userProfile.StatusesCount}} Tweets">
                                 <span class="twPc-StatLabel twPc-block">Tweets</span>
-                                <span class="twPc-StatValue">9.840</span>
+                                <span class="twPc-StatValue">{{userProfile.StatusesCount}}</span>
                             </a>
                         </li>
                         <li class="twPc-ArrangeSizeFit">
-                            <a href="https://twitter.com/mertskaplan/following" title="885 Following">
+                            <a href="https://twitter.com/{{userProfile.ScreenName}}/following" title="{{userProfile.FriendsCount}} Following">
                                 <span class="twPc-StatLabel twPc-block">Following</span>
-                                <span class="twPc-StatValue">885</span>
+                                <span class="twPc-StatValue">{{userProfile.FriendsCount}}</span>
                             </a>
                         </li>
                         <li class="twPc-ArrangeSizeFit">
-                            <a href="https://twitter.com/mertskaplan/followers" title="1.810 Followers">
+                            <a href="https://twitter.com/{{userProfile.ScreenName}}/followers" title="{{userProfile.FollowersCount}} Followers">
                                 <span class="twPc-StatLabel twPc-block">Followers</span>
-                                <span class="twPc-StatValue">1.810</span>
+                                <span class="twPc-StatValue">{{userProfile.FollowersCount}}</span>
                             </a>
                         </li>
                     </ul>
@@ -53,7 +44,7 @@
         </div>
         <!-- code end -->
         <div>
-           <p>{{userProfile.Description}}</p>
+            <p>{{userProfile.Description}}</p>
         </div>
     </div>
 </div>
