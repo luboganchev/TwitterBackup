@@ -2,16 +2,17 @@
     'use strict';
 
     function dataService($http, $q, authorization, notifier, baseServiceUrl) {
-
+        var $loaderDiv = $('#loaderDiv');
         function get(url, queryParams) {
             var defered = $q.defer();
-
-            //var authHeader = authorization.getAuthorizationHeader();
+            $loaderDiv.show();
 
             $http.get(baseServiceUrl + '/' + url, { params: queryParams})
                 .then(function (response) {
+                    $loaderDiv.hide();
                     defered.resolve(response.data);
                 }, function (error) {
+                    $loaderDiv.hide();
                     error = getErrorMessage(error);
                     notifier.error(error);
                     defered.reject(error);
@@ -22,13 +23,13 @@
 
         function post(url, postData) {
             var defered = $q.defer();
-
-            var authHeader = authorization.getAuthorizationHeader();
-
+            $loaderDiv.show();
             $http.post(baseServiceUrl + '/' + url, postData)
                 .then(function (response) {
+                    $loaderDiv.hide();
                     defered.resolve(response.data);
                 }, function (error) {
+                    $loaderDiv.hide();
                     error = getErrorMessage(error);
                     notifier.error(error);
                     defered.reject(error);

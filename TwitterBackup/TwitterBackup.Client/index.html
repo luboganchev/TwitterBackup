@@ -30,6 +30,9 @@
         </div>
     </div>
     <div class="container body-content">
+        <div id="loaderDiv" style="display:none;">
+            <img src="Content/loading-image.gif" class="ajax-loader" />
+        </div>
         <div ng-view>
 
         </div>
@@ -96,6 +99,7 @@
     <script src="js/identity/login-controller.js"></script>
     <script src="js/identity/register-controller.js"></script>
     <script src="js/user/userService.js"></script>
+    <script src="js/home/homeService.js"></script>
 
     <!-- Load controllers -->
     <script src="js/user/rateExceededController.js"></script>

@@ -40,13 +40,20 @@
         public IHttpActionResult GetFriends()
         {
             var friends = authUser.GetFriends();
-            var friendsDTO = friends.Select(friend => new { friend.Name, friend.Description, friend.Id });
+            var friendsDTO = friends.Select(friend => new UserShortInfoViewModel
+            {
+                Id = friend.Id,
+                Name = friend.Name,
+                Description = friend.Description,
+                ScreenName = friend.ScreenName,
+                ProfileImageUrl = friend.ProfileImageUrl
+            });
 
             return Ok(JsonConvert.SerializeObject(friendsDTO));
         }
 
         [HttpPost]
-        public IHttpActionResult UnfollowFriend(long userId)
+        public IHttpActionResult UnfollowFriend([FromBody] long userId)
         {
             var hasUnfollowed = authUser.UnFollowUser(userId);
 
@@ -133,7 +140,7 @@
         {
             private const int TWITTER_API_RATE_EXCEEDED_CODE = 88;
             private bool isTwitterApiRateExceeded = false;
-            
+
 
             protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
             {

@@ -10,30 +10,30 @@
     </div>
 </div>
 //TODO add angular UI typeahead
+
+
 <div class="panel panel-success">
     <div class="panel-heading">
         <h3 class="panel-title text-center">Favorite friends</h3>
     </div>
     <div class="panel-body">
         <div class="row">
-            <div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="friend in friends">
-                <div class="thumbnail">
-                    <a href="#/user/profile/{{friend.Id}}" title="Dark">
-                        <div class="ratio img-rounded" style="background-image: url('{{friend.profile_image_url}}"></div>
-                    </a>
-                    <div class="caption">
-                        <h4 class="truncate" style="height: 40px">
+            <div class="col-md-3" ng-repeat="friend in friends">
+                <div class="card">
+                    <div class="header-bg" width="250" height="70"></div>
+                    <div class="avatar">
+                        <img src="{{friend.ProfileImageUrl}}" alt="" />
+                    </div>
+                    <div class="content">
+                        <p>
                             <a href="#/user/profile/{{friend.Id}}">
                                 {{friend.Name}}
                             </a>
-                        </h4>
-                    </div>
-                    <div>
-                        <p class="truncate">
-                            {{friend.Description}}
+                            <br>
+                            <a href="https://twitter.com/{{friend.ScreenName}}">@<span>{{friend.ScreenName}}</span></a>
                         </p>
+                        <p><button type="button" ng-click="unfollowFriend(friend.Id)" class="btn btn-danger">Unfollow</button></p>
                     </div>
-                    <a href="#" class="btn btn-success btn-block">Unfollow</a>
                 </div>
             </div>
         </div>

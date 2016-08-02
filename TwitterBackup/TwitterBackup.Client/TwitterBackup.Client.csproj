@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="authComplete.html" />
+    <Content Include="Content\loading-image.gif" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="css\app.css" />
     <Content Include="css\bootstrap-theme.css" />
@@ -71,6 +72,7 @@
     <Content Include="index.html" />
     <Content Include="js\common\dataService.js" />
     <Content Include="js\home\homeController.js" />
+    <Content Include="js\home\homeService.js" />
     <Content Include="js\identity\authInterceptorService.js" />
     <Content Include="js\identity\twitter-login-directive.js" />
     <Content Include="js\user\rateExceededController.js" />
