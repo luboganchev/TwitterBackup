@@ -31,7 +31,7 @@
         {
             var context = new HttpContextWrapper(HttpContext.Current);
             HttpRequestBase request = context.Request;
-            TwitterAuth.SetAuthenticatedUserNew(request);
+            TwitterAuth.SetAuthenticatedUser(request);
             //TwitterAuth.TrackRateLimits();
             return this.Ok();
         }
@@ -63,6 +63,21 @@
             }
 
             return this.BadRequest("This user doesn't exist or it's already unfollowed");
+        }
+
+        [HttpGet]
+        public IHttpActionResult SearchFriends(string keyword, int maxResults = 5)
+        {
+            var users = Search.SearchUsers(keyword, maxResults).Select(user => new UserShortInfoViewModel 
+            {
+                Id = user.Id,
+                Name = user.Name,
+                ScreenName = user.ScreenName,
+                ProfileImageUrl = user.ProfileImageUrl,
+                Following = user.Following
+            });
+
+            return Ok(users);
         }
 
         [HttpPost]
@@ -146,7 +161,9 @@
             {
                 try
                 {
-                    var authenticatedUser = Tweetinvi.User.GetAuthenticatedUser();
+                    Auth.SetCredentials(Auth.ApplicationCredentials);
+                    var authenticatedUser = Tweetinvi.User.GetAuthenticatedUser(Auth.ApplicationCredentials);
+
                     if (authenticatedUser == null)
                     {
                         var latestException = ExceptionHandler.GetLastException();

@@ -9,8 +9,21 @@
         </div>
     </div>
 </div>
-//TODO add angular UI typeahead
 
+<div class="row">
+    <div class="col-md-10">
+        <input type="text" ng-model="selectedUser" placeholder="Find your friend" uib-typeahead="user as user.Name for user in searchFriends($viewValue)"
+               typeahead-template-url="views/partials/user-dropdown-list-template.html" typeahead-loading="loadingUsers" typeahead-no-results="noResults"
+               class="form-control" typeahead-show-hint="true" typeahead-min-length="1">
+        <i ng-show="loadingUsers" class="glyphicon glyphicon-refresh"></i>
+        <div ng-show="noResults">
+            <i class="glyphicon glyphicon-remove"></i> No Results Found
+        </div>
+    </div>
+    <div class="col-md-2">
+        <button type="button" ng-click="unfollowFriend(friend.Id)" class="btn btn-success btn-block">Follow</button>
+    </div>
+</div>
 
 <div class="panel panel-success">
     <div class="panel-heading">

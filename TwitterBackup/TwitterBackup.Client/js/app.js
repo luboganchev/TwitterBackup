@@ -39,7 +39,7 @@
         //}]);
     //angular.module('myApp.directives', []);
     angular.module('myApp.controllers', ['myApp.services']);
-    angular.module('myApp', ['ngRoute', 'ngCookies', 'myApp.controllers'])
+    angular.module('myApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ngSanitize', 'myApp.controllers'])
         .config(['$routeProvider', '$httpProvider', '$locationProvider', config])
         .value('toastr', toastr)
         .constant('baseServiceUrl', baseServiceUrl)

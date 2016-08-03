@@ -25,3 +25,4 @@
 /// <reference path="../js/common/dataservice.js" />
 /// <reference path="../js/user/rateexceededcontroller.js" />
 /// <reference path="../js/home/homeservice.js" />
+/// <reference path="../js/common/cacheservice.js" />

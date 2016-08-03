@@ -43,7 +43,7 @@
         //        // Some methods are not RateLimited. Invoking such a method will result in the queryRateLimits to be null
         //        if (queryRateLimits != null)
         //        {
-                    
+
         //            if (queryRateLimits.Remaining > 0)
         //            {
         //                // We have enough resource to execute the query
@@ -55,7 +55,7 @@
         //    };
         //}
 
-        public static void SetAuthenticatedUserNew(HttpRequestBase request)
+        public static void SetAuthenticatedUser(HttpRequestBase request)
         {
             if (request.Headers.AllKeys.Any(key => key == "AuthorizationData"))
             {

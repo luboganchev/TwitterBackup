@@ -13,9 +13,14 @@
             return dataService.post(TWITTER_URL + '/UnfollowFriend', '"' + userId + '"');
         }
 
+        function searchFriends(keyword) {
+            return dataService.get(TWITTER_URL + '/SearchFriends', { keyword: keyword })
+        }
+
         return {
             getFriends: getFriends,
-            unfollowFriend: unfollowFriend
+            unfollowFriend: unfollowFriend,
+            searchFriends: searchFriends
         };
     }
 

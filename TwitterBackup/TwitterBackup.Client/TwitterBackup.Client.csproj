@@ -70,6 +70,7 @@
     <Content Include="css\toastr.css" />
     <Content Include="css\toastr.min.css" />
     <Content Include="index.html" />
+    <Content Include="js\common\cacheService.js" />
     <Content Include="js\common\dataService.js" />
     <Content Include="js\home\homeController.js" />
     <Content Include="js\home\homeService.js" />
@@ -123,6 +124,7 @@
     <Content Include="views\partials\home.html" />
     <Content Include="views\partials\tweet.html" />
     <Content Include="views\partials\twitter-login.html" />
+    <Content Include="views\partials\user-dropdown-list-template.html" />
     <Content Include="views\partials\user-profile.html" />
     <Content Include="Web.config" />
   </ItemGroup>

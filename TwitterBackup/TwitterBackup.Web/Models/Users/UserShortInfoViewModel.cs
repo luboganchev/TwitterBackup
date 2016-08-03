@@ -11,5 +11,7 @@
         public string Description { get; set; }
 
         public string ProfileImageUrl { get; set; }
+
+        public bool Following { get; set; }
     }
 }
