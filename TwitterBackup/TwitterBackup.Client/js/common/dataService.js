@@ -48,7 +48,7 @@
                 error = error[Object.keys(error)[0]][0];
             }
             else {
-                error = response.data.message;
+                error = response.data.Message;
             }
 
             return error;

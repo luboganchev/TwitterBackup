@@ -1,29 +1,56 @@
 ﻿.navbar {
-	margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-	padding-left: 15px;
-	padding-right: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
+.favorite-icon {
+    color: red;
+    font-size: 18px;
+}
+
+.retweet-icon {
+    color: green;
+    font-size: 18px;
+}
+
+.favorite-icon-value {
+    color: red;
+    font-size: 20px;
+    font-family: monospace;
+}
+
+.retweet-icon-value {
+    color: green;
+    font-size: 20px;
+    font-family: monospace;
+}
+
+.no-margin {
+    margin: 0px !important;
+}
 /*=======================================
 TWEET FEED STYLES
 ==================================================*/
 .twt-wrapper .panel-body {
-    max-height:650px;
-    overflow:auto;
+    max-height: 650px;
+    overflow: auto;
 }
+
 .twt-wrapper .media-list .media img {
-    width:64px;
-    height:64px;
-    border:2px solid #e5e7e8;
+    width: 64px;
+    height: 64px;
+    border: 2px solid #e5e7e8;
 }
+
 .twt-wrapper .media-list .media {
-    border-bottom:1px dashed #efefef;
-    margin-bottom:25px;
+    border-bottom: 1px dashed #efefef;
+    margin-bottom: 25px;
 }
 
 /*=======================================
@@ -35,8 +62,10 @@ TWEET FEED STYLES
     border: 1px solid #e1e8ed;
     border-radius: 6px;
     height: 200px;
-    max-width: 340px; // orginal twitter width: 290px;
+    max-width: 340px;
+    // orginal twitter width: 290px;
 }
+
 .twPc-bg {
     /*background-image: url("https://pbs.twimg.com/profile_banners/50988711/1384539792/600x200");*/
     background-position: 0 50%;
@@ -46,14 +75,17 @@ TWEET FEED STYLES
     height: 95px;
     width: 100%;
 }
+
 .twPc-block {
     display: block !important;
 }
+
 .twPc-button {
     margin: -35px -10px 0;
     text-align: right;
     width: 100%;
 }
+
 .twPc-avatarLink {
     background-color: #fff;
     border-radius: 6px;
@@ -64,6 +96,7 @@ TWEET FEED STYLES
     padding: 1px;
     vertical-align: bottom;
 }
+
 .twPc-avatarImg {
     border: 2px solid #fff;
     border-radius: 7px;
@@ -72,21 +105,26 @@ TWEET FEED STYLES
     height: 72px;
     width: 72px;
 }
+
 .twPc-divUser {
     margin: 5px 0 0;
 }
+
 .twPc-divName {
     font-size: 18px;
     font-weight: 700;
     line-height: 21px;
 }
-.twPc-divName a {
-    color: inherit !important;
-}
+
+    .twPc-divName a {
+        color: inherit !important;
+    }
+
 .twPc-divStats {
     margin-left: 11px;
     padding: 10px 0;
 }
+
 .twPc-Arrange {
     box-sizing: border-box;
     display: table;
@@ -95,25 +133,30 @@ TWEET FEED STYLES
     padding: 0;
     table-layout: auto;
 }
+
 ul.twPc-Arrange {
     list-style: outside none none;
     margin: 0;
     padding: 0;
 }
+
 .twPc-ArrangeSizeFit {
     display: table-cell;
     padding: 0;
     vertical-align: top;
 }
-.twPc-ArrangeSizeFit a:hover {
-    text-decoration: none;
-}
+
+    .twPc-ArrangeSizeFit a:hover {
+        text-decoration: none;
+    }
+
 .twPc-StatValue {
     display: block;
     font-size: 18px;
     font-weight: 500;
     transition: color 0.15s ease-in-out 0s;
 }
+
 .twPc-StatLabel {
     color: #8899a6;
     font-size: 10px;
@@ -126,65 +169,66 @@ ul.twPc-Arrange {
 /*grid*/
 
 .src-image {
-  display: none;
+    display: none;
 }
 
 .card {
-  overflow: hidden;
-  position: relative;
-  border: 1px solid #CCC;
-  border-radius: 8px;
-  text-align: center;
-  padding: 0;
-  background-color: white;
-  color: rgb(136, 172, 217);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    text-align: center;
+    padding: 0;
+    background-color: white;
+    color: rgb(136, 172, 217);
 }
 
-.card .header-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 70px;
-  border-bottom: 1px #FFF solid;
-  z-index: 1;
-  background-color: #d34615;
-}
-.card .avatar {
-  position: relative;
-  margin-top: 15px;
-  z-index: 100;
-}
+    .card .header-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        border-bottom: 1px #FFF solid;
+        z-index: 1;
+        background-color: #d34615;
+    }
 
-.card .avatar img {
-  width: 100px;
-  height: 100px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%;
-  border: 5px solid rgba(0,0,30,0.8);
-}
+    .card .avatar {
+        position: relative;
+        margin-top: 15px;
+        z-index: 100;
+    }
+
+        .card .avatar img {
+            width: 100px;
+            height: 100px;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            border: 5px solid rgba(0,0,30,0.8);
+        }
 
 /*Loader*/
 
-#loaderDiv {  
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    z-index:1000;
-    background-color:white;
+#loaderDiv {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: white;
     opacity: .8;
- }
+}
 
 .ajax-loader {
     position: absolute;
     left: 50%;
     top: 50%;
     margin-left: -32px; /* -1 * image width / 2 */
-    margin-top: -32px;  /* -1 * image height / 2 */
-    display: block;     
+    margin-top: -32px; /* -1 * image height / 2 */
+    display: block;
 }
 
 /*Angular - UI*/

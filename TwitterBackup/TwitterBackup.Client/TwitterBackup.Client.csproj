@@ -69,6 +69,7 @@
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\toastr.css" />
     <Content Include="css\toastr.min.css" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
     <Content Include="js\common\cacheService.js" />
     <Content Include="js\common\dataService.js" />
@@ -83,6 +84,9 @@
     <Content Include="css\bootstrap-theme.css.map" />
     <Content Include="css\bootstrap.css.map" />
     <Content Include="libs\toastr\toastr.min.js.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="scripts\angular.intellisense.js" />
     <Content Include="scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="scripts\angular-ui\ui-bootstrap-tpls.min.js" />

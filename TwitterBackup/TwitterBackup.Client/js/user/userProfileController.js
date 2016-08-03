@@ -15,23 +15,12 @@
                 $scope.bannerValue = $scope.userProfile.ProfileBannerUrl ? 'url(' +$scope.userProfile.ProfileBannerUrl + ')': '#' +$scope.userProfile.ProfileLinkColor;
             });
 
-        //$scope.setBannerValue = function () {
-        //    var attribute = null;
-        //    var value = null;
-
-        //    if (vm.ProfileBannerUrl) {
-        //        attribute = 'background-url';
-        //        value = 'src('+ vm.ProfileBannerUrl+')';
-        //    } else {
-        //        attribute = 'background-color';
-        //        value = '#' + vm.ProfileLinkColor;
-        //    }
-            
-        //    var returnObject = {};
-        //    returnObject[attribute] = value;
-
-        //    return returnObject;
-        //}
+        $scope.storeTweet = function () {
+            userService.storeUserTweet()
+                .then(function (response) {
+                    debugger;
+                });
+        }
     }
 
     angular.module('myApp.controllers')

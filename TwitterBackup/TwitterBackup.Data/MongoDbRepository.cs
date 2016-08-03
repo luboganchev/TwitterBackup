@@ -14,9 +14,10 @@
         private IMongoDatabase database;
         private IMongoCollection<BsonDocument> collection;
 
-        public MongoDbRepository(IMongoDatabase database)
+        public MongoDbRepository(string connectionString, string databaseName)
         {
-            GetDatabase();
+            var client = new MongoClient(connectionString);
+            database = client.GetDatabase(databaseName);
             this.collection = database.GetCollection<BsonDocument>(typeof(T).Name);
         }
 
@@ -64,16 +65,6 @@
             this.Delete(entity.Id);
         }
 
-        private void GetDatabase()
-        {
-            var _dbName = "123";// ConfigurationManager.AppSettings["MongoDbDatabaseName"];
-            var _connectionString = "123";// ConfigurationManager.AppSettings["MongoDbConnectionString"];
-
-            _connectionString = _connectionString.Replace("{DB_NAME}", _dbName);
-
-            var client = new MongoClient(_connectionString);
-            database = client.GetDatabase(_dbName);
-        }
 
         //private void GetCollection()
         //{

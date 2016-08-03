@@ -13,9 +13,14 @@
             return dataService.post(TWITTER_URL + '/Retweet', { userId: tweetId });
         }
 
+        function storeUserTweet() {
+            return dataService.get(TWITTER_URL + '/StoreTweet');
+        }
+
         return {
             getUserDetails: getUserDetails,
-            createRetweet: createRetweet
+            createRetweet: createRetweet,
+            storeUserTweet: storeUserTweet
         };
     }
 

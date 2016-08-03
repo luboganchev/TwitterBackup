@@ -2,6 +2,7 @@
 {
     using Newtonsoft.Json;
     using System;
+    using System.Configuration;
     using System.Linq;
     using System.Net.Http;
     using System.Web;
@@ -9,6 +10,7 @@
     using System.Web.Http.Controllers;
     using Tweetinvi;
     using Tweetinvi.Models;
+    using TwitterBackup.Services;
     using TwitterBackup.Web.Helpers;
     using TwitterBackup.Web.Models.Tweets;
     using TwitterBackup.Web.Models.Users;
@@ -81,16 +83,21 @@
         }
 
         [HttpPost]
-        public IHttpActionResult FollowFriend(long userId)
+        public IHttpActionResult FollowFriend([FromBody] long userId)
         {
-            var hasFollowed = authUser.FollowUser(userId);
-
-            if (hasFollowed)
+            var hasAlreadyFollowed = Tweetinvi.User.GetUserFromId(userId).Following;
+            if (!hasAlreadyFollowed) 
             {
-                return this.Ok(true);
+                var hasFollowed = authUser.FollowUser(userId);
+                if (hasFollowed)
+                {
+                    return this.Ok(true);
+                }
+
+                return this.BadRequest("This user doesn't exist");
             }
 
-            return this.BadRequest("This user doesn't exist or it's already followed");
+            return this.BadRequest("This user is already followed");
         }
 
         [HttpGet]
@@ -119,13 +126,27 @@
                 userDTO.Tweets = tweetCollection.Select(tweet => new TweetViewModel
                 {
                     CreatedAt = tweet.CreatedAt,
-                    CreatedByName = tweet.CreatedBy.Name,
                     FavoriteCount = tweet.FavoriteCount,
                     FullText = tweet.FullText,
                     //Retweet = tweet.RetweetedTweet.e,
                     RetweetCount = tweet.RetweetCount,
-                    Retweeted = tweet.Retweeted,
-                    Text = tweet.Text
+                    RetweetedFromMe = tweet.Retweeted,
+                    Text = tweet.Text,
+                    Creator = new UserShortInfoViewModel 
+                    {
+                        Id = tweet.CreatedBy.Id,
+                        Name = tweet.CreatedBy.Name,
+                        ScreenName = tweet.CreatedBy.ScreenName,
+                        ProfileImageUrl = tweet.CreatedBy.ProfileImageUrl
+                    },
+                    IsRetweet = tweet.IsRetweet,
+                    RetweetFrom = tweet.IsRetweet? new UserShortInfoViewModel
+                    {
+                        Id = tweet.RetweetedTweet.CreatedBy.Id,
+                        Name = tweet.RetweetedTweet.CreatedBy.Name,
+                        ScreenName = tweet.RetweetedTweet.CreatedBy.ScreenName,
+                        ProfileImageUrl = tweet.RetweetedTweet.CreatedBy.ProfileImageUrl
+                    } : null
                 }).ToArray();
 
                 return Ok(JsonConvert.SerializeObject(userDTO));
@@ -149,6 +170,15 @@
             }
 
             return this.BadRequest("This tweet doesn't exist");
+        }
+
+        [HttpGet]
+        public IHttpActionResult StoreTweet()
+        {
+            StoreService service = new StoreService(ConfigurationManager.ConnectionStrings["MongoConnection"].ConnectionString, ConfigurationManager.AppSettings["DatabaseName"].ToString());
+            service.AddUser();
+
+            return Ok();
         }
 
         public class TwitterAuthorization : AuthorizeAttribute

@@ -1,17 +1,30 @@
 ﻿(function () {
     'use strict';
 
-    function HomeController($scope, $http,cacheService, homeService) {
+    function HomeController($scope, $http, cacheService, homeService, notifier) {
         var vm = this;
         var friendsCacheKey = 'friends';
+        $scope.selectedUser = null;
+
         $scope.unfollowFriend = function (id) {
             homeService.unfollowFriend(id)
                 .then(function (response) {
                     if (response === true) {
-                        vm.getFriends();
+                        vm.getFriends(false);
                     }
-                }, function (error) {
+                });
+        }
 
+        $scope.followFriend = function (id) {
+            var userName = $scope.selectedUser.Name;
+
+            homeService.followFriend(id)
+                .then(function (response) {
+                    if (response === true) {
+                        vm.getFriends(false);
+                        notifier.success(userName + 'is successfully followed');
+                        $scope.selectedUser = null;
+                    }
                 });
         }
 
@@ -22,9 +35,10 @@
                 });
         }
 
-        vm.getFriends = function () {
+        vm.getFriends = function (useCache) {
+            useCache = useCache !== false ? true : useCache;
             var cachedValue = cacheService.get(friendsCacheKey);
-            if (cachedValue) {
+            if (useCache && cachedValue) {
                 $scope.friends = JSON.parse(cachedValue);
             } else {
                 homeService.getFriends()
@@ -39,5 +53,5 @@
     }
 
     angular.module('myApp.controllers')
-        .controller('HomeController', ['$scope', '$http', 'cacheService', 'homeService', HomeController]);
+        .controller('HomeController', ['$scope', '$http', 'cacheService', 'homeService', 'notifier', HomeController]);
 }());

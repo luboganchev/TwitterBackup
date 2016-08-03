@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="col-md-2">
-        <button type="button" ng-click="unfollowFriend(friend.Id)" class="btn btn-success btn-block">Follow</button>
+        <button type="button" ng-click="followFriend(selectedUser.Id)" ng-disabled="!selectedUser" class="btn btn-success btn-block">Follow</button>
     </div>
 </div>
 

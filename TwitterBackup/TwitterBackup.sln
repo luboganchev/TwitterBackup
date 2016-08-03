@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Client", "TwitterBackup.Client\TwitterBackup.Client.csproj", "{EFB47192-3280-4594-AFA7-2803554D638E}"
 EndProject
@@ -21,6 +21,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Data", "TwitterBackup.Data\TwitterBackup.Data.csproj", "{0B38639B-DDEE-43E3-B74C-CA65D2F33C5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Models", "TwitterBackup.Models\TwitterBackup.Models.csproj", "{4287B647-9FC6-483B-B224-B855389F19F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services", "TwitterBackup.Services\TwitterBackup.Services.csproj", "{162C2EFD-E963-4AF8-8D05-70124BBB8364}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{4287B647-9FC6-483B-B224-B855389F19F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4287B647-9FC6-483B-B224-B855389F19F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4287B647-9FC6-483B-B224-B855389F19F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{162C2EFD-E963-4AF8-8D05-70124BBB8364}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162C2EFD-E963-4AF8-8D05-70124BBB8364}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162C2EFD-E963-4AF8-8D05-70124BBB8364}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162C2EFD-E963-4AF8-8D05-70124BBB8364}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

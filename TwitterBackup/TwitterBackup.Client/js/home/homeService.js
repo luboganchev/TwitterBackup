@@ -17,10 +17,15 @@
             return dataService.get(TWITTER_URL + '/SearchFriends', { keyword: keyword })
         }
 
+        function followFriend(userId) {
+            return dataService.post(TWITTER_URL + '/FollowFriend', '"' + userId + '"');
+        }
+
         return {
             getFriends: getFriends,
             unfollowFriend: unfollowFriend,
-            searchFriends: searchFriends
+            searchFriends: searchFriends,
+            followFriend: followFriend
         };
     }
 
