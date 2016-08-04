@@ -1,5 +1,4 @@
-﻿
-namespace TwitterBackup.Services
+﻿namespace TwitterBackup.Services
 {
     using TwitterBackup.Models;
     using TwitterBackup.Data;
@@ -7,21 +6,19 @@ namespace TwitterBackup.Services
     public class StoreService
     {
         private readonly IRepository<User> userRepo;
+        private readonly IRepository<Tweet> tweetRepo;
 
         public StoreService(string connectionString, string databaseName)
         {
             userRepo = new MongoDbRepository<User>(connectionString, databaseName);
+            tweetRepo = new MongoDbRepository<Tweet>(connectionString, databaseName);
         }
 
-        public void AddUser()
+        public Tweet StoreTweet(Tweet tweet)
         {
-            var testUser = new User
-            {
-                Name = "Pesho",
-                StatusesCount =2
-            };
+            var dbTweet = tweetRepo.Add(tweet);
 
-            var currentUser = userRepo.Add(testUser);
+            return dbTweet;
         }
     }
 }

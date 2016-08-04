@@ -13,16 +13,22 @@
 
         public User Creator { get; set; }
 
+        [BsonRequired]
         public DateTime CreatedAt { get; set; }
 
+        [BsonRequired]
         public string Text { get; set; }
 
+        [BsonRequired]
         public string FullText { get; set; }
 
+        [BsonRequired]
         public int FavoriteCount { get; set; }
 
+        [BsonRequired]
         public int RetweetCount { get; set; }
 
+        [BsonRequired]
         public bool RetweetedFromMe { get; set; }
 
         public bool IsRetweet { get; set; }

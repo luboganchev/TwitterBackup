@@ -9,17 +9,17 @@
             return dataService.get(TWITTER_URL + '/UserDetails', { userId: tweetId });
         }
 
-        function createRetweet(tweetId) {
-            return dataService.post(TWITTER_URL + '/Retweet', { userId: tweetId });
+        function publishRetweet(tweetId) {
+            return dataService.post(TWITTER_URL + '/Retweet', '"' + userId + '"');
         }
 
-        function storeUserTweet() {
-            return dataService.get(TWITTER_URL + '/StoreTweet');
+        function storeUserTweet(tweetData) {
+            return dataService.post(TWITTER_URL + '/StoreTweet', tweetData);
         }
 
         return {
             getUserDetails: getUserDetails,
-            createRetweet: createRetweet,
+            publishRetweet: publishRetweet,
             storeUserTweet: storeUserTweet
         };
     }

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TwitterBackup.Web.Models.Users;
-
-namespace TwitterBackup.Web.Models.Tweets
+﻿namespace TwitterBackup.Web.Models.Tweets
 {
-    public class TweetViewModel
+    using System;
+    using TwitterBackup.Models;
+    using TwitterBackup.Web.Helpers.AutoMapper;
+    using TwitterBackup.Web.Models.Users;
+
+    public class TweetViewModel : IMapFrom<Tweet>
     {
+        public long Id { get; set; }
+
         public UserShortInfoViewModel Creator { get; set; }
 
         public DateTime CreatedAt { get; set; }
@@ -27,5 +28,7 @@ namespace TwitterBackup.Web.Models.Tweets
         public UserShortInfoViewModel RetweetFrom { get; set; }
 
         public TweetViewModel Retweet { get; set; }
+
+        
     }
 }

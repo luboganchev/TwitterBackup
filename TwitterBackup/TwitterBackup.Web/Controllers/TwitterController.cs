@@ -1,17 +1,16 @@
 ﻿namespace TwitterBackup.Web.Controllers
 {
+    using AutoMapper;
     using Newtonsoft.Json;
     using System;
-    using System.Configuration;
     using System.Linq;
-    using System.Net.Http;
     using System.Web;
     using System.Web.Http;
-    using System.Web.Http.Controllers;
     using Tweetinvi;
     using Tweetinvi.Models;
     using TwitterBackup.Services;
     using TwitterBackup.Web.Helpers;
+    using TwitterBackup.Web.Helpers.Filters;
     using TwitterBackup.Web.Models.Tweets;
     using TwitterBackup.Web.Models.Users;
 
@@ -125,6 +124,7 @@
                 var tweetCollection = Tweetinvi.Timeline.GetUserTimeline(userId);
                 userDTO.Tweets = tweetCollection.Select(tweet => new TweetViewModel
                 {
+                    Id = tweet.Id,
                     CreatedAt = tweet.CreatedAt,
                     FavoriteCount = tweet.FavoriteCount,
                     FullText = tweet.FullText,
@@ -162,7 +162,7 @@
             // From a string (the extension namespace is 'Tweetinvi.Core.Extensions')
             //var twitterLength = "I love https://github.com/linvi/tweetinvi".TweetLength();
 
-            var retweet = Tweet.GetTweet(tweetId).PublishRetweet();
+            var retweet = Tweet.PublishRetweet(tweetId);
 
             if (retweet != null)
             {
@@ -172,70 +172,20 @@
             return this.BadRequest("This tweet doesn't exist");
         }
 
-        [HttpGet]
-        public IHttpActionResult StoreTweet()
+        [HttpPost]
+        public IHttpActionResult StoreTweet(TweetViewModel viewModel)
         {
-            StoreService service = new StoreService(ConfigurationManager.ConnectionStrings["MongoConnection"].ConnectionString, ConfigurationManager.AppSettings["DatabaseName"].ToString());
-            service.AddUser();
-
-            return Ok();
-        }
-
-        public class TwitterAuthorization : AuthorizeAttribute
-        {
-            private const int TWITTER_API_RATE_EXCEEDED_CODE = 88;
-            private bool isTwitterApiRateExceeded = false;
-
-
-            protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
+            try
             {
-                try
-                {
-                    Auth.SetCredentials(Auth.ApplicationCredentials);
-                    var authenticatedUser = Tweetinvi.User.GetAuthenticatedUser(Auth.ApplicationCredentials);
+                StoreService service = new StoreService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
+                var dataModel = Mapper.Map<TwitterBackup.Models.Tweet>(viewModel);
+                service.StoreTweet(dataModel);
 
-                    if (authenticatedUser == null)
-                    {
-                        var latestException = ExceptionHandler.GetLastException();
-                        if (latestException != null)
-                        {
-                            var exceptionCore = latestException.TwitterExceptionInfos.FirstOrDefault().Code;
-                            switch (exceptionCore)
-                            {
-                                case TWITTER_API_RATE_EXCEEDED_CODE:
-                                    //Rate limit of twitter is exceeded https://dev.twitter.com/rest/public/rate-limiting
-                                    isTwitterApiRateExceeded = true;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-
-                        return false;
-                    }
-                    else
-                    {
-                        authUser = authenticatedUser;
-
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                return Ok();
             }
-
-            protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
+            catch (Exception)
             {
-                if (isTwitterApiRateExceeded)
-                {
-                    actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
-                }
-                else
-                {
-                    base.HandleUnauthorizedRequest(actionContext);
-                }
+                return this.BadRequest("Error occured when storing the tweet");
             }
         }
     }

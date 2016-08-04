@@ -11,8 +11,10 @@
         [BsonIgnoreIfDefault]
         public string Id { get; set; }
 
+        [BsonRequired]
         public string Name { get; set; }
 
+        [BsonRequired]
         public string ScreenName { get; set; }
 
         public string Description { get; set; }

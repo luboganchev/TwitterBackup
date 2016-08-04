@@ -80,7 +80,7 @@
                                     <div>
                                         <span class="glyphicon glyphicon-heart favorite-icon"></span><span class="favorite-icon-value">{{tweet.FavoriteCount}}</span>
                                         <span class="glyphicon glyphicon-retweet retweet-icon"></span><span class="retweet-icon-value">{{tweet.RetweetCount}}</span>
-                                        <span class="glyphicon glyphicon-cloud-download" ng-click="storeTweet()"></span>
+                                        <span class="glyphicon glyphicon-cloud-download" ng-click="storeTweet(tweet.Id)"></span>
                                     </div>
                                 </div>
                             </li>
