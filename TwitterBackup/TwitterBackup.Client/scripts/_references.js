@@ -26,3 +26,6 @@
 /// <reference path="../js/user/rateexceededcontroller.js" />
 /// <reference path="../js/home/homeservice.js" />
 /// <reference path="../js/common/cacheservice.js" />
+/// <reference path="../js/admin/admincontroller.js" />
+/// <reference path="../js/admin/adminservice.js" />
+/// <reference path="../js/common/trusturlfilter.js" />

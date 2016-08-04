@@ -15,10 +15,8 @@
     using TwitterBackup.Web.Models.Users;
 
     [TwitterAuthorization]
-    public class TwitterController : ApiController
+    public class TwitterController : BaseController
     {
-        internal static IAuthenticatedUser authUser;
-
         [AllowAnonymous]
         [HttpGet]
         public IHttpActionResult Authorize()
@@ -132,7 +130,7 @@
                     RetweetCount = tweet.RetweetCount,
                     RetweetedFromMe = tweet.Retweeted,
                     Text = tweet.Text,
-                    Creator = new UserShortInfoViewModel 
+                    Owner = new UserShortInfoViewModel 
                     {
                         Id = tweet.CreatedBy.Id,
                         Name = tweet.CreatedBy.Name,
@@ -172,9 +170,10 @@
         {
             try
             {
-                StoreService service = new StoreService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
+                TweetService service = new TweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
                 var dataModel = Mapper.Map<TwitterBackup.Models.Tweet>(viewModel);
-                service.StoreTweet(dataModel);
+                dataModel.CreatorId = authUser.Id;
+                service.Save(dataModel);
 
                 return Ok();
             }

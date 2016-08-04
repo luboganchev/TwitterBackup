@@ -22,6 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="#/">Home</a></li>
+                    <li><a href="#/admin">Admin</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#/logout">Logout</a></li>
@@ -34,7 +35,7 @@
             <img src="Content/loading-image.gif" class="ajax-loader" />
         </div>
         <div ng-view>
-
+            
         </div>
     </div>
     <!--<div class="navbar navbar-default">
@@ -103,10 +104,15 @@
     <script src="js/user/userService.js"></script>
     <script src="js/home/homeService.js"></script>
     <script src="js/common/cacheService.js"></script>
+    <script src="js/admin/adminService.js"></script>
+
+    <!-- Load filters -->
+    <script src="js/common/trustUrlFilter.js"></script>
 
     <!-- Load controllers -->
     <script src="js/user/rateExceededController.js"></script>
     <script src="js/home/homeController.js"></script>
     <script src="js/user/userProfileController.js"></script>
+    <script src="js/admin/adminController.js"></script>
 </body>
 </html>

@@ -14,5 +14,12 @@ namespace TwitterBackup.Web.Controllers
 
             return View();
         }
+
+        public ActionResult Test()
+        {
+            ViewBag.Title = "Home Page";
+
+            return PartialView("Index");
+        }
     }
 }

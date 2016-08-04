@@ -71,8 +71,11 @@
     <Content Include="css\toastr.min.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
+    <Content Include="js\admin\adminController.js" />
+    <Content Include="js\admin\adminService.js" />
     <Content Include="js\common\cacheService.js" />
     <Content Include="js\common\dataService.js" />
+    <Content Include="js\common\trustUrlFilter.js" />
     <Content Include="js\home\homeController.js" />
     <Content Include="js\home\homeService.js" />
     <Content Include="js\identity\authInterceptorService.js" />
@@ -124,6 +127,7 @@
     <Content Include="scripts\angular-mocks.js" />
     <None Include="scripts\_references.js" />
     <Content Include="scripts\authComplete.js" />
+    <Content Include="views\partials\admin.html" />
     <Content Include="views\partials\rate-exceeded.html" />
     <Content Include="views\partials\home.html" />
     <Content Include="views\partials\tweet.html" />

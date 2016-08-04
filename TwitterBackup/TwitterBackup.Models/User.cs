@@ -11,6 +11,8 @@
         [BsonIgnoreIfDefault]
         public string Id { get; set; }
 
+        public long UserTwitterId { get; set; }
+
         [BsonRequired]
         public string Name { get; set; }
 

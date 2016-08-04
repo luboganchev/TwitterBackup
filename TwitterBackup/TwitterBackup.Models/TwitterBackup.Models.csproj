@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="IEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Retweet.cs" />
     <Compile Include="Tweet.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>

@@ -1,5 +1,9 @@
 ﻿namespace TwitterBackup.Web.Models.Users
 {
+    using AutoMapper;
+    using Tweetinvi.Models;
+    using TwitterBackup.Web.Helpers.AutoMapper;
+
     public class UserShortInfoViewModel
     {
         public long Id { get; set; }

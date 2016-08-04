@@ -9,7 +9,7 @@
     {
         public string IdString { get; set; }
 
-        public UserShortInfoViewModel Creator { get; set; }
+        public UserShortInfoViewModel Owner { get; set; }
 
         public DateTime CreatedAt { get; set; }
 

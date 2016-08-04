@@ -11,7 +11,11 @@
         [BsonIgnoreIfDefault]
         public string Id { get; set; }
 
-        public User Creator { get; set; }
+        public long TweetTwitterId { get; set; }
+
+        public long CreatorId { get; set; }
+
+        public User Owner { get; set; }
 
         [BsonRequired]
         public DateTime CreatedAt { get; set; }

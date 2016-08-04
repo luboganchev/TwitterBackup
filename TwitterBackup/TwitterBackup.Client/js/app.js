@@ -1,8 +1,15 @@
 (function () {
     'use strict';
 
-    function config($routeProvider, $httpProvider, $locationProvider) {
+    function config($routeProvider, $httpProvider, $locationProvider, $sceDelegateProvider, authConstants) {
         $httpProvider.interceptors.push('authInterceptorService');
+
+        $sceDelegateProvider.resourceUrlWhitelist([
+          // Allow same origin resource loads.
+          'self',
+          // Allow loading from our assets domain.  Notice the difference between * and **.
+          authConstants.apiServiceBaseUrl
+        ]);
 
         $routeProvider
             .when('/', {
@@ -22,6 +29,10 @@
                     });
                 }]
             })
+            .when("/admin", {
+                templateUrl: 'views/partials/admin.html',
+                controller: "AdminController",
+            })
             .when("/rate-exceeded", {
                 templateUrl: "views/partials/rate-exceeded.html",
                 controller: "RateExceededController",
@@ -36,11 +47,12 @@
     angular.module('myApp.services', []);
         //.factory('applicationAuthorization', ['authService', function (authService) {
         //    return authService.authorize();
-        //}]);
+    //}]);
+    angular.module('myApp.filters', []);
     //angular.module('myApp.directives', []);
     angular.module('myApp.controllers', ['myApp.services']);
     angular.module('myApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ngSanitize', 'myApp.controllers'])
-        .config(['$routeProvider', '$httpProvider', '$locationProvider', config])
+        .config(['$routeProvider', '$httpProvider', '$locationProvider', '$sceDelegateProvider', 'authConstants', config])
         .value('toastr', toastr)
         .constant('baseServiceUrl', baseServiceUrl)
         .constant('authConstants', {
