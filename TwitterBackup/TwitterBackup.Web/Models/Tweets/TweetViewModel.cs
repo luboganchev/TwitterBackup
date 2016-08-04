@@ -7,7 +7,7 @@
 
     public class TweetViewModel : IMapFrom<Tweet>
     {
-        public long Id { get; set; }
+        public string IdString { get; set; }
 
         public UserShortInfoViewModel Creator { get; set; }
 

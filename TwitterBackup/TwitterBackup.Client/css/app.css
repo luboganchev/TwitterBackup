@@ -15,9 +15,24 @@
 }
 
 .retweet-icon {
-    color: green;
     font-size: 18px;
 }
+
+.gray-color {
+    color: gray;
+}
+
+.green-color {
+    color: green;
+}
+
+.glyphicon.glyphicon-retweet.green-color {
+    cursor: pointer;
+}
+
+    .glyphicon.glyphicon-retweet.green-color:hover {
+        color: lawngreen;
+    }
 
 .favorite-icon-value {
     color: red;
@@ -26,7 +41,6 @@
 }
 
 .retweet-icon-value {
-    color: green;
     font-size: 20px;
     font-family: monospace;
 }

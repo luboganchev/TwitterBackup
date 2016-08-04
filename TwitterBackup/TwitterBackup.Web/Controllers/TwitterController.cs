@@ -124,7 +124,7 @@
                 var tweetCollection = Tweetinvi.Timeline.GetUserTimeline(userId);
                 userDTO.Tweets = tweetCollection.Select(tweet => new TweetViewModel
                 {
-                    Id = tweet.Id,
+                    IdString = tweet.IdStr,
                     CreatedAt = tweet.CreatedAt,
                     FavoriteCount = tweet.FavoriteCount,
                     FullText = tweet.FullText,
@@ -156,20 +156,15 @@
         }
 
         [HttpPost]
-        public IHttpActionResult Retweet(long tweetId)
+        public IHttpActionResult Retweet([FromBody]long tweetId)
         {
-            //Check retweet string length
-            // From a string (the extension namespace is 'Tweetinvi.Core.Extensions')
-            //var twitterLength = "I love https://github.com/linvi/tweetinvi".TweetLength();
-
             var retweet = Tweet.PublishRetweet(tweetId);
-
             if (retweet != null)
             {
                 return Ok(true);
             }
 
-            return this.BadRequest("This tweet doesn't exist");
+            return this.BadRequest("This tweet doesn't exist or is already retweeted");
         }
 
         [HttpPost]

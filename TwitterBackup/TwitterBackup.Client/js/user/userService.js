@@ -10,7 +10,7 @@
         }
 
         function publishRetweet(tweetId) {
-            return dataService.post(TWITTER_URL + '/Retweet', '"' + userId + '"');
+            return dataService.post(TWITTER_URL + '/Retweet', '"' + tweetId + '"');
         }
 
         function storeUserTweet(tweetData) {
