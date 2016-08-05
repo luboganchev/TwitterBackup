@@ -75,14 +75,5 @@
                 }
             }
         }
-
-        private class AuthorizationData
-        {
-            public string AuthorizationURL { get; set; }
-            public string AuthorizationKey { get; set; }
-            public string AuthorizationSecret { get; set; }
-
-            public string VerifierCode { get; set; }
-        }
     }
 }

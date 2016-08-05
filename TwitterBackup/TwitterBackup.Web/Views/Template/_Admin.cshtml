@@ -41,7 +41,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="friend in adminData.Friends" ng-class-even="'active'">
-            <td><img ng-src="friend.ProfileImageUrl" class="img-rounded" /></td>
+            <td><img ng-src="{{friend.ProfileImageUrl}}" class="img-rounded" /></td>
             <td class="text-center">{{friend.Id}}</td>
             <td class="text-center">{{friend.Name}} (@@{{friend.ScreenName}})</td>
             <td class="text-center">{{friend.Description}}</td>

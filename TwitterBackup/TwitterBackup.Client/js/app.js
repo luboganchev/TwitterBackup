@@ -38,8 +38,8 @@
     }
     var baseServiceUrl = 'http://localhost:19169';
     angular.module('myApp.services', []);
-        //.factory('applicationAuthorization', ['authService', function (authService) {
-        //    return authService.authorize();
+    //.factory('applicationAuthorization', ['authService', function (authService) {
+    //    return authService.authorize();
     //}]);
     angular.module('myApp.filters', []);
     //angular.module('myApp.directives', []);
@@ -52,5 +52,12 @@
             apiServiceBaseUrl: baseServiceUrl,
             clientId: 'Progress'
         })
-        //.run(['applicationAuthorization', function () { }])
+        .run(['$rootScope', '$location', '$timeout', 'authService', function ($rootScope, $location, $timeout, authService) {
+            $rootScope.$on('$routeChangeStart', function (event, route) {
+                if (!authService.isAuthorized() && route.originalPath !== '/login' && route.originalPath !== '/rate-exceeded') {
+                    event.preventDefault();
+                    $location.path('/login');
+                }
+            });
+        }]);
 }());

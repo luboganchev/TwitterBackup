@@ -22,9 +22,6 @@
                 else {
                     localStorage.removeItem(twitterAuthorizationName);
                 }
-            },
-            isAuthenticated: function () {
-                return this.getCurrentUser() ? true : false;
             }
         }
     }

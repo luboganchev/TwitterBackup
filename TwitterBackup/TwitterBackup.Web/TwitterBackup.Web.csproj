@@ -252,6 +252,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AuthorizationData.cs" />
     <Compile Include="Helpers\AutoMapper\AutoMapperConfig.cs" />
     <Compile Include="Helpers\AutoMapper\IHaveCustomMappings.cs" />
     <Compile Include="Helpers\AutoMapper\IMapFrom.cs" />

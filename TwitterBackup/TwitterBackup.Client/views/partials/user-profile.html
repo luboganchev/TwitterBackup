@@ -63,14 +63,14 @@
                         <hr>-->
                         <ul class="media-list">
                             <li class="media" ng-repeat="tweet in userProfile.Tweets">
-                                <a href="#/user/profile/{{tweet.IsRetweet? tweet.RetweetFrom.Id: tweet.Creator.Id}}" class="pull-left">
-                                    <img ng-src="{{tweet.IsRetweet? tweet.RetweetFrom.ProfileImageUrl: tweet.Creator.ProfileImageUrl}}" alt="{{tweet.IsRetweet? tweet.RetweetFrom.ScreenName: tweet.Creator.ScreenName}}" class="img-circle">
+                                <a href="#/user/profile/{{tweet.IsRetweet? tweet.RetweetFrom.Id: tweet.Owner.Id}}" class="pull-left">
+                                    <img ng-src="{{tweet.IsRetweet? tweet.RetweetFrom.ProfileImageUrl: tweet.Owner.ProfileImageUrl}}" a alt="{{tweet.IsRetweet? tweet.RetweetFrom.ScreenName: tweet.Owner.ScreenName}}" c class="img-circle">
                                 </a>
                                 <div class="media-body">
                                     <span class="text-muted pull-right">
                                         <small class="text-muted">{{tweet.CreatedAt | date:'medium'}}</small>
                                     </span>
-                                    <strong class="text-success">@{{tweet.IsRetweet? tweet.RetweetFrom.ScreenName: tweet.Creator.ScreenName}}</strong>
+                                    <strong class="text-success">@{{tweet.IsRetweet? tweet.RetweetFrom.ScreenName: tweet.Owner.ScreenName}}</strong>
                                     <p class="no-margin">
                                         {{tweet.FullText}}
                                         <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -83,7 +83,7 @@
                                               ng-attr-title="{{tweet.RetweetedFromMe? 'Tweet is already retweeted': 'Tweet'}}"
                                               ng-click="publishTweet(tweet.IdString, tweet.RetweetedFromMe)"></span>
                                         <span ng-class="(tweet.RetweetedFromMe)? 'gray-color retweet-icon-value' : 'green-color retweet-icon-value'">{{tweet.RetweetCount}}</span>
-                                        <button class="btn btn-primary btn-sm" title="Download tweet"><span class="glyphicon glyphicon-cloud-download" ng-click="storeTweet(tweet.IdString)"></span></button> 
+                                        <button class="btn btn-primary btn-sm" ng-disabled="tweet.HasStored" ng-attr-title="{{tweet.HasStored? 'Tweet is already saved': 'Save tweet'}}" ng-click="storeTweet(tweet.IdString)"><span class="glyphicon glyphicon-cloud-download"></span></button> 
                                     </div>
                                 </div>
                             </li>

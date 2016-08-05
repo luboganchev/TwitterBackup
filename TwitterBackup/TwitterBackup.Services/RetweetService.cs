@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitterBackup.Data;
-using TwitterBackup.Models;
-
-namespace TwitterBackup.Services
+﻿namespace TwitterBackup.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using TwitterBackup.Data;
+    using TwitterBackup.Models;
+
     public class RetweetService
     {
         private readonly IRepository<Retweet> retweetRepo;
@@ -17,9 +15,17 @@ namespace TwitterBackup.Services
             retweetRepo = new MongoDbRepository<Retweet>(connectionString, databaseName);
         }
 
-        public Retweet Save(Retweet tweet)
+        public Retweet Save(long retweetId, long createdById, long tweetOwnerId)
         {
-            var dbTweet = retweetRepo.Add(tweet);
+            var dataModel = new Retweet
+            {
+                DateCreated = DateTime.Now,
+                ReweetTwitterId = retweetId,
+                CreatedById = createdById,
+                TweetOwnerId = tweetOwnerId
+            };
+
+            var dbTweet = retweetRepo.Add(dataModel);
 
             return dbTweet;
         }

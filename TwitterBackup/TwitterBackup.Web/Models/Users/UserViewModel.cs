@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TwitterBackup.Web.Models.Tweets;
-
-namespace TwitterBackup.Web.Models.Users
+﻿namespace TwitterBackup.Web.Models.Users
 {
-    public class UserViewModel
+    using AutoMapper;
+    using System.Collections.Generic;
+    using Tweetinvi.Models;
+    using TwitterBackup.Web.Helpers.AutoMapper;
+    using TwitterBackup.Web.Models.Tweets;
+
+    public class UserViewModel : IHaveCustomMappings
     {
         public UserViewModel()
         {
             this.Tweets = new HashSet<TweetViewModel>();
         }
+
+        public long UserTwitterId { get; set; }
 
         public string Name { get; set; }
 
@@ -32,5 +34,11 @@ namespace TwitterBackup.Web.Models.Users
         public int StatusesCount { get; set; }
 
         public ICollection<TweetViewModel> Tweets { get; set; }
+
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<IUser, UserViewModel>()
+                .ForMember(dest => dest.UserTwitterId, opt => opt.MapFrom(src => src.Id));
+        }
     }
 }

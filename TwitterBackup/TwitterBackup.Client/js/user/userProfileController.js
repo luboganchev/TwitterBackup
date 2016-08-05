@@ -29,12 +29,12 @@
             useCache = useCache !== false ? true : useCache;
             var cachedValue = cacheService.get(vm.userDetailsCacheKey);
             if (useCache && cachedValue) {
-                $scope.userProfile = JSON.parse(cachedValue);
+                $scope.userProfile = cachedValue;
                 $scope.bannerValue = vm.getBannerValue($scope.userProfile.ProfileBannerUrl, $scope.userProfile.ProfileLinkColor);
             } else {
                 userService.getUserDetails(vm.id)
                     .then(function (response) {
-                        $scope.userProfile = JSON.parse(response);
+                        $scope.userProfile = response;
                         $scope.bannerValue = vm.getBannerValue($scope.userProfile.ProfileBannerUrl, $scope.userProfile.ProfileLinkColor);
                         cacheService.set(vm.userDetailsCacheKey, response);
                     });

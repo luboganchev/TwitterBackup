@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\TweetException.cs" />
+    <Compile Include="Exceptions\TweetExceptionType.cs" />
     <Compile Include="RetweetService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TweetService.cs" />

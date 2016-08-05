@@ -1,5 +1,6 @@
 ﻿namespace TwitterBackup.Web.Helpers.Filters
 {
+    using Newtonsoft.Json;
     using System;
     using System.Linq;
     using System.Net.Http;
@@ -18,6 +19,17 @@
         {
             try
             {
+                var authDataHeader = actionContext.Request.Headers.GetValues("AuthorizationData")
+                    .FirstOrDefault();
+                if (!string.IsNullOrEmpty(authDataHeader))
+                {
+                    var authData = JsonConvert.DeserializeObject<AuthorizationData>(authDataHeader);
+                    if (string.IsNullOrEmpty(authData.VerifierCode))
+                    {
+                        return false;
+                    }
+                }
+
                 Auth.SetCredentials(Auth.ApplicationCredentials);
                 var authenticatedUser = Tweetinvi.User.GetAuthenticatedUser(Auth.ApplicationCredentials);
 
@@ -57,7 +69,11 @@
         {
             if (isTwitterApiRateExceeded)
             {
-                actionContext.Response = new HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
+                actionContext.Response = actionContext.Request.CreateResponse(
+                        System.Net.HttpStatusCode.Forbidden, 
+                        new { Message = "Your user is just exceed the maximum limit of requests to Twitter API" }, 
+                        actionContext.ControllerContext.Configuration.Formatters.JsonFormatter
+                    );
             }
             else
             {

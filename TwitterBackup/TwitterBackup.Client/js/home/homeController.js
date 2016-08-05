@@ -39,11 +39,11 @@
             useCache = useCache !== false ? true : useCache;
             var cachedValue = cacheService.get(friendsCacheKey);
             if (useCache && cachedValue) {
-                $scope.friends = JSON.parse(cachedValue);
+                $scope.friends = cachedValue;
             } else {
                 homeService.getFriends()
                     .then(function (response) {
-                        $scope.friends = JSON.parse(response);
+                        $scope.friends = response;
                         cacheService.set(friendsCacheKey, response);
                     });
             }

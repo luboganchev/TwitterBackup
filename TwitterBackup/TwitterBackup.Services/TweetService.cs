@@ -4,6 +4,7 @@
     using System.Linq;
     using TwitterBackup.Data;
     using TwitterBackup.Models;
+    using TwitterBackup.Services.Exceptions;
 
     public class TweetService
     {
@@ -16,6 +17,15 @@
 
         public Tweet Save(Tweet tweet)
         {
+            var hasAlreadySavedTweet = tweetRepo
+                .All()
+                .Any(tweetDTO => tweetDTO.TweetTwitterId == tweet.TweetTwitterId);
+
+            if (hasAlreadySavedTweet)
+            {
+                throw new TweetException(TweetExceptionType.TweetIsAlreadySaved);
+            }
+
             var dbTweet = tweetRepo.Add(tweet);
 
             return dbTweet;
@@ -41,14 +51,14 @@
             return tweets;
         }
 
-        public int GetTweetsCountForFriend(long currentLoggedUserId, long friendId)
+        public ICollection<Tweet> GetTweetsForFriend(long currentLoggedUserId, long friendId)
         {
-            var retweetsCount = tweetRepo
+            var tweets = tweetRepo
                 .All()
                 .Where(tweet => tweet.CreatedById == currentLoggedUserId && tweet.Owner.UserTwitterId == friendId)
-                .Count();
+                .ToArray();
 
-            return retweetsCount;
+            return tweets;
         }
     }
 }
