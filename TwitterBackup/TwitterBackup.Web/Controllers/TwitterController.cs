@@ -13,6 +13,7 @@
     using TwitterBackup.Web.Helpers.Filters;
     using TwitterBackup.Web.Models.Tweets;
     using TwitterBackup.Web.Models.Users;
+    using TwitterBackupModels = TwitterBackup.Models;
 
     [TwitterAuthorization]
     public class TwitterController : BaseController
@@ -159,6 +160,17 @@
             var retweet = Tweet.PublishRetweet(tweetId);
             if (retweet != null)
             {
+                var retweetService = new RetweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
+                var dataModel = new TwitterBackupModels.Retweet
+                {
+                    DateCreated = DateTime.Now,
+                    ReweetTwitterId = retweet.Id,
+                    CreatedById = authUser.Id,
+                    TweetOwnerId = retweet.RetweetedTweet.CreatedBy.Id
+                };
+
+                retweetService.Save(dataModel);
+
                 return Ok(true);
             }
 
@@ -170,10 +182,10 @@
         {
             try
             {
-                TweetService service = new TweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
                 var dataModel = Mapper.Map<TwitterBackup.Models.Tweet>(viewModel);
-                dataModel.CreatorId = authUser.Id;
-                service.Save(dataModel);
+                dataModel.CreatedById = authUser.Id;
+                var tweetService = new TweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
+                tweetService.Save(dataModel);
 
                 return Ok();
             }

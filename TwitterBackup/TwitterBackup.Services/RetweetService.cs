@@ -28,7 +28,7 @@ namespace TwitterBackup.Services
         {
             var retweetsCount = retweetRepo
                 .All()
-                .Where(tweet => tweet.CreatorId == currentLoggedUserId)
+                .Where(tweet => tweet.CreatedById == currentLoggedUserId)
                 .Count();
 
             return retweetsCount;
@@ -38,7 +38,7 @@ namespace TwitterBackup.Services
         {
             var tweets = retweetRepo
                 .All()
-                .Where(retweet => retweet.CreatorId == currentLoggedUserId && friendsIds.Contains(retweet.RetweetedFromId))
+                .Where(retweet => retweet.CreatedById == currentLoggedUserId && friendsIds.Contains(retweet.TweetOwnerId))
                 .ToArray();
 
             return tweets;
@@ -49,7 +49,7 @@ namespace TwitterBackup.Services
         {
             var retweetsCount = retweetRepo
                 .All()
-                .Where(tweet => tweet.CreatorId == currentLoggedUserId && tweet.RetweetedFromId == friendId)
+                .Where(tweet => tweet.CreatedById == currentLoggedUserId && tweet.TweetOwnerId == friendId)
                 .Count();
 
             return retweetsCount;

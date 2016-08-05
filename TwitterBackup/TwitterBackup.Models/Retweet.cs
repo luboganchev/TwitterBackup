@@ -15,8 +15,8 @@
 
         public DateTime DateCreated { get; set; }
 
-        public long CreatorId { get; set; }
+        public long CreatedById { get; set; }
 
-        public long RetweetedFromId { get; set; }
+        public long TweetOwnerId { get; set; }
     }
 }

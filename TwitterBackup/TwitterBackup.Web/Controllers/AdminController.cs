@@ -26,29 +26,30 @@ namespace TwitterBackup.Web.Controllers
 
             RetweetService retweetService = new RetweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
             TweetService tweetService = new TweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
-            
 
             var friends = authUser
                 .GetFriends()
-                .Select(friend => new UserShortInfoViewModel
+                .Select(friend => new UserAdminViewModel
                 {
                     Id = friend.Id,
                     Name = friend.Name,
                     Description = friend.Description,
                     ScreenName = friend.ScreenName,
-                    ProfileImageUrl = friend.ProfileImageUrl
-                });
+                    ProfileImageUrl = friend.ProfileImageUrl,
+                    FavoritesCount = friend.FavouritesCount
+                })
+                .ToArray();
 
             var friendsIds = friends
                 .Select(friend => friend.Id)
                 .ToArray();
+
             var allStoreTweetsForFriends = tweetService.GetTweetsForFriends(authUser.Id, friendsIds);
             var allRetweetsForFriends = retweetService.GetRetweetsForFriends(authUser.Id, friendsIds);
             foreach (var friend in friends)
             {
-                //TODO MAKE BETTER DTO OBJECT AND ASSIGN THIS VARIABLES
-                var totalStoreTweetsForCurrentFriend = allStoreTweetsForFriends.Count(tweet => tweet.Owner.UserTwitterId == friend.Id);
-                var totalRetweetsForCurrentFriend = allRetweetsForFriends.Count(retweet => retweet.RetweetedFromId == friend.Id);
+                friend.DownloadedPostCount = allStoreTweetsForFriends.Count(tweet => tweet.Owner.UserTwitterId == friend.Id);
+                friend.RetweetsCount = allRetweetsForFriends.Count(retweet => retweet.TweetOwnerId == friend.Id);
             }
 
             var viewModel = new AdminViewModel

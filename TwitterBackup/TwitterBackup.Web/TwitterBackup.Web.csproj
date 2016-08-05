@@ -263,6 +263,7 @@
     <Compile Include="Models\Admin\AdminViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Tweets\TweetViewModel.cs" />
+    <Compile Include="Models\Users\UserAdminViewModel.cs" />
     <Compile Include="Models\Users\UserShortInfoViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

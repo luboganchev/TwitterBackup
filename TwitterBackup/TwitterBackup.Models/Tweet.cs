@@ -13,7 +13,7 @@
 
         public long TweetTwitterId { get; set; }
 
-        public long CreatorId { get; set; }
+        public long CreatedById { get; set; }
 
         public User Owner { get; set; }
 
@@ -38,7 +38,5 @@
         public bool IsRetweet { get; set; }
 
         public User RetweetFrom { get; set; }
-
-        //public TweetViewModel Retweet { get; set; }
     }
 }

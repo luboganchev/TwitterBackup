@@ -1,11 +1,12 @@
 ﻿namespace TwitterBackup.Web.Models.Tweets
 {
+    using AutoMapper;
     using System;
     using TwitterBackup.Models;
     using TwitterBackup.Web.Helpers.AutoMapper;
     using TwitterBackup.Web.Models.Users;
 
-    public class TweetViewModel : IMapFrom<Tweet>
+    public class TweetViewModel : IHaveCustomMappings
     {
         public string IdString { get; set; }
 
@@ -27,8 +28,10 @@
 
         public UserShortInfoViewModel RetweetFrom { get; set; }
 
-        public TweetViewModel Retweet { get; set; }
-
-        
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<TweetViewModel, Tweet>()
+                .ForMember(dest => dest.TweetTwitterId, opt => opt.MapFrom(src => long.Parse(src.IdString)));
+        }
     }
 }

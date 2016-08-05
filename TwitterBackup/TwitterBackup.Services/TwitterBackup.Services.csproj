@@ -40,8 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RetweetService.cs" />
-    <Compile Include="TweetService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TweetService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj">

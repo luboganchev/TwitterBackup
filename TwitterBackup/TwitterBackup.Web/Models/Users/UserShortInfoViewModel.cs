@@ -2,9 +2,10 @@
 {
     using AutoMapper;
     using Tweetinvi.Models;
+    using TwitterBackup.Models;
     using TwitterBackup.Web.Helpers.AutoMapper;
 
-    public class UserShortInfoViewModel
+    public class UserShortInfoViewModel : IHaveCustomMappings
     {
         public long Id { get; set; }
 
@@ -17,5 +18,12 @@
         public string ProfileImageUrl { get; set; }
 
         public bool Following { get; set; }
+
+        public void CreateMappings(IConfiguration configuration)
+        {
+            configuration.CreateMap<UserShortInfoViewModel, User>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.UserTwitterId, opt => opt.MapFrom(src => src.Id));
+        }
     }
 }
