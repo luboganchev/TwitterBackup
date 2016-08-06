@@ -22,6 +22,9 @@
                 else {
                     localStorage.removeItem(twitterAuthorizationName);
                 }
+            },
+            getVerifierCode: function () {
+                return this.getAuthorizationData().VerifierCode;
             }
         }
     }
