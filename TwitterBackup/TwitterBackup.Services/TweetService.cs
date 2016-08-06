@@ -43,6 +43,24 @@
             return tweetsCount;
         }
 
+        public int GetTotalTweetsCount()
+        {
+            var tweetsCount = tweetRepo
+                .All()
+                .Count();
+
+            return tweetsCount;
+        }
+
+        public ICollection<Tweet> GetTweets()
+        {
+            var tweets = tweetRepo
+                .All()
+                .ToArray();
+
+            return tweets;
+        }
+
         public ICollection<Tweet> GetTweetsForFriends(long currentLoggedUserId, ICollection<long> friendsIds)
         {
             var tweets = tweetRepo

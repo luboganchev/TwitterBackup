@@ -7,21 +7,21 @@ namespace TwitterBackup.Web.Models.Admin
     {
         public AdminViewModel()
         {
-            this.Friends = new HashSet<UserShortInfoViewModel>();
+            this.Users = new HashSet<UserShortInfoViewModel>();
         }
 
         public int DownloadedTweetsCount { get; set; }
 
         public int RetweetsCount { get; set; }
 
-        public int FriendsCount
+        public int UsersCount
         {
             get
             {
-                return this.Friends.Count();
+                return this.Users.Count();
             }
         }
 
-        public IEnumerable<UserShortInfoViewModel> Friends { get; set; }
+        public IEnumerable<UserShortInfoViewModel> Users { get; set; }
     }
 }

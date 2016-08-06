@@ -3,6 +3,7 @@
     using AutoMapper;
     using System.Collections.Generic;
     using Tweetinvi.Models;
+    using TwitterBackup.Models;
     using TwitterBackup.Web.Helpers.AutoMapper;
     using TwitterBackup.Web.Models.Tweets;
 
@@ -39,6 +40,8 @@
         {
             configuration.CreateMap<IUser, UserViewModel>()
                 .ForMember(dest => dest.UserTwitterId, opt => opt.MapFrom(src => src.Id));
+
+            configuration.CreateMap<UserViewModel, User>();
         }
     }
 }

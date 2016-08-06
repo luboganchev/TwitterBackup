@@ -65,6 +65,7 @@ namespace TwitterBackup.Web.App_Start
         {
             kernel.Bind<ITweetService>().To<TweetService>();
             kernel.Bind<IRetweetService>().To<RetweetService>();
+            kernel.Bind<IUserService>().To<UserService>();
         }        
     }
 }

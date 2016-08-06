@@ -8,47 +8,42 @@
     using TwitterBackup.Web.Models.Admin;
     using Tweetinvi.Models;
     using TwitterBackup.Services.Contracts;
+    using TwitterBackup.Models;
 
     public class AdminController : BaseController
     {
         private ITweetService tweetService;
+
         private IRetweetService retweetService;
 
+        private IUserService userService;
 
-        public AdminController(ITweetService tweetService, IRetweetService retweetService)
+        public AdminController(ITweetService tweetService, IRetweetService retweetService, IUserService userService)
         {
             this.tweetService = tweetService;
             this.retweetService = retweetService;
+            this.userService = userService;
         }
 
         [HttpGet]
         public IHttpActionResult GetAdminData()
         {
-            //CHECKED! a. Total number of users, downloaded posts and retweets.
-            //b. Number of items in the favorite list for every user.
-            //c. Number if downloaded posts for every user.
-            //d. Number of retweets for every users.
+            var allStoreTweets = this.tweetService.GetTweets();
+            var allRetweets = this.retweetService.GetRetweets();
+            var twitterUsersDataModels = this.userService.GetUsers();
+            var twitterBackupUsers = Mapper.Map<IEnumerable<User>, ICollection<UserAdminViewModel>>(twitterUsersDataModels);
 
-            var twitterFriends = authUser
-                .GetFriends();
-            var friends = Mapper.Map<IEnumerable<IUser>, ICollection<UserAdminViewModel>>(twitterFriends);
-            var friendsIds = friends
-                .Select(friend => friend.Id)
-                .ToArray();
-
-            var allStoreTweetsForFriends = this.tweetService.GetTweetsForFriends(authUser.Id, friendsIds);
-            var allRetweetsForFriends = this.retweetService.GetRetweetsForFriends(authUser.Id, friendsIds);
-            foreach (var friend in friends)
+            foreach (var user in twitterBackupUsers)
             {
-                friend.DownloadedPostCount = allStoreTweetsForFriends.Count(tweet => tweet.Owner.UserTwitterId == friend.Id);
-                friend.RetweetsCount = allRetweetsForFriends.Count(retweet => retweet.TweetOwnerId == friend.Id);
+                user.DownloadedPostCount = allStoreTweets.Count(tweet => tweet.CreatedById== user.Id);
+                user.RetweetsCount = allRetweets.Count(retweet => retweet.CreatedById == user.Id);
             }
 
             var viewModel = new AdminViewModel
             {
-                Friends = friends,
-                DownloadedTweetsCount = this.tweetService.GetTweetsCount(authUser.Id),
-                RetweetsCount = this.retweetService.GetRetweetsCount(authUser.Id)
+                Users = twitterBackupUsers,
+                DownloadedTweetsCount = this.tweetService.GetTotalTweetsCount(),
+                RetweetsCount = this.retweetService.GetTotalRetweetsCount()
             };
 
             return Ok(viewModel);

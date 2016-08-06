@@ -1,10 +1,10 @@
 ﻿<div class="row jumbotron">
     <div class="col-md-4 text-center">
         <div>
-            <strong>Total friends</strong>
+            <strong>Total users</strong>
         </div>
         <div>
-            <span>{{adminData.FriendsCount}}</span>
+            <span>{{adminData.UsersCount}}</span>
         </div>
     </div>
 
@@ -34,20 +34,20 @@
             <th class="text-center">Id</th>
             <th class="text-center">Name</th>
             <th class="text-center">Description</th>
-            <th class="text-center">Favorite tweets count</th>
-            <th class="text-center">Downloaded tweets in TwitterBackup</th>
-            <th class="text-center">Retweets in TwitterBackup</th>
+            <th class="text-center">Friends count</th>
+            <th class="text-center">Downloaded tweets count</th>
+            <th class="text-center">Retweets count</th>
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="friend in adminData.Friends" ng-class-even="'active'">
-            <td><img ng-src="{{friend.ProfileImageUrl}}" class="img-rounded" /></td>
-            <td class="text-center">{{friend.Id}}</td>
-            <td class="text-center">{{friend.Name}} (@@{{friend.ScreenName}})</td>
-            <td class="text-center">{{friend.Description}}</td>
-            <td class="text-center">{{friend.FavoritesCount}}</td>
-            <td class="text-center">{{friend.DownloadedPostCount}}</td>
-            <td class="text-center">{{friend.RetweetsCount}}</td>
+        <tr ng-repeat="user in adminData.Users" ng-class-even="'active'">
+            <td><img ng-src="{{user.ProfileImageUrl}}" class="img-rounded" /></td>
+            <td class="text-center">{{user.Id}}</td>
+            <td class="text-center">{{user.Name}} (@@{{user.ScreenName}})</td>
+            <td class="text-center">{{user.Description}}</td>
+            <td class="text-center">{{user.FavoritesCount}}</td>
+            <td class="text-center">{{user.DownloadedPostCount}}</td>
+            <td class="text-center">{{user.RetweetsCount}}</td>
         </tr>
     </tbody>
 </table> 

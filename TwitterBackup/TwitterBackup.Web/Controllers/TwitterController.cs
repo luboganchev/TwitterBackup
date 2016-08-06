@@ -9,6 +9,7 @@
     using System.Web.Http;
     using Tweetinvi;
     using Tweetinvi.Models;
+    using TBModels = TwitterBackup.Models;
     using TwitterBackup.Services;
     using TwitterBackup.Services.Contracts;
     using TwitterBackup.Services.Exceptions;
@@ -24,10 +25,13 @@
 
         private IRetweetService retweetService;
 
-        public TwitterController(ITweetService tweetService, IRetweetService retweetService)
+        private IUserService userService;
+
+        public TwitterController(ITweetService tweetService, IRetweetService retweetService, IUserService userService)
         {
             this.tweetService = tweetService;
             this.retweetService = retweetService;
+            this.userService = userService;
         }
 
         [AllowAnonymous]
@@ -43,8 +47,14 @@
         {
             var context = new HttpContextWrapper(HttpContext.Current);
             HttpRequestBase request = context.Request;
-            TwitterAuth.SetAuthenticatedUser(request);
-            //TwitterAuth.TrackRateLimits();
+            var authUser = TwitterAuth.SetAuthenticatedUser(request);
+            if (authUser != null)
+            {
+                var userViewModel = Mapper.Map<IUser, UserViewModel>(authUser);
+                var userDataModel = Mapper.Map<UserViewModel, TBModels.User>(userViewModel);
+                this.userService.Save(userDataModel);
+            }
+
             return this.Ok();
         }
 

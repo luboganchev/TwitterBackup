@@ -42,6 +42,24 @@
             return retweetsCount;
         }
 
+        public int GetTotalRetweetsCount()
+        {
+            var retweetsCount = retweetRepo
+               .All()
+               .Count();
+
+            return retweetsCount;
+        }
+
+        public ICollection<Retweet> GetRetweets()
+        {
+            var tweets = retweetRepo
+                .All()
+                .ToArray();
+
+            return tweets;
+        }
+
         public ICollection<Retweet> GetRetweetsForFriends(long currentLoggedUserId, ICollection<long> friendsIds)
         {
             var tweets = retweetRepo

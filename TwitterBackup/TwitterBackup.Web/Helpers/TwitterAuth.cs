@@ -13,9 +13,6 @@
         private const string ConsumerKey = "tU2Hn3puJlsS5h5er6j5WTRzf";
         private const string ConsumerSecret = "83M4WmrFbDon009CbAtECREU9jGWplIxdigFxmFmd5mbD97BLO";
 
-        //private static IAuthenticationContext authenticationContext;
-        //private static ITwitterCredentials creds = new TwitterCredentials(ConsumerKey, ConsumerSecret, "757545439130509312-JiRdKd3PncbtEDX3kThqt3sButW8syn", "8UsBdoDEcFyeCgN8SqlNXCxqtQCng1Yyqmg8jWQRlH85h");
-
         public static string GetAuthorizationData(HttpRequestMessage request)
         {
             var queryParams = request.RequestUri.ParseQueryString();
@@ -34,28 +31,7 @@
             return JsonConvert.SerializeObject(authorizationData);
         }
 
-        //public static void TrackRateLimits()
-        //{
-        //    TweetinviEvents.QueryBeforeExecute += (sender, args) =>
-        //    {
-        //        var queryRateLimits = RateLimit.GetQueryRateLimit(args.QueryURL);
-
-        //        // Some methods are not RateLimited. Invoking such a method will result in the queryRateLimits to be null
-        //        if (queryRateLimits != null)
-        //        {
-
-        //            if (queryRateLimits.Remaining > 0)
-        //            {
-        //                // We have enough resource to execute the query
-        //                return;
-        //            }
-
-        //            args.Cancel = true;
-        //        }
-        //    };
-        //}
-
-        public static void SetAuthenticatedUser(HttpRequestBase request)
+        public static IAuthenticatedUser SetAuthenticatedUser(HttpRequestBase request)
         {
             if (request.Headers.AllKeys.Any(key => key == "AuthorizationData"))
             {
@@ -71,9 +47,13 @@
                         Auth.SetCredentials(userCredentials);
                         // When a new thread is created, the default credentials will be the Application Credentials
                         Auth.ApplicationCredentials = userCredentials;
+
+                        return User.GetAuthenticatedUser(Auth.ApplicationCredentials);
                     }
                 }
             }
+
+            return null;
         }
     }
 }

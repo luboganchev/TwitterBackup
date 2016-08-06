@@ -23,6 +23,8 @@
         {
             configuration.CreateMap<IUser, UserShortInfoViewModel>();
 
+            configuration.CreateMap<User, UserShortInfoViewModel>();
+
             configuration.CreateMap<UserShortInfoViewModel, User>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.UserTwitterId, opt => opt.MapFrom(src => src.Id));
