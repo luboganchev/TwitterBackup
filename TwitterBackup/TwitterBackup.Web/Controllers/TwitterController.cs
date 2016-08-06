@@ -10,6 +10,7 @@
     using Tweetinvi;
     using Tweetinvi.Models;
     using TwitterBackup.Services;
+    using TwitterBackup.Services.Contracts;
     using TwitterBackup.Services.Exceptions;
     using TwitterBackup.Web.Helpers;
     using TwitterBackup.Web.Helpers.Filters;
@@ -19,38 +20,14 @@
     [TwitterAuthorization]
     public class TwitterController : BaseController
     {
-        private TweetService tweetService;
+        private ITweetService tweetService;
 
-        private RetweetService retweetService;
+        private IRetweetService retweetService;
 
-        public TweetService TweetService
+        public TwitterController(ITweetService tweetService, IRetweetService retweetService)
         {
-            get
-            {
-                if (this.tweetService == null)
-                {
-                    this.tweetService = new TweetService(base.ConnectionString, base.DatabaseName);
-
-                    return this.tweetService;
-                }
-
-                return tweetService;
-            }
-        }
-
-        public RetweetService RetweetService
-        {
-            get
-            {
-                if (this.retweetService == null)
-                {
-                    this.retweetService = new RetweetService(base.ConnectionString, base.DatabaseName);
-
-                    return this.retweetService;
-                }
-
-                return retweetService;
-            }
+            this.tweetService = tweetService;
+            this.retweetService = retweetService;
         }
 
         [AllowAnonymous]
@@ -138,7 +115,7 @@
                     .GetUserTimeline(userId);
                 userViewModel.Tweets = Mapper.Map<IEnumerable<ITweet>, ICollection<TweetViewModel>>(userTweets);
 
-                var tweets = this.TweetService.GetTweetsForFriend(authUser.Id, userViewModel.UserTwitterId);
+                var tweets = this.tweetService.GetTweetsForFriend(authUser.Id, userViewModel.UserTwitterId);
                 foreach (var tweet in tweets)
                 {
                     var storedTweet = userViewModel.Tweets
@@ -160,7 +137,7 @@
             var retweet = Tweet.PublishRetweet(tweetId);
             if (retweet != null)
             {
-                this.RetweetService.Save(retweet.Id, authUser.Id, retweet.RetweetedTweet.CreatedBy.Id);
+                this.retweetService.Save(retweet.Id, authUser.Id, retweet.RetweetedTweet.CreatedBy.Id);
 
                 return Ok(true);
             }
@@ -175,7 +152,7 @@
             {
                 var dataModel = Mapper.Map<TwitterBackup.Models.Tweet>(viewModel);
                 dataModel.CreatedById = authUser.Id;
-                this.TweetService.Save(dataModel);
+                this.tweetService.Save(dataModel);
 
                 return Ok();
             }

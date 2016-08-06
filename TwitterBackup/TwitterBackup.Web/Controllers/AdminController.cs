@@ -1,21 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using TwitterBackup.Web.Models.Users;
-using TwitterBackup.Web.Models.Admin;
-using Tweetinvi.Models;
-using TwitterBackup.Services;
-using TwitterBackup.Web.Helpers;
-
-namespace TwitterBackup.Web.Controllers
+﻿namespace TwitterBackup.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web.Http;
+    using AutoMapper;
+    using TwitterBackup.Web.Models.Users;
+    using TwitterBackup.Web.Models.Admin;
+    using Tweetinvi.Models;
+    using TwitterBackup.Services.Contracts;
+
     public class AdminController : BaseController
     {
+        private ITweetService tweetService;
+        private IRetweetService retweetService;
+
+
+        public AdminController(ITweetService tweetService, IRetweetService retweetService)
+        {
+            this.tweetService = tweetService;
+            this.retweetService = retweetService;
+        }
+
         [HttpGet]
         public IHttpActionResult GetAdminData()
         {
@@ -24,28 +29,15 @@ namespace TwitterBackup.Web.Controllers
             //c. Number if downloaded posts for every user.
             //d. Number of retweets for every users.
 
-            RetweetService retweetService = new RetweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
-            TweetService tweetService = new TweetService(ConfigHelper.ConnectionString, ConfigHelper.DatabaseName);
-
-            var friends = authUser
-                .GetFriends()
-                .Select(friend => new UserAdminViewModel
-                {
-                    Id = friend.Id,
-                    Name = friend.Name,
-                    Description = friend.Description,
-                    ScreenName = friend.ScreenName,
-                    ProfileImageUrl = friend.ProfileImageUrl,
-                    FavoritesCount = friend.FavouritesCount
-                })
-                .ToArray();
-
+            var twitterFriends = authUser
+                .GetFriends();
+            var friends = Mapper.Map<IEnumerable<IUser>, ICollection<UserAdminViewModel>>(twitterFriends);
             var friendsIds = friends
                 .Select(friend => friend.Id)
                 .ToArray();
 
-            var allStoreTweetsForFriends = tweetService.GetTweetsForFriends(authUser.Id, friendsIds);
-            var allRetweetsForFriends = retweetService.GetRetweetsForFriends(authUser.Id, friendsIds);
+            var allStoreTweetsForFriends = this.tweetService.GetTweetsForFriends(authUser.Id, friendsIds);
+            var allRetweetsForFriends = this.retweetService.GetRetweetsForFriends(authUser.Id, friendsIds);
             foreach (var friend in friends)
             {
                 friend.DownloadedPostCount = allStoreTweetsForFriends.Count(tweet => tweet.Owner.UserTwitterId == friend.Id);
@@ -55,8 +47,8 @@ namespace TwitterBackup.Web.Controllers
             var viewModel = new AdminViewModel
             {
                 Friends = friends,
-                DownloadedTweetsCount = tweetService.GetTweetsCount(authUser.Id),
-                RetweetsCount = retweetService.GetRetweetsCount(authUser.Id)
+                DownloadedTweetsCount = this.tweetService.GetTweetsCount(authUser.Id),
+                RetweetsCount = this.retweetService.GetRetweetsCount(authUser.Id)
             };
 
             return Ok(viewModel);

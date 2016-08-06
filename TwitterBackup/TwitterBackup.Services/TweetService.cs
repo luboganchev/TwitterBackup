@@ -2,17 +2,19 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using TwitterBackup.Common.Constants;
     using TwitterBackup.Data;
     using TwitterBackup.Models;
+    using TwitterBackup.Services.Contracts;
     using TwitterBackup.Services.Exceptions;
 
-    public class TweetService
+    public class TweetService : ITweetService
     {
-         private readonly IRepository<Tweet> tweetRepo;
+        private readonly IRepository<Tweet> tweetRepo;
 
-        public TweetService(string connectionString, string databaseName)
+        public TweetService()
         {
-            tweetRepo = new MongoDbRepository<Tweet>(connectionString, databaseName);
+            tweetRepo = new MongoDbRepository<Tweet>(Database.ConnectionString, Database.DatabaseName);
         }
 
         public Tweet Save(Tweet tweet)

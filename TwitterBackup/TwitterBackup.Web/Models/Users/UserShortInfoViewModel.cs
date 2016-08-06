@@ -19,7 +19,7 @@
 
         public bool Following { get; set; }
 
-        public void CreateMappings(IConfiguration configuration)
+        public virtual void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<IUser, UserShortInfoViewModel>();
 

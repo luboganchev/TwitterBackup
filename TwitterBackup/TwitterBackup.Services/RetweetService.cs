@@ -3,16 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using TwitterBackup.Common.Constants;
     using TwitterBackup.Data;
     using TwitterBackup.Models;
+    using TwitterBackup.Services.Contracts;
 
-    public class RetweetService
+    public class RetweetService : IRetweetService
     {
         private readonly IRepository<Retweet> retweetRepo;
 
-        public RetweetService(string connectionString, string databaseName)
+        public RetweetService()
         {
-            retweetRepo = new MongoDbRepository<Retweet>(connectionString, databaseName);
+            retweetRepo = new MongoDbRepository<Retweet>(Database.ConnectionString, Database.DatabaseName);
         }
 
         public Retweet Save(long retweetId, long createdById, long tweetOwnerId)
