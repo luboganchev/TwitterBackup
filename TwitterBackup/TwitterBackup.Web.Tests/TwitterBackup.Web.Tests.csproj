@@ -37,6 +37,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -93,6 +96,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\TwitterControllerTest.cs" />
+    <Compile Include="MockObjectFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\ValuesControllerTest.cs" />
@@ -104,6 +109,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj">
+      <Project>{0b38639b-ddee-43e3-b74c-ca65d2f33c5b}</Project>
+      <Name>TwitterBackup.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwitterBackup.Models\TwitterBackup.Models.csproj">
+      <Project>{4287b647-9fc6-483b-b224-b855389f19f8}</Project>
+      <Name>TwitterBackup.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwitterBackup.Services\TwitterBackup.Services.csproj">
+      <Project>{162c2efd-e963-4af8-8d05-70124bbb8364}</Project>
+      <Name>TwitterBackup.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwitterBackup.Web\TwitterBackup.Web.csproj">
       <Project>{EC86386B-F29B-45A9-9D17-8FF901069AC0}</Project>
       <Name>TwitterBackup.Web</Name>
