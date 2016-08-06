@@ -18,6 +18,12 @@
         };
 
         $scope.authCompletedCB = function (queryParams) {
+            if (queryParams.indexOf('denied') !== -1) {
+                notifier.error('Login is denied!');
+
+                return;
+            }
+
             var authorizationData = identity.getAuthorizationData();
             authorizationData.VerifierCode = /oauth_verifier=(\w+)/.exec(queryParams)[1];
             identity.setAuthorizationData(authorizationData);
