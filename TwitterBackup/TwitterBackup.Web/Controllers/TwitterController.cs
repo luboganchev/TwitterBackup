@@ -158,27 +158,36 @@
         [HttpPost]
         public IHttpActionResult StoreTweet(TweetViewModel viewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var dataModel = Mapper.Map<TwitterBackup.Models.Tweet>(viewModel);
-                dataModel.CreatedById = authUser.Id;
-                this.tweetService.Save(dataModel);
-
-                return Ok();
-            }
-            catch (TweetException tweetException)
-            {
-                switch (tweetException.Type)
+                try
                 {
-                    case TweetExceptionType.TweetIsAlreadySaved:
-                    default:
-                        return this.BadRequest("Tweet is already saved");
+                    var dataModel = Mapper.Map<TwitterBackup.Models.Tweet>(viewModel);
+                    dataModel.CreatedById = authUser.Id;
+                    this.tweetService.Save(dataModel);
+
+                    return Ok();
+                }
+                catch (ArgumentException argException)
+                {
+                    return this.BadRequest(argException.Message);
+                }
+                catch (TweetException tweetException)
+                {
+                    switch (tweetException.Type)
+                    {
+                        case TweetExceptionType.IsAlreadySaved:
+                        default:
+                            return this.BadRequest("Tweet is already saved");
+                    }
+                }
+                catch (Exception)
+                {
+                    return this.BadRequest("Error occured when storing the tweet");
                 }
             }
-            catch (Exception)
-            {
-                return this.BadRequest("Error occured when storing the tweet");
-            }
+
+            return this.BadRequest("Tweet that you're trying to save has some invalid arguments");
         }
     }
 }

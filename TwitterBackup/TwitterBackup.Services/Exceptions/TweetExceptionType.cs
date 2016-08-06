@@ -8,6 +8,6 @@ namespace TwitterBackup.Services.Exceptions
 {
     public enum TweetExceptionType
     {
-        TweetIsAlreadySaved
+        IsAlreadySaved
     }
 }

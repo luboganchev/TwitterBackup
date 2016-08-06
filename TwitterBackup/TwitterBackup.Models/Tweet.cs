@@ -11,8 +11,10 @@
         [BsonIgnoreIfDefault]
         public string Id { get; set; }
 
+        [BsonRequired]
         public long TweetTwitterId { get; set; }
 
+        [BsonRequired]
         public long CreatedById { get; set; }
 
         public User Owner { get; set; }

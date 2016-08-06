@@ -1,6 +1,5 @@
 ﻿namespace TwitterBackup.Services
 {
-    using TwitterBackup.Common.Constants;
     using TwitterBackup.Data;
     using TwitterBackup.Models;
     using TwitterBackup.Services.Contracts;
@@ -11,9 +10,9 @@
     {
         private readonly IRepository<User> userRepo;
 
-        public UserService()
+        public UserService(IRepository<User> userRepo)
         {
-            userRepo = new MongoDbRepository<User>(Database.ConnectionString, Database.DatabaseName);
+            this.userRepo = userRepo;
         }
 
         /// <summary>

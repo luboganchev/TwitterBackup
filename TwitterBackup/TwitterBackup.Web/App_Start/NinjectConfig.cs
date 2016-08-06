@@ -12,6 +12,8 @@ namespace TwitterBackup.Web.App_Start
     using Ninject.Web.Common;
     using TwitterBackup.Services.Contracts;
     using TwitterBackup.Services;
+    using TwitterBackup.Data;
+    using TwitterBackup.Web.Helpers;
 
     public static class NinjectConfig 
     {
@@ -63,6 +65,10 @@ namespace TwitterBackup.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind(typeof(IRepository<>)).To(typeof(MongoDbRepository<>))
+                .WithConstructorArgument("connectionString", ConfigHelper.ConnectionString)
+                .WithConstructorArgument("databaseName", ConfigHelper.DatabaseName);
+
             kernel.Bind<ITweetService>().To<TweetService>();
             kernel.Bind<IRetweetService>().To<RetweetService>();
             kernel.Bind<IUserService>().To<UserService>();

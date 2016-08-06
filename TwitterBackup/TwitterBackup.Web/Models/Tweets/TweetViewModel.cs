@@ -2,6 +2,7 @@
 {
     using AutoMapper;
     using System;
+    using System.ComponentModel.DataAnnotations;
     using Tweetinvi.Models;
     using TwitterBackup.Models;
     using TwitterBackup.Web.Helpers.AutoMapper;
@@ -9,20 +10,27 @@
 
     public class TweetViewModel : IHaveCustomMappings
     {
+        [Required]
         public string IdString { get; set; }
 
         public UserShortInfoViewModel Owner { get; set; }
 
+        [Required]
         public DateTime CreatedAt { get; set; }
 
+        [Required]
         public string Text { get; set; }
 
+        [Required]
         public string FullText { get; set; }
 
+        [Required]
         public int FavoriteCount { get; set; }
 
+        [Required]
         public int RetweetCount { get; set; }
 
+        [Required]
         public bool RetweetedFromMe { get; set; }
 
         public bool IsRetweet { get; set; }

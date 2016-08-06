@@ -1,8 +1,8 @@
 ﻿namespace TwitterBackup.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using TwitterBackup.Common.Constants;
     using TwitterBackup.Data;
     using TwitterBackup.Models;
     using TwitterBackup.Services.Contracts;
@@ -12,35 +12,30 @@
     {
         private readonly IRepository<Tweet> tweetRepo;
 
-        public TweetService()
+        public TweetService(IRepository<Tweet> tweetRepo)
         {
-            tweetRepo = new MongoDbRepository<Tweet>(Database.ConnectionString, Database.DatabaseName);
+            this.tweetRepo = tweetRepo;
         }
 
         public Tweet Save(Tweet tweet)
         {
+            if (tweet == null)
+            {
+                throw new ArgumentException("Tweet is not valid");
+            }
+
             var hasAlreadySavedTweet = tweetRepo
                 .All()
                 .Any(tweetDTO => tweetDTO.TweetTwitterId == tweet.TweetTwitterId);
 
             if (hasAlreadySavedTweet)
             {
-                throw new TweetException(TweetExceptionType.TweetIsAlreadySaved);
+                throw new TweetException(TweetExceptionType.IsAlreadySaved);
             }
 
             var dbTweet = tweetRepo.Add(tweet);
 
             return dbTweet;
-        }
-
-        public int GetTweetsCount(long currentLoggedUserId)
-        {
-            var tweetsCount = tweetRepo
-                .All()
-                .Where(tweet => tweet.CreatedById == currentLoggedUserId)
-                .Count();
-
-            return tweetsCount;
         }
 
         public int GetTotalTweetsCount()
@@ -56,16 +51,6 @@
         {
             var tweets = tweetRepo
                 .All()
-                .ToArray();
-
-            return tweets;
-        }
-
-        public ICollection<Tweet> GetTweetsForFriends(long currentLoggedUserId, ICollection<long> friendsIds)
-        {
-            var tweets = tweetRepo
-                .All()
-                .Where(tweet => tweet.CreatedById == currentLoggedUserId && friendsIds.Contains(tweet.Owner.UserTwitterId))
                 .ToArray();
 
             return tweets;

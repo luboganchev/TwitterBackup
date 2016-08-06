@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using TwitterBackup.Common.Constants;
     using TwitterBackup.Data;
     using TwitterBackup.Models;
     using TwitterBackup.Services.Contracts;
@@ -12,9 +11,9 @@
     {
         private readonly IRepository<Retweet> retweetRepo;
 
-        public RetweetService()
+        public RetweetService(IRepository<Retweet> retweetRepo)
         {
-            retweetRepo = new MongoDbRepository<Retweet>(Database.ConnectionString, Database.DatabaseName);
+            this.retweetRepo = retweetRepo;
         }
 
         public Retweet Save(long retweetId, long createdById, long tweetOwnerId)
@@ -30,16 +29,6 @@
             var dbTweet = retweetRepo.Add(dataModel);
 
             return dbTweet;
-        }
-
-        public int GetRetweetsCount(long currentLoggedUserId)
-        {
-            var retweetsCount = retweetRepo
-                .All()
-                .Where(tweet => tweet.CreatedById == currentLoggedUserId)
-                .Count();
-
-            return retweetsCount;
         }
 
         public int GetTotalRetweetsCount()
@@ -59,17 +48,6 @@
 
             return tweets;
         }
-
-        public ICollection<Retweet> GetRetweetsForFriends(long currentLoggedUserId, ICollection<long> friendsIds)
-        {
-            var tweets = retweetRepo
-                .All()
-                .Where(retweet => retweet.CreatedById == currentLoggedUserId && friendsIds.Contains(retweet.TweetOwnerId))
-                .ToArray();
-
-            return tweets;
-        }
-
 
         public int GetRetweetsCountForFriend(long currentLoggedUserId, long friendId)
         {

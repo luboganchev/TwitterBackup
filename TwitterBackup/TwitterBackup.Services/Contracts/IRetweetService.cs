@@ -7,13 +7,9 @@
     {
         Retweet Save(long retweetId, long createdById, long tweetOwnerId);
 
-        int GetRetweetsCount(long currentLoggedUserId);
-
         int GetTotalRetweetsCount();
 
         ICollection<Retweet> GetRetweets();
-
-        ICollection<Retweet> GetRetweetsForFriends(long currentLoggedUserId, ICollection<long> friendsIds);
 
         int GetRetweetsCountForFriend(long currentLoggedUserId, long friendId);
     }
