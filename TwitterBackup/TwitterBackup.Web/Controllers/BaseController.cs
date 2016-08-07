@@ -14,6 +14,6 @@ namespace TwitterBackup.Web.Controllers
         protected internal readonly string ConnectionString = ConfigHelper.ConnectionString;
         protected internal readonly string DatabaseName = ConfigHelper.DatabaseName;
 
-        internal static IAuthenticatedUser authUser;
+        public static IAuthenticatedUser authUser;
     }
 }
