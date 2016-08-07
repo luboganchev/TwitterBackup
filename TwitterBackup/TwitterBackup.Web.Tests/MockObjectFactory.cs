@@ -125,7 +125,7 @@ namespace TwitterBackup.Web.Tests
             userService.Setup(us => us.GetUsers())
                 .Returns(users);
 
-            userService.Setup(us => us.UsersCount())
+            userService.Setup(us => us.GetUsersCount())
                 .Returns(users.Count);
 
             return userService.Object;

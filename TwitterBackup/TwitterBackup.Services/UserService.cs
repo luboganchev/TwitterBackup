@@ -5,6 +5,8 @@
     using TwitterBackup.Services.Contracts;
     using System.Linq;
     using System.Collections.Generic;
+    using System;
+    using TwitterBackup.Services.Exceptions;
 
     public class UserService : IUserService
     {
@@ -21,21 +23,26 @@
         /// <param name="user"></param>
         public User Save(User user)
         {
+            if (user == null)
+            {
+                throw new ArgumentException("Tweet is not valid");
+            }
+
             var hasAlreadyExist = userRepo
                 .All()
                 .Any(userDTO => userDTO.UserTwitterId == user.UserTwitterId);
 
-            if (!hasAlreadyExist) 
+            if (hasAlreadyExist)
             {
-                var userDataModel = userRepo.Add(user);
-
-                return userDataModel;
+                throw new UserException(UserExceptionType.IsAlreadySaved);
             }
 
-            return null;
+            var userDataModel = userRepo.Add(user);
+
+            return userDataModel;
         }
 
-        public int UsersCount()
+        public int GetUsersCount()
         {
             var usersCount = this.userRepo
                 .All()

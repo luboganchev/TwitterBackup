@@ -52,7 +52,19 @@
             {
                 var userViewModel = Mapper.Map<IUser, UserViewModel>(authUser);
                 var userDataModel = Mapper.Map<UserViewModel, TBModels.User>(userViewModel);
-                this.userService.Save(userDataModel);
+                try
+                {
+                    this.userService.Save(userDataModel);
+                }
+                catch (UserException userException)
+                {
+                    switch (userException.Type)
+                    {
+                        case UserExceptionType.IsAlreadySaved:
+                            //User is already saved which is okey
+                            break;
+                    }
+                }
             }
 
             return this.Ok();

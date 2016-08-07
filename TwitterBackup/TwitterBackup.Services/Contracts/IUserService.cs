@@ -7,7 +7,7 @@
     {
         User Save(User user);
 
-        int UsersCount();
+        int GetUsersCount();
 
         IEnumerable<User> GetUsers();
     }
