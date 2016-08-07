@@ -24,8 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Models", "Twi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services", "TwitterBackup.Services\TwitterBackup.Services.csproj", "{162C2EFD-E963-4AF8-8D05-70124BBB8364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Common", "TwitterBackup.Common\TwitterBackup.Common.csproj", "{5D9B1C32-09C7-4729-BF12-F9F54229CA14}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1185B31E-E65E-4639-B32D-B19873BCEE5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwitterBackup.Services.Tests", "TwitterBackup.Services.Tests\TwitterBackup.Services.Tests.csproj", "{07E2DAA3-A860-41F9-B971-C29D58B1158C}"
@@ -60,10 +58,6 @@ Global
 		{162C2EFD-E963-4AF8-8D05-70124BBB8364}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{162C2EFD-E963-4AF8-8D05-70124BBB8364}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{162C2EFD-E963-4AF8-8D05-70124BBB8364}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D9B1C32-09C7-4729-BF12-F9F54229CA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D9B1C32-09C7-4729-BF12-F9F54229CA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D9B1C32-09C7-4729-BF12-F9F54229CA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D9B1C32-09C7-4729-BF12-F9F54229CA14}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07E2DAA3-A860-41F9-B971-C29D58B1158C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{07E2DAA3-A860-41F9-B971-C29D58B1158C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07E2DAA3-A860-41F9-B971-C29D58B1158C}.Release|Any CPU.ActiveCfg = Release|Any CPU

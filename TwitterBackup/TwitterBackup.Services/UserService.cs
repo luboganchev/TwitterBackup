@@ -16,7 +16,7 @@
         }
 
         /// <summary>
-        /// Store user in the system
+        /// Store user in the TwitterBackup database
         /// </summary>
         /// <param name="user"></param>
         public User Save(User user)

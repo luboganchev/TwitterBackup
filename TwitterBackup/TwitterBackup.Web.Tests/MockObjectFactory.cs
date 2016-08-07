@@ -28,9 +28,43 @@ namespace TwitterBackup.Web.Tests
             }
         };
 
+        private static List<Retweet> retweets = new List<Retweet>
+        {
+            new Retweet()
+            {
+                Id = Guid.NewGuid().ToString(),
+                DateCreated = DateTime.Now,
+                ReweetTwitterId = 987654321,
+                TweetOwnerId = 555566666,
+                CreatedById = 123465789
+            }
+        };
+
+        private static List<User> users = new List<User>
+        {
+            new User()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Description = "Its me",
+                Name = "Pesho",
+                ScreenName = "peshoivanov",
+                UserTwitterId = 123465789,
+                StatusesCount = 50,
+                FriendsCount = 100,
+                FollowersCount = 23,
+                ProfileBannerUrl = null,
+                ProfileImageUrl = "http://pbs.twimg.com/profile_images/757546391426179072/bq3mi1XN_normal.jpg",
+                ProfileLinkColor = "1B95E0"
+            }
+        };
+
         public static ITweetService GetTweetService()
         {
             var tweetService = new Mock<ITweetService>();
+
+            tweetService.Setup(ts => ts.Save(
+                    It.IsAny<Tweet>()))
+                .Returns(tweets.FirstOrDefault());
 
             tweetService.Setup(ts => ts.GetTotalTweetsCount())
                 .Returns(tweets.Count);
@@ -48,10 +82,6 @@ namespace TwitterBackup.Web.Tests
                     It.Is<long>(s => s != 654321)))
                 .Returns(new List<Tweet>());
 
-            tweetService.Setup(ts => ts.Save(
-                    It.IsAny<Tweet>()))
-                .Returns(tweets.FirstOrDefault());
-
             return tweetService.Object;
         }
 
@@ -59,12 +89,44 @@ namespace TwitterBackup.Web.Tests
         {
             var retweetService = new Mock<IRetweetService>();
 
+            retweetService.Setup(rs => rs.Save(
+                    It.IsAny<long>(),
+                    It.IsAny<long>(),
+                    It.IsAny<long>()))
+                .Returns(retweets.FirstOrDefault());
+
+            retweetService.Setup(rs => rs.GetTotalRetweetsCount())
+                .Returns(retweets.Count);
+
+            retweetService.Setup(rs => rs.GetRetweets())
+                .Returns(retweets);
+
+            retweetService.Setup(rs => rs.GetRetweetsCountForFriend(
+                    It.Is<long>(c => c == 123465789),
+                    It.Is<long>(f => f == 555566666)))
+                .Returns(retweets.Count);
+
+            retweetService.Setup(rs => rs.GetRetweetsCountForFriend(
+                    It.Is<long>(c => c != 123465789),
+                    It.Is<long>(f => f != 555566666)))
+                .Returns(0);
+
             return retweetService.Object;
         }
 
         public static IUserService GetUserService()
         {
             var userService = new Mock<IUserService>();
+
+            userService.Setup(us => us.Save(
+                    It.IsAny<User>()))
+                .Returns(users.FirstOrDefault());
+
+            userService.Setup(us => us.GetUsers())
+                .Returns(users);
+
+            userService.Setup(us => us.UsersCount())
+                .Returns(users.Count);
 
             return userService.Object;
         }

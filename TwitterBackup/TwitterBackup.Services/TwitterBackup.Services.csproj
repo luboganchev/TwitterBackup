@@ -50,10 +50,6 @@
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwitterBackup.Common\TwitterBackup.Common.csproj">
-      <Project>{5d9b1c32-09c7-4729-bf12-f9f54229ca14}</Project>
-      <Name>TwitterBackup.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TwitterBackup.Data\TwitterBackup.Data.csproj">
       <Project>{0b38639b-ddee-43e3-b74c-ca65d2f33c5b}</Project>
       <Name>TwitterBackup.Data</Name>
