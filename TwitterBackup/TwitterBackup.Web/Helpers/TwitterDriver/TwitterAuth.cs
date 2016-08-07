@@ -33,9 +33,9 @@
 
         public static IAuthenticatedUser SetAuthenticatedUser(HttpRequestBase request)
         {
-            if (request.Headers.AllKeys.Any(key => key == "AuthorizationData"))
+            if (request.Headers.AllKeys.Any(key => key == GlobalConstants.AuthorizationData))
             {
-                var authorizationDataJson = request.Headers.Get("AuthorizationData");
+                var authorizationDataJson = request.Headers.Get(GlobalConstants.AuthorizationData);
 
                 if (authorizationDataJson != null)
                 {

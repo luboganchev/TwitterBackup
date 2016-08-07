@@ -132,7 +132,6 @@
     <Content Include="views\partials\admin.html" />
     <Content Include="views\partials\rate-exceeded.html" />
     <Content Include="views\partials\home.html" />
-    <Content Include="views\partials\tweet.html" />
     <Content Include="views\partials\twitter-login.html" />
     <Content Include="views\partials\user-dropdown-list-template.html" />
     <Content Include="views\partials\user-profile.html" />

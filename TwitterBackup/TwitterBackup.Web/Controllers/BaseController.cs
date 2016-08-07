@@ -11,9 +11,6 @@ namespace TwitterBackup.Web.Controllers
 {
     public class BaseController : ApiController
     {
-        protected internal readonly string ConnectionString = ConfigHelper.ConnectionString;
-        protected internal readonly string DatabaseName = ConfigHelper.DatabaseName;
-
         public static IAuthenticatedUser authUser;
     }
 }

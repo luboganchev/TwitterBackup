@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-using Tweetinvi;
-using TwitterBackup.Web.Helpers;
-using TwitterBackup.Web.Helpers.AutoMapper;
-
-namespace TwitterBackup.Web
+﻿namespace TwitterBackup.Web
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Web.Http;
+    using System.Web.Mvc;
+    using System.Web.Optimization;
+    using System.Web.Routing;
+    using TwitterBackup.Web.Helpers.AutoMapper;
+
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_BeginRequest(object sender, EventArgs e)

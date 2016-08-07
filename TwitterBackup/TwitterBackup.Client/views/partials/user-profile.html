@@ -11,10 +11,10 @@
 
                     <div class="twPc-divUser">
                         <div class="twPc-divName">
-                            <a href="https://twitter.com/{{userProfile.ScreenName}}">{{userProfile.Name}}</a>
+                            <a target="_blank" href="https://twitter.com/{{userProfile.ScreenName}}">{{userProfile.Name}}</a>
                         </div>
                         <span>
-                            <a href="https://twitter.com/{{userProfile.ScreenName}}">@<span>{{userProfile.ScreenName}}</span></a>
+                            <a target="_blank" href="https://twitter.com/{{userProfile.ScreenName}}">@<span>{{userProfile.ScreenName}}</span></a>
                         </span>
                     </div>
 
@@ -67,9 +67,9 @@
                                     </p>
 
                                     <div>
-                                        <span class="glyphicon glyphicon-heart favorite-icon"></span><span class="favorite-icon-value">{{tweet.FavoriteCount}}</span>
+                                        <span title="likes" class="glyphicon glyphicon-heart favorite-icon"></span><span class="favorite-icon-value">{{tweet.FavoriteCount}}</span>
                                         <span ng-class="(tweet.RetweetedFromMe)? 'gray-color glyphicon glyphicon-retweet retweet-icon': 'green-color glyphicon glyphicon-retweet retweet-icon'"
-                                              ng-attr-title="{{tweet.RetweetedFromMe? 'Tweet is already retweeted': 'Tweet'}}"
+                                              ng-attr-title="{{tweet.RetweetedFromMe? 'Tweet is already retweeted': 'Retweet'}}"
                                               ng-click="publishTweet(tweet.IdString, tweet.RetweetedFromMe)"></span>
                                         <span ng-class="(tweet.RetweetedFromMe)? 'gray-color retweet-icon-value' : 'green-color retweet-icon-value'">{{tweet.RetweetCount}}</span>
                                         <button class="btn btn-primary btn-sm tweet-download" ng-disabled="tweet.HasStored" ng-attr-title="{{tweet.HasStored? 'Tweet is already saved': 'Save tweet'}}" ng-click="storeTweet(tweet.IdString)"><span class="glyphicon glyphicon-cloud-download"></span></button>

@@ -10,7 +10,7 @@
             var isBaseAuth = base.IsAuthorized(actionContext);
             if (isBaseAuth)
             {
-                var authDataHeader = actionContext.Request.Headers.GetValues("AuthorizationData").FirstOrDefault();
+                var authDataHeader = actionContext.Request.Headers.GetValues(GlobalConstants.AuthorizationData).FirstOrDefault();
                 if (!string.IsNullOrEmpty(authDataHeader))
                 {
                     var authData = JsonConvert.DeserializeObject<AuthorizationData>(authDataHeader);

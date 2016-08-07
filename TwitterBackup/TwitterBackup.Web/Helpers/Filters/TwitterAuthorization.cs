@@ -19,7 +19,7 @@
         {
             try
             {
-                var authDataHeader = actionContext.Request.Headers.GetValues("AuthorizationData")
+                var authDataHeader = actionContext.Request.Headers.GetValues(GlobalConstants.AuthorizationData)
                     .FirstOrDefault();
                 if (!string.IsNullOrEmpty(authDataHeader))
                 {

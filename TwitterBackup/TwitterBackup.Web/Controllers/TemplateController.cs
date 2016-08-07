@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace TwitterBackup.Web.Controllers
+﻿namespace TwitterBackup.Web.Controllers
 {
+    using System.Web.Mvc;
+
     public class TemplateController : Controller
     {
-        // GET: Admin
+        // GET: Return partial view of admin page
         public ActionResult Admin()
         {
             return PartialView("_Admin");

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using TwitterBackup.Web.Models.Users;
-using System.Linq;
-namespace TwitterBackup.Web.Models.Admin
+﻿namespace TwitterBackup.Web.Models.Admin
 {
+    using System.Collections.Generic;
+    using TwitterBackup.Web.Models.Users;
+    using System.Linq;
+
     public class AdminViewModel
     {
         public AdminViewModel()

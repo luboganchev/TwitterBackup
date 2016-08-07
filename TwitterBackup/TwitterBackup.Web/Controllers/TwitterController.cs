@@ -7,17 +7,14 @@
     using System.Linq;
     using System.Web;
     using System.Web.Http;
-    using Tweetinvi;
     using Tweetinvi.Models;
     using TBModels = TwitterBackup.Models;
-    using TwitterBackup.Services;
     using TwitterBackup.Services.Contracts;
     using TwitterBackup.Services.Exceptions;
-    using TwitterBackup.Web.Helpers;
     using TwitterBackup.Web.Helpers.Filters;
     using TwitterBackup.Web.Models.Tweets;
     using TwitterBackup.Web.Models.Users;
-using TwitterBackup.Web.Helpers.TwitterDriver;
+    using TwitterBackup.Web.Helpers.TwitterDriver;
 
     [TwitterAuthorization]
     public class TwitterController : BaseController
