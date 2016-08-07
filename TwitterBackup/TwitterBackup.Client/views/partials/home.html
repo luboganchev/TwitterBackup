@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="col-md-2">
-        <button type="button" ng-click="followFriend(selectedUser.Id)" ng-disabled="!selectedUser" class="btn btn-success btn-block">Follow</button>
+        <button type="button" ng-click="followFriend(selectedUser.ScreenName)" ng-disabled="!selectedUser" class="btn btn-success btn-block">Follow</button>
     </div>
 </div>
 
@@ -39,13 +39,13 @@
                     </div>
                     <div class="content">
                         <p>
-                            <a href="#/user/profile/{{friend.Id}}">
+                            <a href="#/user/profile/{{friend.ScreenName}}">
                                 {{friend.Name}}
                             </a>
                             <br>
                             <a href="https://twitter.com/{{friend.ScreenName}}">@<span>{{friend.ScreenName}}</span></a>
                         </p>
-                        <p><button type="button" ng-click="unfollowFriend(friend.Id)" class="btn btn-danger">Unfollow</button></p>
+                        <p><button type="button" ng-click="unfollowFriend(friend.ScreenName)" class="btn btn-danger">Unfollow</button></p>
                     </div>
                 </div>
             </div>

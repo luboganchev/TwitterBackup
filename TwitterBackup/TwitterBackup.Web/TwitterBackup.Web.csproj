@@ -275,8 +275,11 @@
     <Compile Include="Helpers\AutoMapper\IHaveCustomMappings.cs" />
     <Compile Include="Helpers\AutoMapper\IMapFrom.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
+    <Compile Include="Helpers\Filters\AdminAuthorization.cs" />
     <Compile Include="Helpers\Filters\TwitterAuthorization.cs" />
-    <Compile Include="Helpers\TwitterAuth.cs" />
+    <Compile Include="Helpers\TwitterDriver\ITwitterApi.cs" />
+    <Compile Include="Helpers\TwitterDriver\TwitterApiAdapter.cs" />
+    <Compile Include="Helpers\TwitterDriver\TwitterAuth.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Admin\AdminViewModel.cs" />

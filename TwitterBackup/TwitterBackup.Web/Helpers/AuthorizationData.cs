@@ -8,6 +8,8 @@
 
         public string AuthorizationSecret { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public string VerifierCode { get; set; }
     }
 }

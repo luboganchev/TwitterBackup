@@ -11,6 +11,7 @@
             isAuthorized: function () {
                 var authorizationData = identity.getAuthorizationData();
 
+                $rootScope.isAdmin = authorizationData.IsAdmin;
                 $rootScope.isLoggedIn = !!authorizationData.VerifierCode;
 
                 return $rootScope.isLoggedIn;
@@ -28,14 +29,12 @@
             authenticate: function(){
                 return $http.get(twitterApi + '/VerifyUser');
             },
-            externalAuthData: {
-                provider: "",
-                userName: "",
-                externalAccessToken: ""
-            },
-            authentication: {
-                isAuth: false,
-                userName: ""
+            isAdmin: function () {
+                var authorizationData = identity.getAuthorizationData();
+
+                $rootScope.isAdmin = authorizationData.IsAdmin;
+
+                return $rootScope.isAdmin;
             }
         };
     }

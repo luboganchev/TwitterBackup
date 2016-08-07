@@ -17,6 +17,8 @@
         [BsonRequired]
         public long CreatedById { get; set; }
 
+        public string CreatedByScreenName{ get; set; }
+
         public User Owner { get; set; }
 
         [BsonRequired]

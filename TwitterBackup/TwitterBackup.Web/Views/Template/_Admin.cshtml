@@ -41,7 +41,7 @@
     </thead>
     <tbody>
         <tr ng-repeat="user in adminData.Users" ng-class-even="'active'">
-            <td><img ng-src="{{user.ProfileImageUrl}}" class="img-rounded" /></td>
+            <td><img ng-src="{{user.ProfileImageUrl}}" class="img-rounded admin-image" /></td>
             <td class="text-center">{{user.Id}}</td>
             <td class="text-center">{{user.Name}} (<a target="_blank" href="https://twitter.com/{{user.ScreenName}}">@@{{user.ScreenName}}</a>)</td>
             <td class="text-center">{{user.Description}}</td>

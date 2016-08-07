@@ -30,7 +30,7 @@
                 templateUrl: "views/partials/rate-exceeded.html",
                 controller: "RateExceededController",
             })
-            .when('/user/profile/:id', {
+            .when('/user/profile/:screenName', {
                 templateUrl: 'views/partials/user-profile.html',
                 controller: 'UserProfileController'
             })
@@ -38,11 +38,7 @@
     }
     var baseServiceUrl = 'http://localhost:19169';
     angular.module('myApp.services', []);
-    //.factory('applicationAuthorization', ['authService', function (authService) {
-    //    return authService.authorize();
-    //}]);
     angular.module('myApp.filters', []);
-    //angular.module('myApp.directives', []);
     angular.module('myApp.controllers', ['myApp.services']);
     angular.module('myApp', ['ngRoute', 'ngCookies', 'ui.bootstrap', 'ngSanitize', 'myApp.controllers'])
         .config(['$routeProvider', '$httpProvider', '$locationProvider', config])

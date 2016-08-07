@@ -6,23 +6,24 @@
         var friendsCacheKey = 'friends';
         $scope.selectedUser = null;
 
-        $scope.unfollowFriend = function (id) {
-            homeService.unfollowFriend(id)
+        $scope.unfollowFriend = function (screenName) {
+            homeService.unfollowFriend(screenName)
                 .then(function (response) {
                     if (response === true) {
                         vm.getFriends(false);
+                        notifier.success(screenName + ' is successfully unfollowed');
                     }
                 });
         }
 
-        $scope.followFriend = function (id) {
+        $scope.followFriend = function (screenName) {
             var userName = $scope.selectedUser.Name;
 
-            homeService.followFriend(id)
+            homeService.followFriend(screenName)
                 .then(function (response) {
                     if (response === true) {
                         vm.getFriends(false);
-                        notifier.success(userName + 'is successfully followed');
+                        notifier.success(userName + ' is successfully followed');
                         $scope.selectedUser = null;
                     }
                 });

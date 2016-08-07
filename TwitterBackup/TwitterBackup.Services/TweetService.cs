@@ -26,7 +26,7 @@
 
             var hasAlreadySavedTweet = tweetRepo
                 .All()
-                .Any(tweetDTO => tweetDTO.TweetTwitterId == tweet.TweetTwitterId && tweetDTO.CreatedById == tweet.CreatedById);
+                .Any(tweetDTO => tweetDTO.TweetTwitterId == tweet.TweetTwitterId && tweetDTO.CreatedByScreenName == tweet.CreatedByScreenName);
 
             if (hasAlreadySavedTweet)
             {
@@ -56,11 +56,11 @@
             return tweets;
         }
 
-        public ICollection<Tweet> GetTweetsForFriend(long currentLoggedUserId, long friendId)
+        public ICollection<Tweet> GetTweetsForFriend(string currentLoggedUserScreenName, string friendScreenName)
         {
             var tweets = tweetRepo
                 .All()
-                .Where(tweet => tweet.CreatedById == currentLoggedUserId && tweet.Owner.UserTwitterId == friendId)
+                .Where(tweet => tweet.CreatedByScreenName == currentLoggedUserScreenName && tweet.Owner.ScreenName == friendScreenName)
                 .ToArray();
 
             return tweets;

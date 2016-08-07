@@ -64,28 +64,5 @@
         {
             this.Delete(entity.Id);
         }
-
-
-        //private void GetCollection()
-        //{
-        //    collection = database.GetCollection<T>(typeof(T).Name);
-        //}
-
-        //private MongoCollectionBase<T> GetCollection<T>()
-        //{
-        //    return database.GetCollection<BsonDocument>(typeof(T).Name) as MongoCollectionBase<T>;
-        //}
-
-        //public IEnumerable<T> List()
-        //{
-        //    var _result = GetCollection<T>().AsQueryable<T>().ToList(); ;
-
-        //    return _result;
-        //}
-
-        //public async Task<IEnumerable<T>> GetAllAsync(IMongoCollection<T> collection)
-        //{
-        //    return await collection.Find(f => true).ToListAsync();
-        //}
     }
 }

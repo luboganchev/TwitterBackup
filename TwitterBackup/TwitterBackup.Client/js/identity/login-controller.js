@@ -2,9 +2,13 @@
     'use strict';
 
     function LoginController($scope, $location, $window, $timeout, notifier, identity, authService, authConstants) {
+        var vm = this;
+        vm.isAdmin;
         $scope.identity = identity;
 
-        $scope.authExternalProvider = function (provider) {
+        $scope.authExternalProvider = function (provider, isAdmin) {
+            vm.isAdmin = isAdmin || false;
+
             authService.authorize()
                 .then(function () {
                     var twitterData = identity.getAuthorizationData();
@@ -26,6 +30,7 @@
 
             var authorizationData = identity.getAuthorizationData();
             authorizationData.VerifierCode = /oauth_verifier=(\w+)/.exec(queryParams)[1];
+            authorizationData.IsAdmin = vm.isAdmin;
             identity.setAuthorizationData(authorizationData);
 
             authService.authenticate().then(function () {

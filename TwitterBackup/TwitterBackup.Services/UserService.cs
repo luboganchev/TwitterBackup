@@ -30,7 +30,7 @@
 
             var hasAlreadyExist = userRepo
                 .All()
-                .Any(userDTO => userDTO.UserTwitterId == user.UserTwitterId);
+                .Any(userDTO => userDTO.ScreenName == user.ScreenName);
 
             if (hasAlreadyExist)
             {

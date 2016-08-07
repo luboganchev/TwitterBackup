@@ -10,10 +10,12 @@ namespace TwitterBackup.Web.Tests.TestObjects
     public class MockedIAuthenticatedUser : IAuthenticatedUser
     {
         private long id;
+        private string screenName;
 
-        public MockedIAuthenticatedUser(long id)
+        public MockedIAuthenticatedUser(long id, string screenName)
         {
             this.Id = id;
+            this.screenName = screenName;
         }
 
         public IAccountSettings AccountSettings
@@ -1051,11 +1053,11 @@ namespace TwitterBackup.Web.Tests.TestObjects
         {
             get
             {
-                throw new NotImplementedException();
+                return this.screenName;
             }
             set
             {
-                throw new NotImplementedException();
+                this.screenName = value;
             }
         }
 

@@ -27,8 +27,8 @@
         {
             var dateTimeNow = DateTime.Now;
             var twitterId = 10023012321;
-            var creatorId = 123465798;
-            var tweet = this.GetTweetObject(twitterId, dateTimeNow, creatorId, "Sample text Sample text");
+            var creatorScreenName = "Ivan";
+            var tweet = this.GetTweetObject(twitterId, dateTimeNow, creatorScreenName, "Sample text Sample text");
             var tweetId = tweet.Id;
             this.tweetService.Save(tweet);
             var storedTweet = this.tweetRepo.GetById(tweetId);
@@ -40,7 +40,7 @@
             Assert.AreEqual(2, storedTweet.RetweetCount);
             Assert.AreEqual(4, storedTweet.FavoriteCount);
             Assert.AreEqual("Sample text Sample text", storedTweet.FullText);
-            Assert.AreEqual(creatorId, storedTweet.CreatedById);
+            Assert.AreEqual(creatorScreenName, storedTweet.CreatedByScreenName);
             Assert.AreEqual(false, storedTweet.RetweetedFromMe);
         }
 
@@ -50,8 +50,8 @@
         {
             var dateTimeNow = DateTime.Now;
             var twitterId = 1111111;
-            var creatorId = 123465798;
-            var tweet = this.GetTweetObject(twitterId, dateTimeNow, creatorId);
+            var creatorScreenName = "Ivan";
+            var tweet = this.GetTweetObject(twitterId, dateTimeNow, creatorScreenName);
             this.tweetService.Save(tweet);
             this.tweetService.Save(tweet);
         }
@@ -61,10 +61,10 @@
         {
             var dateTimeNow = DateTime.Now;
             var twitterId = 1111111;
-            var creatorOneId = 123465798;
-            var creatorTwoId = 9988556633;
-            var tweetOne = this.GetTweetObject(twitterId, dateTimeNow, creatorOneId);
-            var tweetTwo = this.GetTweetObject(twitterId, dateTimeNow, creatorTwoId);
+            var creatorOneScreenName = "Ivan";
+            var creatorTwoScreenName = "Petar";
+            var tweetOne = this.GetTweetObject(twitterId, dateTimeNow, creatorOneScreenName);
+            var tweetTwo = this.GetTweetObject(twitterId, dateTimeNow, creatorTwoScreenName);
             this.tweetService.Save(tweetOne);
             this.tweetService.Save(tweetTwo);
         }
@@ -84,11 +84,11 @@
         public void AddSomeTweets_GetCorrectCount()
         {
             var dateTimeNow = DateTime.Now;
-            var creatorId = 123465798;
-            var tweetOne = this.GetTweetObject(10023012321, dateTimeNow, creatorId);
-            var tweetTwo = this.GetTweetObject(10023012322, dateTimeNow, creatorId);
-            var tweetThree = this.GetTweetObject(10023012323, dateTimeNow, creatorId);
-            var tweetFour = this.GetTweetObject(10023012324, dateTimeNow, creatorId);
+            var creatorScreenName = "Ivan";
+            var tweetOne = this.GetTweetObject(10023012321, dateTimeNow, creatorScreenName);
+            var tweetTwo = this.GetTweetObject(10023012322, dateTimeNow, creatorScreenName);
+            var tweetThree = this.GetTweetObject(10023012323, dateTimeNow, creatorScreenName);
+            var tweetFour = this.GetTweetObject(10023012324, dateTimeNow, creatorScreenName);
             this.tweetService.Save(tweetOne);
             this.tweetService.Save(tweetTwo);
             this.tweetService.Save(tweetThree);
@@ -113,11 +113,11 @@
         public void AddSomeTweets_GetCorrectCollection()
         {
             var dateTimeNow = DateTime.Now;
-            var creatorId = 123465798;
-            var tweetOne = this.GetTweetObject(10023012321, dateTimeNow, creatorId);
-            var tweetTwo = this.GetTweetObject(10023012322, dateTimeNow, creatorId);
-            var tweetThree = this.GetTweetObject(10023012323, dateTimeNow, creatorId);
-            var tweetFour = this.GetTweetObject(10023012324, dateTimeNow, creatorId);
+            var creatorScreenName = "Ivan";
+            var tweetOne = this.GetTweetObject(10023012321, dateTimeNow, creatorScreenName);
+            var tweetTwo = this.GetTweetObject(10023012322, dateTimeNow, creatorScreenName);
+            var tweetThree = this.GetTweetObject(10023012323, dateTimeNow, creatorScreenName);
+            var tweetFour = this.GetTweetObject(10023012324, dateTimeNow, creatorScreenName);
             this.tweetService.Save(tweetOne);
             this.tweetService.Save(tweetTwo);
             this.tweetService.Save(tweetThree);
@@ -155,16 +155,16 @@
         public void AddSomeTweets_GetCorrectCollectionOfTweetsForGivenFriend()
         {
             var dateTimeNow = DateTime.Now;
-            var creatorOneId = 123465798;
-            var creatorTwoId = 123465799;
-            var userOwnerIdOne = 123654;
-            var userOwnerIdTwo = 654321;
+            var creatorOneScreenName = "Ivan";
+            var creatorTwoScreenName = "Petar";
+            var userOwnerScreenNameOne = "Maria";
+            var userOwnerScreenNameTwo = "Gergana";
 
-            var tweetOne = this.GetTweetObject(10023012321, dateTimeNow, creatorOneId, withOwner: true, userTwitterId: userOwnerIdOne);
-            var tweetTwo = this.GetTweetObject(10023012322, dateTimeNow, creatorOneId, withOwner: true, userTwitterId: userOwnerIdOne);
-            var tweetThree = this.GetTweetObject(10023012323, dateTimeNow, creatorOneId, withOwner: true, userTwitterId: userOwnerIdTwo);
-            var tweetFour = this.GetTweetObject(10023012324, dateTimeNow, creatorTwoId, withOwner: true, userTwitterId: userOwnerIdTwo);
-            var tweetFive = this.GetTweetObject(10023012325, dateTimeNow, creatorTwoId, withOwner: true, userTwitterId: userOwnerIdTwo);
+            var tweetOne = this.GetTweetObject(10023012321, dateTimeNow, creatorOneScreenName, withOwner: true, userTwitterScreenName: userOwnerScreenNameOne);
+            var tweetTwo = this.GetTweetObject(10023012322, dateTimeNow, creatorOneScreenName, withOwner: true, userTwitterScreenName: userOwnerScreenNameOne);
+            var tweetThree = this.GetTweetObject(10023012323, dateTimeNow, creatorOneScreenName, withOwner: true, userTwitterScreenName: userOwnerScreenNameTwo);
+            var tweetFour = this.GetTweetObject(10023012324, dateTimeNow, creatorTwoScreenName, withOwner: true, userTwitterScreenName: userOwnerScreenNameTwo);
+            var tweetFive = this.GetTweetObject(10023012325, dateTimeNow, creatorTwoScreenName, withOwner: true, userTwitterScreenName: userOwnerScreenNameTwo);
 
             this.tweetService.Save(tweetOne);
             this.tweetService.Save(tweetTwo);
@@ -172,12 +172,12 @@
             this.tweetService.Save(tweetFour);
             this.tweetService.Save(tweetFive);
 
-            var tweetsForFirstCreatorFirstOwner = this.tweetService.GetTweetsForFriend(creatorOneId, userOwnerIdOne);
-            var tweetsForFirstCreatorSecondOwner = this.tweetService.GetTweetsForFriend(creatorOneId, userOwnerIdTwo);
-            var tweetsForSecondCreatorFirstOwner = this.tweetService.GetTweetsForFriend(creatorTwoId, userOwnerIdOne);
-            var tweetsForSecondCreatorSecondOwner = this.tweetService.GetTweetsForFriend(creatorTwoId, userOwnerIdTwo);
+            var tweetsForFirstCreatorFirstOwner = this.tweetService.GetTweetsForFriend(creatorOneScreenName, userOwnerScreenNameOne);
+            var tweetsForFirstCreatorSecondOwner = this.tweetService.GetTweetsForFriend(creatorOneScreenName, userOwnerScreenNameTwo);
+            var tweetsForSecondCreatorFirstOwner = this.tweetService.GetTweetsForFriend(creatorTwoScreenName, userOwnerScreenNameOne);
+            var tweetsForSecondCreatorSecondOwner = this.tweetService.GetTweetsForFriend(creatorTwoScreenName, userOwnerScreenNameTwo);
 
-            var tweetsForNonExistingCreatorAndOwner = this.tweetService.GetTweetsForFriend(9156357147, 753159963321);
+            var tweetsForNonExistingCreatorAndOwner = this.tweetService.GetTweetsForFriend("Blagoi", "Stamat");
 
             Assert.IsNotNull(tweetsForFirstCreatorFirstOwner);
             Assert.IsNotNull(tweetsForFirstCreatorSecondOwner);
@@ -194,7 +194,7 @@
 
         #endregion GetTweetsForFriend
 
-        private Tweet GetTweetObject(long tweetTwitterId, DateTime createdAt, long createdById, string fullText = null, bool withOwner = false, long? userTwitterId = null)
+        private Tweet GetTweetObject(long tweetTwitterId, DateTime createdAt, string createdByScreenName, string fullText = null, bool withOwner = false, string userTwitterScreenName = null)
         {
             var tweet = new Tweet()
             {
@@ -205,7 +205,7 @@
                 RetweetCount = 2,
                 FavoriteCount = 4,
                 FullText = fullText ?? "Sample text Sample text",
-                CreatedById = createdById,
+                CreatedByScreenName = createdByScreenName,
                 RetweetedFromMe = false
             };
 
@@ -213,7 +213,7 @@
             {
                 tweet.Owner = new User
                 {
-                    UserTwitterId = userTwitterId ?? 456789123
+                    ScreenName = userTwitterScreenName ?? "Kolio"
                 };
             }
 

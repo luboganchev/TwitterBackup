@@ -3,7 +3,7 @@
 
     function UserProfileController($scope, $location, $routeParams, $filter, cacheService, userService, notifier) {
         var vm = this;
-        vm.id = $routeParams.id;
+        vm.id = $routeParams.screenName;
         vm.userDetailsCacheKey = 'userDetails' + vm.id;
         $scope.userProfile = null;
 

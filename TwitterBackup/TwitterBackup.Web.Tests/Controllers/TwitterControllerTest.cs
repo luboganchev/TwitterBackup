@@ -8,6 +8,7 @@
     using TwitterBackup.Services.Contracts;
     using TwitterBackup.Web.Controllers;
     using TwitterBackup.Web.Helpers;
+    using TwitterBackup.Web.Helpers.TwitterDriver;
     using TwitterBackup.Web.Tests.TestObjects;
 
     [TestClass]
@@ -16,6 +17,7 @@
         private ITweetService tweetService;
         private IRetweetService retweetService;
         private IUserService userService;
+        private ITwitterApi twitterApi;
 
         [TestInitialize]
         public void Init()
@@ -23,14 +25,34 @@
             this.tweetService = MockObjectFactory.GetTweetService();
             this.retweetService = MockObjectFactory.GetRetweetService();
             this.userService = MockObjectFactory.GetUserService();
+            this.twitterApi = MockObjectFactory.GetTwitterApi();
         }
+
+        #region Retweet
+
+        //[TestMethod]
+        //public void Retweet_WithNonExistingTweet_ShouldReturnBadRequest()
+        //{
+        //    var controller = new TwitterController(this.tweetService, this.retweetService, this.userService);
+        //    controller.Configuration = new HttpConfiguration();
+        //    long invalidTweetId = 
+
+        //    var result = controller.StoreTweet(invalidModel);
+        //    var badResult = result as BadRequestErrorMessageResult;
+
+        //    Assert.IsFalse(controller.ModelState.IsValid);
+        //    Assert.IsNotNull(badResult);
+        //    Assert.AreEqual("Tweet that you're trying to save has some invalid arguments", badResult.Message);
+        //}
+
+        #endregion Retweet
 
         #region StoreTweet
 
         [TestMethod]
         public void StoreTweet_WithInvalidModel_ShouldReturnBadRequest()
         {
-            var controller = new TwitterController(this.tweetService, this.retweetService, this.userService);
+            var controller = new TwitterController(this.tweetService, this.retweetService, this.userService, this.twitterApi);
             controller.Configuration = new HttpConfiguration();
             var invalidModel = MockObjectFactory.GetInvalidTweetViewModel();
             controller.Validate(invalidModel);
@@ -46,12 +68,12 @@
         [TestMethod]
         public void StoreTweet_WithValidModel_ShouldReturnOk()
         {
-            var controller = new TwitterController(this.tweetService, this.retweetService, this.userService);
+            var controller = new TwitterController(this.tweetService, this.retweetService, this.userService, this.twitterApi);
             controller.Configuration = new HttpConfiguration();
 
             var validModel = MockObjectFactory.GetValidTweetViewModel();
             controller.Validate(validModel);
-            BaseController.authUser = new MockedIAuthenticatedUser(123456);
+            BaseController.authUser = new MockedIAuthenticatedUser(123456, "ivan");
             var result = controller.StoreTweet(validModel);
             var okResult = result as OkResult;
 
@@ -62,12 +84,12 @@
         [TestMethod]
         public void StoreTweet_WithAlreadyStoredTweet_ShouldReturnBadRequest()
         {
-            var controller = new TwitterController(this.tweetService, this.retweetService, this.userService);
+            var controller = new TwitterController(this.tweetService, this.retweetService, this.userService, this.twitterApi);
             controller.Configuration = new HttpConfiguration();
 
             var validModel = MockObjectFactory.GetValidTweetViewModelWhoThrowsException();
             controller.Validate(validModel);
-            BaseController.authUser = new MockedIAuthenticatedUser(123456);
+            BaseController.authUser = new MockedIAuthenticatedUser(123456, "ivan");
             var result = controller.StoreTweet(validModel);
             var badResult = result as BadRequestErrorMessageResult;
 

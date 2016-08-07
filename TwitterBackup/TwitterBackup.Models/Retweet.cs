@@ -17,6 +17,8 @@
 
         public long CreatedById { get; set; }
 
+        public string CreatedByScreenName { get; set; }
+
         public long TweetOwnerId { get; set; }
     }
 }

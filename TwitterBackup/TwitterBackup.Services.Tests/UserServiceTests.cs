@@ -26,7 +26,7 @@
         public void Populate_ShouldDatabaseBeCorrect()
         {
             var userTwitterId = 10023012321;
-            var user = this.GetUserObject(userTwitterId);
+            var user = this.GetUserObject(userTwitterId, "peshoivanov");
             var userId = user.Id;
             this.userService.Save(user);
             var storedUser = this.userRepo.GetById(userId);
@@ -47,7 +47,7 @@
         public void DoubleAddingSomeUser_ThrowException()
         {
             var userTwitterId = 10023012321;
-            var user = this.GetUserObject(userTwitterId);
+            var user = this.GetUserObject(userTwitterId, "peshoivanov");
             this.userService.Save(user);
             this.userService.Save(user);
         }
@@ -66,10 +66,10 @@
         [TestMethod]
         public void AddSomeUsers_GetCorrectCount()
         {
-            var userOne = this.GetUserObject(10023012321);
-            var userTwo = this.GetUserObject(10023012322);
-            var userThree = this.GetUserObject(10023012323);
-            var userFour = this.GetUserObject(10023012324);
+            var userOne = this.GetUserObject(10023012321, "peshoivanov1");
+            var userTwo = this.GetUserObject(10023012322, "peshoivanov2");
+            var userThree = this.GetUserObject(10023012323, "peshoivanov3");
+            var userFour = this.GetUserObject(10023012324, "peshoivanov4");
             this.userService.Save(userOne);
             this.userService.Save(userTwo);
             this.userService.Save(userThree);
@@ -93,10 +93,10 @@
         [TestMethod]
         public void AddSomeUsers_GetCorrectCollection()
         {
-            var userOne = this.GetUserObject(10023012321);
-            var userTwo = this.GetUserObject(10023012322);
-            var userThree = this.GetUserObject(10023012323);
-            var userFour = this.GetUserObject(10023012324);
+            var userOne = this.GetUserObject(10023012321, "peshoivanov1");
+            var userTwo = this.GetUserObject(10023012322, "peshoivanov2");
+            var userThree = this.GetUserObject(10023012323, "peshoivanov3");
+            var userFour = this.GetUserObject(10023012324, "peshoivanov4");
             this.userService.Save(userOne);
             this.userService.Save(userTwo);
             this.userService.Save(userThree);
@@ -128,14 +128,14 @@
 
         #endregion GetUsers
 
-        private User GetUserObject(long userTwitterId)
+        private User GetUserObject(long userTwitterId, string screenName)
         {
             var user = new User()
             {
                 Id = Guid.NewGuid().ToString(),
                 Description = "Its me",
                 Name = "Pesho",
-                ScreenName = "peshoivanov",
+                ScreenName = screenName,
                 UserTwitterId = userTwitterId,
                 StatusesCount = 50,
                 FriendsCount = 100,

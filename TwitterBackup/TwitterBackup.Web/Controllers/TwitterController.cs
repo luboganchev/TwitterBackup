@@ -17,6 +17,7 @@
     using TwitterBackup.Web.Helpers.Filters;
     using TwitterBackup.Web.Models.Tweets;
     using TwitterBackup.Web.Models.Users;
+using TwitterBackup.Web.Helpers.TwitterDriver;
 
     [TwitterAuthorization]
     public class TwitterController : BaseController
@@ -27,11 +28,14 @@
 
         private IUserService userService;
 
-        public TwitterController(ITweetService tweetService, IRetweetService retweetService, IUserService userService)
+        private ITwitterApi twitterApi;
+
+        public TwitterController(ITweetService tweetService, IRetweetService retweetService, IUserService userService, ITwitterApi twitterApi)
         {
             this.tweetService = tweetService;
             this.retweetService = retweetService;
             this.userService = userService;
+            this.twitterApi = twitterApi;
         }
 
         [AllowAnonymous]
@@ -84,9 +88,9 @@
         }
 
         [HttpPost]
-        public IHttpActionResult UnfollowFriend([FromBody] long userId)
+        public IHttpActionResult UnfollowFriend([FromBody] string screenName)
         {
-            var hasUnfollowed = authUser.UnFollowUser(userId);
+            var hasUnfollowed = authUser.UnFollowUser(screenName);
             if (hasUnfollowed)
             {
                 return this.Ok(true);
@@ -98,7 +102,7 @@
         [HttpGet]
         public IHttpActionResult SearchFriends(string keyword, int maxResults = 5)
         {
-            var users = Search
+            var users = this.twitterApi
                 .SearchUsers(keyword, maxResults)
                 .AsQueryable()
                 .Project()
@@ -109,12 +113,12 @@
         }
 
         [HttpPost]
-        public IHttpActionResult FollowFriend([FromBody] long userId)
+        public IHttpActionResult FollowFriend([FromBody] string screenName)
         {
-            var hasAlreadyFollowed = Tweetinvi.User.GetUserFromId(userId).Following;
+            var hasAlreadyFollowed = this.twitterApi.GetUserFromScreenName(screenName).Following;
             if (!hasAlreadyFollowed)
             {
-                var hasFollowed = authUser.FollowUser(userId);
+                var hasFollowed = authUser.FollowUser(screenName);
                 if (hasFollowed)
                 {
                     return this.Ok(true);
@@ -127,17 +131,16 @@
         }
 
         [HttpGet]
-        public IHttpActionResult UserDetails(long userId)
+        public IHttpActionResult UserDetails(string screenName)
         {
-            var userDetails = Tweetinvi.User.GetUserFromId(userId);
+            var userDetails = this.twitterApi.GetUserFromScreenName(screenName);
             if (userDetails != null)
             {
                 var userViewModel = Mapper.Map<IUser, UserViewModel>(userDetails);
-                var userTweets = Tweetinvi.Timeline
-                    .GetUserTimeline(userId);
+                var userTweets = this.twitterApi.GetUserTimeline(screenName);
                 userViewModel.Tweets = Mapper.Map<IEnumerable<ITweet>, ICollection<TweetViewModel>>(userTweets);
 
-                var tweets = this.tweetService.GetTweetsForFriend(authUser.Id, userViewModel.UserTwitterId);
+                var tweets = this.tweetService.GetTweetsForFriend(authUser.ScreenName, userViewModel.ScreenName);
                 foreach (var tweet in tweets)
                 {
                     var storedTweet = userViewModel.Tweets
@@ -156,12 +159,12 @@
         [HttpPost]
         public IHttpActionResult Retweet([FromBody]long tweetId)
         {
-            var retweet = Tweet.PublishRetweet(tweetId);
+            var retweet = this.twitterApi.PublishRetweet(tweetId);
             if (retweet != null)
             {
                 try
                 {
-                    this.retweetService.Save(retweet.Id, authUser.Id, retweet.RetweetedTweet.CreatedBy.Id);
+                    this.retweetService.Save(retweet.Id, authUser.Id, authUser.ScreenName, retweet.RetweetedTweet.CreatedBy.Id);
 
                     return Ok(true);
                 }
@@ -188,6 +191,7 @@
                 {
                     var dataModel = Mapper.Map<TwitterBackup.Models.Tweet>(viewModel);
                     dataModel.CreatedById = authUser.Id;
+                    dataModel.CreatedByScreenName = authUser.ScreenName;
                     this.tweetService.Save(dataModel);
 
                     return Ok();

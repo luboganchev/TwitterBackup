@@ -155,7 +155,7 @@ HOME STYLES
 }
 
 /*=======================================
-HOME STYLES
+Admin STYLES
 ==================================================*/
 
 .admin-stats-text {
@@ -165,6 +165,10 @@ HOME STYLES
 .admin-stats-stat{
     font-size: 2em;
     color: #e95420;
+}
+
+.admin-image {
+    max-width:70px;
 }
 
 /*=======================================

@@ -9,16 +9,16 @@
             return dataService.get(TWITTER_URL + '/GetFriends');
         }
 
-        function unfollowFriend(userId) {
-            return dataService.post(TWITTER_URL + '/UnfollowFriend', '"' + userId + '"');
+        function unfollowFriend(screenName) {
+            return dataService.post(TWITTER_URL + '/UnfollowFriend', '"' + screenName + '"');
         }
 
         function searchFriends(keyword) {
             return dataService.get(TWITTER_URL + '/SearchFriends', { keyword: keyword })
         }
 
-        function followFriend(userId) {
-            return dataService.post(TWITTER_URL + '/FollowFriend', '"' + userId + '"');
+        function followFriend(screenName) {
+            return dataService.post(TWITTER_URL + '/FollowFriend', '"' + screenName + '"');
         }
 
         return {

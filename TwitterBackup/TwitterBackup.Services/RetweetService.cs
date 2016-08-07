@@ -17,11 +17,11 @@
             this.retweetRepo = retweetRepo;
         }
 
-        public Retweet Save(long retweetId, long createdById, long tweetOwnerId)
+        public Retweet Save(long retweetId, long createdById, string screenName, long tweetOwnerId)
         {
             var hasAlreadySavedRetweet = retweetRepo
                 .All()
-                .Any(retweet => retweet.ReweetTwitterId == retweetId && retweet.CreatedById == createdById);
+                .Any(retweet => retweet.ReweetTwitterId == retweetId && retweet.CreatedByScreenName == screenName);
 
             if (hasAlreadySavedRetweet)
             {
@@ -33,7 +33,8 @@
                 DateCreated = DateTime.Now,
                 ReweetTwitterId = retweetId,
                 CreatedById = createdById,
-                TweetOwnerId = tweetOwnerId
+                TweetOwnerId = tweetOwnerId,
+                CreatedByScreenName = screenName,
             };
 
             var dbTweet = retweetRepo.Add(dataModel);
@@ -57,16 +58,6 @@
                 .ToArray();
 
             return tweets;
-        }
-
-        public int GetRetweetsCountForFriend(long currentLoggedUserId, long friendId)
-        {
-            var retweetsCount = retweetRepo
-                .All()
-                .Where(tweet => tweet.CreatedById == currentLoggedUserId && tweet.TweetOwnerId == friendId)
-                .Count();
-
-            return retweetsCount;
         }
     }
 }

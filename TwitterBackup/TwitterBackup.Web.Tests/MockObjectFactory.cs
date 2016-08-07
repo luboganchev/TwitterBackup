@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TwitterBackup.Models;
 using TwitterBackup.Services.Contracts;
 using TwitterBackup.Services.Exceptions;
+using TwitterBackup.Web.Helpers.TwitterDriver;
 using TwitterBackup.Web.Models.Tweets;
 
 namespace TwitterBackup.Web.Tests
@@ -78,13 +79,13 @@ namespace TwitterBackup.Web.Tests
                 .Returns(tweets);
 
             tweetService.Setup(ts => ts.GetTweetsForFriend(
-                    It.Is<long>(s => s == 123456),
-                    It.Is<long>(s => s == 654321)))
+                    It.Is<string>(s => s == "Ivan"),
+                    It.Is<string>(s => s == "Maria")))
                 .Returns(tweets);
 
             tweetService.Setup(ts => ts.GetTweetsForFriend(
-                    It.Is<long>(s => s != 123456),
-                    It.Is<long>(s => s != 654321)))
+                    It.Is<string>(s => s != "Ivan"),
+                    It.Is<string>(s => s != "Maria")))
                 .Returns(new List<Tweet>());
 
             return tweetService.Object;
@@ -97,6 +98,7 @@ namespace TwitterBackup.Web.Tests
             retweetService.Setup(rs => rs.Save(
                     It.IsAny<long>(),
                     It.IsAny<long>(),
+                    It.IsAny<string>(),
                     It.IsAny<long>()))
                 .Returns(retweets.FirstOrDefault());
 
@@ -105,16 +107,6 @@ namespace TwitterBackup.Web.Tests
 
             retweetService.Setup(rs => rs.GetRetweets())
                 .Returns(retweets);
-
-            retweetService.Setup(rs => rs.GetRetweetsCountForFriend(
-                    It.Is<long>(c => c == 123465789),
-                    It.Is<long>(f => f == 555566666)))
-                .Returns(retweets.Count);
-
-            retweetService.Setup(rs => rs.GetRetweetsCountForFriend(
-                    It.Is<long>(c => c != 123465789),
-                    It.Is<long>(f => f != 555566666)))
-                .Returns(0);
 
             return retweetService.Object;
         }
@@ -134,6 +126,15 @@ namespace TwitterBackup.Web.Tests
                 .Returns(users.Count);
 
             return userService.Object;
+        }
+
+        public static ITwitterApi GetTwitterApi()
+        {
+            var twitterApi = new Mock<ITwitterApi>();
+
+
+
+            return twitterApi.Object;
         }
 
         public static TweetViewModel GetInvalidTweetViewModel()

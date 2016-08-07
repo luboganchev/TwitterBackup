@@ -5,12 +5,10 @@
 
     public interface IRetweetService
     {
-        Retweet Save(long retweetId, long createdById, long tweetOwnerId);
+        Retweet Save(long retweetId, long createdById, string screenName, long tweetOwnerId);
 
         int GetTotalRetweetsCount();
 
         ICollection<Retweet> GetRetweets();
-
-        int GetRetweetsCountForFriend(long currentLoggedUserId, long friendId);
     }
 }

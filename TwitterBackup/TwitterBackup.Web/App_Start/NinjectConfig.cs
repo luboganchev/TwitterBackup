@@ -14,6 +14,7 @@ namespace TwitterBackup.Web.App_Start
     using TwitterBackup.Services;
     using TwitterBackup.Data;
     using TwitterBackup.Web.Helpers;
+    using TwitterBackup.Web.Helpers.TwitterDriver;
 
     public static class NinjectConfig 
     {
@@ -72,6 +73,7 @@ namespace TwitterBackup.Web.App_Start
             kernel.Bind<ITweetService>().To<TweetService>();
             kernel.Bind<IRetweetService>().To<RetweetService>();
             kernel.Bind<IUserService>().To<UserService>();
+            kernel.Bind<ITwitterApi>().To<TwitterApiAdapter>();
         }        
     }
 }

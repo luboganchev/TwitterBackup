@@ -6,10 +6,11 @@
     using AutoMapper;
     using TwitterBackup.Web.Models.Users;
     using TwitterBackup.Web.Models.Admin;
-    using Tweetinvi.Models;
     using TwitterBackup.Services.Contracts;
     using TwitterBackup.Models;
+    using TwitterBackup.Web.Helpers.Filters;
 
+    [AdminAuthorization]
     public class AdminController : BaseController
     {
         private ITweetService tweetService;
@@ -35,8 +36,8 @@
 
             foreach (var user in twitterBackupUsers)
             {
-                user.DownloadedPostCount = allStoreTweets.Count(tweet => tweet.CreatedById == user.Id);
-                user.RetweetsCount = allRetweets.Count(retweet => retweet.CreatedById == user.Id);
+                user.DownloadedPostCount = allStoreTweets.Count(tweet => tweet.CreatedByScreenName == user.ScreenName);
+                user.RetweetsCount = allRetweets.Count(retweet => retweet.CreatedByScreenName == user.ScreenName);
             }
 
             var viewModel = new AdminViewModel

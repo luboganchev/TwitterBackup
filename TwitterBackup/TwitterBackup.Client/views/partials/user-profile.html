@@ -54,7 +54,7 @@
                     <div class="panel-body">
                         <ul class="media-list">
                             <li class="media" ng-repeat="tweet in userProfile.Tweets">
-                                <a href="#/user/profile/{{tweet.IsRetweet? tweet.RetweetFrom.Id: tweet.Owner.Id}}" class="pull-left">
+                                <a href="#/user/profile/{{tweet.IsRetweet? tweet.RetweetFrom.ScreenName: tweet.Owner.ScreenName}}" cla class="pull-left">
                                     <img ng-src="{{tweet.IsRetweet? tweet.RetweetFrom.ProfileImageUrl: tweet.Owner.ProfileImageUrl}}" a alt="{{tweet.IsRetweet? tweet.RetweetFrom.ScreenName: tweet.Owner.ScreenName}}" c class="img-circle">
                                 </a>
                                 <div class="media-body">
@@ -64,8 +64,6 @@
                                     <strong class="text-success">@{{tweet.IsRetweet? tweet.RetweetFrom.ScreenName: tweet.Owner.ScreenName}}</strong>
                                     <p class="no-margin">
                                         {{tweet.FullText}}
-                                        <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Lorem ipsum dolor sit amet, <a href="#"># consectetur adipiscing </a>.-->
                                     </p>
 
                                     <div>

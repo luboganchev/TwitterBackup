@@ -5,8 +5,8 @@
 
         var TWITTER_URL = 'api/Twitter';
 
-        function getUserDetails(tweetId) {
-            return dataService.get(TWITTER_URL + '/UserDetails', { userId: tweetId });
+        function getUserDetails(screenName) {
+            return dataService.get(TWITTER_URL + '/UserDetails', { screenName: screenName });
         }
 
         function publishRetweet(tweetId) {

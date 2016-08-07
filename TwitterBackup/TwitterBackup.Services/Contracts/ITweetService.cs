@@ -11,6 +11,6 @@
 
         ICollection<Tweet> GetTweets();
 
-        ICollection<Tweet> GetTweetsForFriend(long currentLoggedUserId, long friendId);
+        ICollection<Tweet> GetTweetsForFriend(string currentLoggedUserScreenName, string friendScreenName);
     }
 }
