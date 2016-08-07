@@ -1,5 +1,27 @@
-﻿.navbar {
-    margin-bottom: 0;
+﻿[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+    .navbar .nav-wrapper {
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+.navbar-header .navbar-brand {
+    font-size: 2em;
+}
+
+.nav li a {
+    font-size: 1.5em;
 }
 
 /* Wrapping element */
@@ -7,15 +29,75 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    font-size: 16px;
+    padding-top: 51px;
+}
+
+    .body-content.login-page {
+        background-image: url('../Content/images/bg-img.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+.login-page .login-wrapper {
+    background: rgba(255,255,255,0.75);
+    border-radius: 15px;
+    text-align: center;
+    position: fixed;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+}
+
+    .login-page .login-wrapper h1, .login-page .login-wrapper h3 {
+        color: #fff;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    }
+
+    .login-page .login-wrapper h1 {
+        font-size: 3.5em;
+    }
+
+    .login-page .login-wrapper h3 {
+        font-size: 2.5em;
+    }
+
+.login-page .logo-container {
+    max-width: 70%;
+    margin-top: 0;
+    margin-bottom: 50px;
+}
+
+.login-page .login-buttons .btn {
+    background: #04acea;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+.login-page .login-buttons .login-btn-margin{
+    margin: 5px;
+}
+
+footer {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 20px 0;
+    margin: 5px 0;
 }
 
 .favorite-icon {
     color: red;
-    font-size: 18px;
+    font-size: 1em;
 }
 
 .retweet-icon {
-    font-size: 18px;
+    font-size: 1em;
 }
 
 .gray-color {
@@ -36,24 +118,65 @@
 
 .favorite-icon-value {
     color: red;
-    font-size: 20px;
+    font-size: 1.3em;
     font-family: monospace;
+    margin-right: 10px;
 }
 
 .retweet-icon-value {
-    font-size: 20px;
+    font-size: 1.3em;
     font-family: monospace;
+        margin-right: 10px;
+}
+
+.tweet-download {
+    margin-bottom: 10px;
 }
 
 .no-margin {
     margin: 0px !important;
 }
+
+/*=======================================
+HOME STYLES
+==================================================*/
+
+.fav-friends {
+    margin-top: 20px;
+}
+
+    .fav-friends .friend {
+        padding: 10px;
+    }
+
+.find-friend .is-following {
+    font-size: 1em;
+    margin-left: 5px;
+}
+
+/*=======================================
+HOME STYLES
+==================================================*/
+
+.admin-stats-text {
+    font-size: 0.7em;
+}
+
+.admin-stats-stat{
+    font-size: 2em;
+    color: #e95420;
+}
+
 /*=======================================
 TWEET FEED STYLES
 ==================================================*/
 .twt-wrapper .panel-body {
-    max-height: 650px;
     overflow: auto;
+}
+
+.twt-wrapper .media-list .media {
+    border-bottom: 1px dashed #efefef;
+    margin-bottom: 25px;
 }
 
 .twt-wrapper .media-list .media img {
@@ -62,36 +185,45 @@ TWEET FEED STYLES
     border: 2px solid #e5e7e8;
 }
 
-.twt-wrapper .media-list .media {
-    border-bottom: 1px dashed #efefef;
-    margin-bottom: 25px;
-}
-
 /*=======================================
     Tweeter profile
 =========================================*/
+
+.user-profile-view {
+    margin-top: 15px;
+}
+
+.user-profile-view .twt-wrapper{
+    min-height: calc(100vh - 160px);
+}
+
+.user-profile-view .twt-wrapper .panel {
+    margin-bottom: 0px;
+}
 
 .twPc-div {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #e1e8ed;
     border-radius: 6px;
-    height: 200px;
-    max-width: 340px;
-    // orginal twitter width: 290px;
+    height: auto;
+    position: fixed;
+    width:32%;
 }
 
 .twPc-bg {
-    /*background-image: url("https://pbs.twimg.com/profile_banners/50988711/1384539792/600x200");*/
     background-position: 0 50%;
     background-size: 100% auto;
     border-bottom: 1px solid #e1e8ed;
     border-radius: 4px 4px 0 0;
-    height: 95px;
+    height: 200px;
     width: 100%;
 }
 
 .twPc-block {
     display: block !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
 }
 
 .twPc-button {
@@ -112,12 +244,12 @@ TWEET FEED STYLES
 }
 
 .twPc-avatarImg {
-    border: 2px solid #fff;
+    border: 2px solid #e95420;
     border-radius: 7px;
     box-sizing: border-box;
     color: #fff;
-    height: 72px;
-    width: 72px;
+    height: 150px;
+    width: 150px;
 }
 
 .twPc-divUser {
@@ -125,9 +257,10 @@ TWEET FEED STYLES
 }
 
 .twPc-divName {
-    font-size: 18px;
+    font-size: 1.2em;
     font-weight: 700;
     line-height: 21px;
+    padding-top: 15px;
 }
 
     .twPc-divName a {
@@ -158,26 +291,37 @@ ul.twPc-Arrange {
     display: table-cell;
     padding: 0;
     vertical-align: top;
+    text-align: center;
 }
 
     .twPc-ArrangeSizeFit a:hover {
         text-decoration: none;
     }
 
+.twPc-desc {
+    font-size: 0.75em;
+    margin: 0 15px;
+    text-align: justify;
+    border-top: 1px solid #ccc;
+    padding: 5px 0;
+    color: #8899a6;
+}
+
 .twPc-StatValue {
     display: block;
-    font-size: 18px;
+    font-size: 0.8em;
     font-weight: 500;
     transition: color 0.15s ease-in-out 0s;
 }
 
 .twPc-StatLabel {
     color: #8899a6;
-    font-size: 10px;
+    font-size: 0.8em;
     letter-spacing: 0.02em;
     overflow: hidden;
     text-transform: uppercase;
     transition: color 0.15s ease-in-out 0s;
+    margin-top: 10px;
 }
 
 /*grid*/
@@ -226,7 +370,7 @@ ul.twPc-Arrange {
 /*Loader*/
 
 #loaderDiv {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -273,3 +417,28 @@ ul.twPc-Arrange {
     border-radius: 0;
     box-shadow: none;
   }*/
+
+@media (min-width: 1200px) {
+    .body-content {
+        font-size: 20px;
+    }
+
+    .login-page .logo-container {
+        max-width: 60%;
+    }
+}
+
+@media (min-width: 1400px) {
+    .body-content {
+        font-size: 25px;
+    }
+
+    .login-page .logo-container {
+        max-width: 50%;
+        margin-bottom: 30px;
+    }
+
+    .login-page .login-wrapper h1, .login-page .login-wrapper h3 {
+        margin-top: 10px;
+    }
+}

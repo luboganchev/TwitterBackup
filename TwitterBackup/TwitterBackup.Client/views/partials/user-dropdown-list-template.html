@@ -1,8 +1,8 @@
-﻿<a>
+﻿<a class="find-friend">
     <img class="avatar size32" ng-src="{{match.model.ProfileImageUrl}}">
     <span class="typeahead-user-item-info">
         <span class="fullname" ng-bind-html="match.model.Name"></span>
         <span class="username"><s>@</s><b ng-bind-html="match.model.ScreenName"></b></span>
     </span>
-    <span class="typeahead-social-context" ng-if="match.model.Following == true">Following</span>
+    <span class="typeahead-social-context is-following label label-success" ng-if="match.model.Following == true">Following</span>
 </a>

@@ -60,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="authComplete.html" />
+    <Content Include="Content\images\bg-img.jpg" />
+    <Content Include="Content\images\Twitter-Logo.png" />
     <Content Include="Content\loading-image.gif" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="css\app.css" />

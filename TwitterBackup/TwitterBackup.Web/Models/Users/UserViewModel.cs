@@ -39,6 +39,7 @@
         public void CreateMappings(IConfiguration configuration)
         {
             configuration.CreateMap<IUser, UserViewModel>()
+                .ForMember(dest => dest.ProfileImageUrl, opt => opt.MapFrom(src => src.ProfileImageUrl400x400))
                 .ForMember(dest => dest.UserTwitterId, opt => opt.MapFrom(src => src.Id));
 
             configuration.CreateMap<UserViewModel, User>();

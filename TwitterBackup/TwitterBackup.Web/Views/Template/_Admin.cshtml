@@ -1,28 +1,28 @@
 ﻿<div class="row jumbotron">
     <div class="col-md-4 text-center">
         <div>
-            <strong>Total users</strong>
+            <span class="admin-stats-text">Total users</span>
         </div>
         <div>
-            <span>{{adminData.UsersCount}}</span>
-        </div>
-    </div>
-
-    <div class="col-md-4 text-center">
-        <div>
-            <strong>Total downloaded tweets</strong>
-        </div>
-        <div>
-            <span>{{adminData.DownloadedTweetsCount}}</span>
+            <strong class="admin-stats-stat">{{adminData.UsersCount}}</strong>
         </div>
     </div>
 
     <div class="col-md-4 text-center">
         <div>
-            <strong>Total retweets</strong>
+            <span class="admin-stats-text">Total downloaded tweets</span>
         </div>
         <div>
-            <span>{{adminData.RetweetsCount}}</span>
+            <strong class="admin-stats-stat">{{adminData.DownloadedTweetsCount}}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-4 text-center">
+        <div>
+            <span class="admin-stats-text">Total retweets</span>
+        </div>
+        <div>
+            <strong class="admin-stats-stat">{{adminData.RetweetsCount}}</strong>
         </div>
     </div>
 </div>
@@ -43,7 +43,7 @@
         <tr ng-repeat="user in adminData.Users" ng-class-even="'active'">
             <td><img ng-src="{{user.ProfileImageUrl}}" class="img-rounded" /></td>
             <td class="text-center">{{user.Id}}</td>
-            <td class="text-center">{{user.Name}} (@@{{user.ScreenName}})</td>
+            <td class="text-center">{{user.Name}} (<a target="_blank" href="https://twitter.com/{{user.ScreenName}}">@@{{user.ScreenName}}</a>)</td>
             <td class="text-center">{{user.Description}}</td>
             <td class="text-center">{{user.FavoritesCount}}</td>
             <td class="text-center">{{user.DownloadedPostCount}}</td>

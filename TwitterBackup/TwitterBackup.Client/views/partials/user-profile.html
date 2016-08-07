@@ -1,7 +1,6 @@
-﻿<div class="container">
+﻿<div class="user-profile-view">
     <div class="row">
-        <div class="col-md-6">
-            <h1>Twitter Profile</h1>
+        <div class="col-md-4 col-sm-4 col-xs-4">
             <!-- code start -->
             <div class="twPc-div">
                 <a class="twPc-bg twPc-block" ng-style="{'background': bannerValue}"></a>
@@ -22,45 +21,37 @@
                     <div class="twPc-divStats">
                         <ul class="twPc-Arrange">
                             <li class="twPc-ArrangeSizeFit">
-                                <a href="https://twitter.com/{{userProfile.ScreenName}}" title="{{userProfile.StatusesCount}} Tweets">
+                                <a target="_blank" href="https://twitter.com/{{userProfile.ScreenName}}" title="{{userProfile.StatusesCount}} Tweets">
                                     <span class="twPc-StatLabel twPc-block">Tweets</span>
                                     <span class="twPc-StatValue">{{userProfile.StatusesCount}}</span>
                                 </a>
                             </li>
                             <li class="twPc-ArrangeSizeFit">
-                                <a href="https://twitter.com/{{userProfile.ScreenName}}/following" title="{{userProfile.FriendsCount}} Following">
+                                <a target="_blank" href="https://twitter.com/{{userProfile.ScreenName}}/following" title="{{userProfile.FriendsCount}} Following">
                                     <span class="twPc-StatLabel twPc-block">Following</span>
                                     <span class="twPc-StatValue">{{userProfile.FriendsCount}}</span>
                                 </a>
                             </li>
                             <li class="twPc-ArrangeSizeFit">
-                                <a href="https://twitter.com/{{userProfile.ScreenName}}/followers" title="{{userProfile.FollowersCount}} Followers">
+                                <a target="_blank" href="https://twitter.com/{{userProfile.ScreenName}}/followers" title="{{userProfile.FollowersCount}} Followers">
                                     <span class="twPc-StatLabel twPc-block">Followers</span>
                                     <span class="twPc-StatValue">{{userProfile.FollowersCount}}</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                    <div ng-if="userProfile.Description" class="twPc-desc">
+                        <p>{{userProfile.Description}}</p>
+                    </div>
                 </div>
             </div>
             <!-- code end -->
-            <div>
-                <p>{{userProfile.Description}}</p>
-            </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-8 col-sm-8 col-xs-8">
             <div class="twt-wrapper">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        Twitter Feed Example
-                    </div>
+                <div ng-if="userProfile.Tweets.length > 0" class="panel panel-default">
                     <div class="panel-body">
-                        <!--<textarea class="form-control" placeholder="Enter here for tweet..." rows="3"></textarea>
-                        <br>
-                        <a href="#" class="btn btn-primary btn-sm pull-right">Tweet</a>-->
-                        <!--<div class="clearfix"></div>
-                        <hr>-->
                         <ul class="media-list">
                             <li class="media" ng-repeat="tweet in userProfile.Tweets">
                                 <a href="#/user/profile/{{tweet.IsRetweet? tweet.RetweetFrom.Id: tweet.Owner.Id}}" class="pull-left">
@@ -74,16 +65,16 @@
                                     <p class="no-margin">
                                         {{tweet.FullText}}
                                         <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Lorem ipsum dolor sit amet, <a href="#"># consectetur adipiscing </a>.-->
+                            Lorem ipsum dolor sit amet, <a href="#"># consectetur adipiscing </a>.-->
                                     </p>
-                                    
+
                                     <div>
                                         <span class="glyphicon glyphicon-heart favorite-icon"></span><span class="favorite-icon-value">{{tweet.FavoriteCount}}</span>
                                         <span ng-class="(tweet.RetweetedFromMe)? 'gray-color glyphicon glyphicon-retweet retweet-icon': 'green-color glyphicon glyphicon-retweet retweet-icon'"
                                               ng-attr-title="{{tweet.RetweetedFromMe? 'Tweet is already retweeted': 'Tweet'}}"
                                               ng-click="publishTweet(tweet.IdString, tweet.RetweetedFromMe)"></span>
                                         <span ng-class="(tweet.RetweetedFromMe)? 'gray-color retweet-icon-value' : 'green-color retweet-icon-value'">{{tweet.RetweetCount}}</span>
-                                        <button class="btn btn-primary btn-sm" ng-disabled="tweet.HasStored" ng-attr-title="{{tweet.HasStored? 'Tweet is already saved': 'Save tweet'}}" ng-click="storeTweet(tweet.IdString)"><span class="glyphicon glyphicon-cloud-download"></span></button> 
+                                        <button class="btn btn-primary btn-sm tweet-download" ng-disabled="tweet.HasStored" ng-attr-title="{{tweet.HasStored? 'Tweet is already saved': 'Save tweet'}}" ng-click="storeTweet(tweet.IdString)"><span class="glyphicon glyphicon-cloud-download"></span></button>
                                     </div>
                                 </div>
                             </li>

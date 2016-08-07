@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function authService($http, $q, $window, identity, authorization, baseServiceUrl) {
+    function authService($http, $q, $window, identity, authorization, baseServiceUrl, $rootScope) {
         var twitterApi = baseServiceUrl + '/api/Twitter';
 
         return {
@@ -11,7 +11,9 @@
             isAuthorized: function () {
                 var authorizationData = identity.getAuthorizationData();
 
-                return !!authorizationData.VerifierCode;
+                $rootScope.isLoggedIn = !!authorizationData.VerifierCode;
+
+                return $rootScope.isLoggedIn;
             },
             authorize: function () {
                 return $http.get(twitterApi + '/Authorize', {
@@ -39,5 +41,5 @@
     }
 
     angular.module('myApp.services')
-        .factory('authService', ['$http', '$q', '$window', 'identity', 'authorization', 'baseServiceUrl', authService]);
+        .factory('authService', ['$http', '$q', '$window', 'identity', 'authorization', 'baseServiceUrl', '$rootScope', authService]);
 }());
