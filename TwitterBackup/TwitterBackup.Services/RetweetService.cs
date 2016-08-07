@@ -6,6 +6,7 @@
     using TwitterBackup.Data;
     using TwitterBackup.Models;
     using TwitterBackup.Services.Contracts;
+    using TwitterBackup.Services.Exceptions;
 
     public class RetweetService : IRetweetService
     {
@@ -18,6 +19,15 @@
 
         public Retweet Save(long retweetId, long createdById, long tweetOwnerId)
         {
+            var hasAlreadySavedRetweet = retweetRepo
+                .All()
+                .Any(retweet => retweet.ReweetTwitterId == retweetId && retweet.CreatedById == createdById);
+
+            if (hasAlreadySavedRetweet)
+            {
+                throw new RetweetException(RetweetExceptionType.IsAlreadySaved);
+            }
+
             var dataModel = new Retweet
             {
                 DateCreated = DateTime.Now,

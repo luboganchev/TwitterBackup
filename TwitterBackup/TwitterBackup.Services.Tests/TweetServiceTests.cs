@@ -23,7 +23,7 @@
         #region Save
 
         [TestMethod]
-        public void AddShouldPopulateDatabaseCorrect()
+        public void Populate_ShouldDatabaseBeCorrect()
         {
             var dateTimeNow = DateTime.Now;
             var twitterId = 10023012321;
@@ -46,7 +46,7 @@
 
         [ExpectedException(typeof(TweetException))]
         [TestMethod]
-        public void DoubleAddingSameTweetThrowException()
+        public void DoubleAddingSameTweet_ThrowException()
         {
             var dateTimeNow = DateTime.Now;
             var twitterId = 1111111;
@@ -56,9 +56,22 @@
             this.tweetService.Save(tweet);
         }
 
+        [TestMethod]
+        public void DoubleAddingSameTweetWithDiffrentCreator_ShouldWork()
+        {
+            var dateTimeNow = DateTime.Now;
+            var twitterId = 1111111;
+            var creatorOneId = 123465798;
+            var creatorTwoId = 9988556633;
+            var tweetOne = this.GetTweetObject(twitterId, dateTimeNow, creatorOneId);
+            var tweetTwo = this.GetTweetObject(twitterId, dateTimeNow, creatorTwoId);
+            this.tweetService.Save(tweetOne);
+            this.tweetService.Save(tweetTwo);
+        }
+
         [ExpectedException(typeof(ArgumentException))]
         [TestMethod]
-        public void AddNullTweetThrowExcetpion()
+        public void AddNullTweet_ThrowExcetpion()
         {
             this.tweetService.Save(null);
         }
@@ -68,7 +81,7 @@
         #region GetTotalTweetsCount
 
         [TestMethod]
-        public void AddSomeTweetsGetCorrectCount()
+        public void AddSomeTweets_GetCorrectCount()
         {
             var dateTimeNow = DateTime.Now;
             var creatorId = 123465798;
@@ -86,7 +99,7 @@
         }
 
         [TestMethod]
-        public void DontAddTweetsGetCorrectCount()
+        public void DontAddTweets_GetCorrectCount()
         {
             var tweetsCount = this.tweetService.GetTotalTweetsCount();
             Assert.AreEqual(0, tweetsCount);
@@ -97,7 +110,7 @@
         #region GetTweets
 
         [TestMethod]
-        public void AddSomeTweetsGetCorrectCollection()
+        public void AddSomeTweets_GetCorrectCollection()
         {
             var dateTimeNow = DateTime.Now;
             var creatorId = 123465798;
@@ -124,7 +137,7 @@
         }
 
         [TestMethod]
-        public void DontAddTweetsGetCorrectCollection()
+        public void DontAddTweets_GetCorrectCollection()
         {
             var tweetsCollection = this.tweetService.GetTweets();
             Assert.IsNotNull(tweetsCollection);
@@ -139,7 +152,7 @@
         #region GetTweetsForFriend
 
         [TestMethod]
-        public void GetCorrectCollectionOfTweetsForGivenFriend()
+        public void AddSomeTweets_GetCorrectCollectionOfTweetsForGivenFriend()
         {
             var dateTimeNow = DateTime.Now;
             var creatorOneId = 123465798;

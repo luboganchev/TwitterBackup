@@ -26,7 +26,7 @@
 
             var hasAlreadySavedTweet = tweetRepo
                 .All()
-                .Any(tweetDTO => tweetDTO.TweetTwitterId == tweet.TweetTwitterId);
+                .Any(tweetDTO => tweetDTO.TweetTwitterId == tweet.TweetTwitterId && tweetDTO.CreatedById == tweet.CreatedById);
 
             if (hasAlreadySavedTweet)
             {

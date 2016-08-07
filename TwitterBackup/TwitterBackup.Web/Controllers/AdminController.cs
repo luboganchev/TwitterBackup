@@ -35,7 +35,7 @@
 
             foreach (var user in twitterBackupUsers)
             {
-                user.DownloadedPostCount = allStoreTweets.Count(tweet => tweet.CreatedById== user.Id);
+                user.DownloadedPostCount = allStoreTweets.Count(tweet => tweet.CreatedById == user.Id);
                 user.RetweetsCount = allRetweets.Count(retweet => retweet.CreatedById == user.Id);
             }
 

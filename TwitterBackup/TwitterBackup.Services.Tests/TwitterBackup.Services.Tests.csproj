@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="RetweetServiceTests.cs" />
     <Compile Include="TestObjects\FakeMemoryRepository.cs" />
     <Compile Include="TweetServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

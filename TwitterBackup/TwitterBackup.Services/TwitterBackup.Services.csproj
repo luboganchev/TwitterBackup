@@ -42,6 +42,9 @@
     <Compile Include="Contracts\IRetweetService.cs" />
     <Compile Include="Contracts\ITweetService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
+    <Compile Include="Exceptions\BaseTwitterBackupException.cs" />
+    <Compile Include="Exceptions\RetweetException.cs" />
+    <Compile Include="Exceptions\RetweetExceptionType.cs" />
     <Compile Include="Exceptions\TweetException.cs" />
     <Compile Include="Exceptions\TweetExceptionType.cs" />
     <Compile Include="RetweetService.cs" />

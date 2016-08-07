@@ -147,9 +147,21 @@
             var retweet = Tweet.PublishRetweet(tweetId);
             if (retweet != null)
             {
-                this.retweetService.Save(retweet.Id, authUser.Id, retweet.RetweetedTweet.CreatedBy.Id);
+                try
+                {
+                    this.retweetService.Save(retweet.Id, authUser.Id, retweet.RetweetedTweet.CreatedBy.Id);
 
-                return Ok(true);
+                    return Ok(true);
+                }
+                catch (RetweetException retweetException)
+                {
+                    switch (retweetException.Type)
+                    {
+                        case RetweetExceptionType.IsAlreadySaved:
+                        default:
+                            return this.BadRequest("Tweet is already retweeted from you");
+                    }
+                }
             }
 
             return this.BadRequest("This tweet doesn't exist or is already retweeted");
