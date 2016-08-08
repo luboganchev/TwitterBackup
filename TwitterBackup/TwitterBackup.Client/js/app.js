@@ -36,7 +36,11 @@
             })
             .otherwise({ redirectTo: '/' });
     }
-    var baseServiceUrl = 'http://localhost:19169';
+
+    //Localhost
+    //var baseServiceUrl = 'http://localhost:19169';
+    //Deploy
+    var baseServiceUrl = 'http://twitterbackup.apphb.com:19169';
     angular.module('myApp.services', []);
     angular.module('myApp.filters', []);
     angular.module('myApp.controllers', ['myApp.services']);
