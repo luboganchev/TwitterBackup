@@ -1,17 +1,17 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitterBackup.Models;
-using TwitterBackup.Services.Contracts;
-using TwitterBackup.Services.Exceptions;
-using TwitterBackup.Web.Helpers.TwitterDriver;
-using TwitterBackup.Web.Models.Tweets;
-
-namespace TwitterBackup.Web.Tests
+﻿namespace TwitterBackup.Web.Tests
 {
+    using Moq;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Tweetinvi.Models;
+    using TwitterBackup.Models;
+    using TwitterBackup.Services.Contracts;
+    using TwitterBackup.Services.Exceptions;
+    using TwitterBackup.Web.Helpers.TwitterDriver;
+    using TwitterBackup.Web.Models.Tweets;
+    using TwitterBackup.Web.Tests.TestObjects;
+
     public static class MockObjectFactory
     {
         private static List<Tweet> tweets = new List<Tweet>
@@ -60,6 +60,38 @@ namespace TwitterBackup.Web.Tests
             }
         };
 
+        private static List<MockedITweet> mockedITweets = new List<MockedITweet>
+        {
+            new MockedITweet(null, MockObjectFactory.GetValidTweetId())
+            {
+                
+            },
+            new MockedITweet(null, MockObjectFactory.GetValidTweetIdThatIsStored())
+            {
+                
+            },
+            new MockedITweet(null, MockObjectFactory.GetValidTweetIdWhoIsAlreadyRetweetedId())
+            {
+                
+            }
+        };
+
+        private static List<MockedIUser> mockedIUsers = new List<MockedIUser>
+        {
+            new MockedIUser(MockObjectFactory.GetValidUserId(), MockObjectFactory.GetValidUserName(), true)
+            {
+                
+            },
+            new MockedIUser(MockObjectFactory.GetInvalidUserId(), MockObjectFactory.GetValidNotFollowingUserName(), false)
+            {
+                
+            },
+            new MockedIUser(MockObjectFactory.GetInvalidUserId(), MockObjectFactory.GetInvalidUserName(), true)
+            {
+                
+            }
+        };
+
         public static ITweetService GetTweetService()
         {
             var tweetService = new Mock<ITweetService>();
@@ -79,13 +111,13 @@ namespace TwitterBackup.Web.Tests
                 .Returns(tweets);
 
             tweetService.Setup(ts => ts.GetTweetsForFriend(
-                    It.Is<string>(s => s == "Ivan"),
-                    It.Is<string>(s => s == "Maria")))
+                    It.Is<string>(s => s == MockObjectFactory.GetValidUserName()),
+                    It.Is<string>(s => s == MockObjectFactory.GetValidUserName())))
                 .Returns(tweets);
 
             tweetService.Setup(ts => ts.GetTweetsForFriend(
-                    It.Is<string>(s => s != "Ivan"),
-                    It.Is<string>(s => s != "Maria")))
+                    It.Is<string>(s => s != MockObjectFactory.GetValidUserName()),
+                    It.Is<string>(s => s != MockObjectFactory.GetValidUserName())))
                 .Returns(new List<Tweet>());
 
             return tweetService.Object;
@@ -96,11 +128,18 @@ namespace TwitterBackup.Web.Tests
             var retweetService = new Mock<IRetweetService>();
 
             retweetService.Setup(rs => rs.Save(
-                    It.IsAny<long>(),
+                    It.Is<long>(id => id == MockObjectFactory.GetValidTweetId()),
                     It.IsAny<long>(),
                     It.IsAny<string>(),
                     It.IsAny<long>()))
                 .Returns(retweets.FirstOrDefault());
+
+            retweetService.Setup(rs => rs.Save(
+                    It.Is<long>(id => id == MockObjectFactory.GetValidTweetIdWhoIsAlreadyRetweetedId()),
+                    It.IsAny<long>(),
+                    It.IsAny<string>(),
+                    It.IsAny<long>()))
+                .Throws(new RetweetException(RetweetExceptionType.IsAlreadySaved));
 
             retweetService.Setup(rs => rs.GetTotalRetweetsCount())
                 .Returns(retweets.Count);
@@ -132,7 +171,43 @@ namespace TwitterBackup.Web.Tests
         {
             var twitterApi = new Mock<ITwitterApi>();
 
+            twitterApi.Setup(tw => tw.PublishRetweet(
+                    It.Is<long>(id => id == MockObjectFactory.GetValidTweetId())))
+                .Returns(mockedITweets.FirstOrDefault());
 
+            twitterApi.Setup(tw => tw.PublishRetweet(
+                    It.Is<long>(id => id == MockObjectFactory.GetValidTweetIdWhoIsAlreadyRetweetedId())))
+                .Returns(mockedITweets.LastOrDefault());
+
+            twitterApi.Setup(tw => tw.PublishRetweet(
+                    It.Is<long>(id => id != MockObjectFactory.GetValidTweetId() && id != MockObjectFactory.GetValidTweetIdWhoIsAlreadyRetweetedId())))
+                .Returns(MockObjectFactory.GetNullMockedITweet);
+
+            twitterApi.Setup(tw => tw.GetUserFromScreenName(
+                    It.Is<string>(name => name == MockObjectFactory.GetValidUserName())))
+                .Returns(mockedIUsers.FirstOrDefault());
+
+            twitterApi.Setup(tw => tw.GetUserFromScreenName(
+                    It.Is<string>(name => name == MockObjectFactory.GetInvalidUserName())))
+                .Returns(MockObjectFactory.GetNullMockedIUser());
+
+            twitterApi.Setup(tw => tw.GetUserFromScreenName(
+                    It.Is<string>(name => name == MockObjectFactory.GetValidNotFollowingUserName())))
+                .Returns(mockedIUsers.Where(u => u.ScreenName == MockObjectFactory.GetValidNotFollowingUserName()).FirstOrDefault());
+
+            twitterApi.Setup(tw => tw.SearchUsers(
+                    It.Is<string>(k => k == MockObjectFactory.GetValidUserName()),
+                    It.IsAny<int>()))
+                .Returns(mockedIUsers);
+
+            twitterApi.Setup(tw => tw.SearchUsers(
+                    It.Is<string>(k => k != MockObjectFactory.GetValidUserName()),
+                    It.IsAny<int>()))
+                .Returns(new HashSet<MockedIUser>());
+
+            twitterApi.Setup(tw => tw.GetUserTimeline(
+                    It.Is<string>(u => u == MockObjectFactory.GetValidUserName())))
+                .Returns(mockedITweets);
 
             return twitterApi.Object;
         }
@@ -168,6 +243,63 @@ namespace TwitterBackup.Web.Tests
                 RetweetCount = 1,
                 RetweetedFromMe = true
             };
+        }
+
+        public static ITweet GetNullMockedITweet()
+        {
+            MockedITweet tweet = null;
+            return tweet;
+        }
+
+        public static long GetInvalidTweetId()
+        {
+            return 987654312;
+        }
+
+        public static long GetValidTweetId()
+        {
+            return 123456;
+        }
+
+        public static long GetValidTweetIdThatIsStored()
+        {
+            return 132456789;
+        }
+
+        public static long GetValidTweetIdWhoIsAlreadyRetweetedId()
+        {
+            return 99999999;
+        }
+
+        public static string GetValidUserName()
+        {
+            return "Ivan";
+        }
+
+        public static string GetInvalidUserName()
+        {
+            return "Stamat";
+        }
+
+        public static string GetValidNotFollowingUserName()
+        {
+            return "Ogi";
+        }
+
+        public static long GetInvalidUserId()
+        {
+            return 987654312;
+        }
+
+        public static long GetValidUserId()
+        {
+            return 123456;
+        }
+
+        public static IUser GetNullMockedIUser()
+        {
+            MockedIUser user = null;
+            return user;
         }
     }
 }

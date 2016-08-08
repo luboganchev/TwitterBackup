@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tweetinvi.Models;
-
-namespace TwitterBackup.Web.Tests.TestObjects
+﻿namespace TwitterBackup.Web.Tests.TestObjects
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Tweetinvi.Models;
+
     public class MockedIAuthenticatedUser : IAuthenticatedUser
     {
         private long id;
@@ -67,7 +65,7 @@ namespace TwitterBackup.Web.Tests.TestObjects
 
         public bool FollowUser(string screenName)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool FollowUser(long userId)
@@ -300,7 +298,12 @@ namespace TwitterBackup.Web.Tests.TestObjects
 
         public bool UnFollowUser(string screenName)
         {
-            throw new NotImplementedException();
+            if (screenName == MockObjectFactory.GetValidUserName())
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public bool UnFollowUser(long userId)
@@ -784,7 +787,28 @@ namespace TwitterBackup.Web.Tests.TestObjects
 
         public IEnumerable<IUser> GetFriends(int maxFriendsToRetrieve = 250)
         {
-            throw new NotImplementedException();
+            if (this.screenName == MockObjectFactory.GetValidUserName())
+            {
+                var result = new HashSet<MockedIUser>()
+                {
+                    new MockedIUser(MockObjectFactory.GetValidUserId(), MockObjectFactory.GetValidUserName(), true)
+                    {
+                        
+                    },
+                    new MockedIUser(MockObjectFactory.GetInvalidUserId(), MockObjectFactory.GetValidNotFollowingUserName(), true)
+                    {
+                
+                    },
+                    new MockedIUser(MockObjectFactory.GetInvalidUserId(), MockObjectFactory.GetInvalidUserName(), true)
+                    {
+                
+                    }
+                };
+
+                return result;
+            }
+
+            return new HashSet<MockedIUser>();
         }
 
         public IEnumerable<ITwitterList> GetOwnedLists(int maximumNumberOfListsToRetrieve)

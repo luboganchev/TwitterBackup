@@ -112,19 +112,25 @@
         [HttpPost]
         public IHttpActionResult FollowFriend([FromBody] string screenName)
         {
-            var hasAlreadyFollowed = this.twitterApi.GetUserFromScreenName(screenName).Following;
-            if (!hasAlreadyFollowed)
+            var user = this.twitterApi.GetUserFromScreenName(screenName);
+            if (user != null)
             {
-                var hasFollowed = authUser.FollowUser(screenName);
-                if (hasFollowed)
+                var hasAlreadyFollowed = user.Following;
+                if (!hasAlreadyFollowed)
                 {
-                    return this.Ok(true);
+                    var hasFollowed = authUser.FollowUser(screenName);
+                    if (hasFollowed)
+                    {
+                        return this.Ok(true);
+                    }
+
+                    return this.BadRequest("This user doesn't exist");
                 }
 
-                return this.BadRequest("This user doesn't exist");
+                return this.BadRequest("This user is already followed");
             }
 
-            return this.BadRequest("This user is already followed");
+            return this.BadRequest("This user doesn't exist");
         }
 
         [HttpGet]
@@ -144,7 +150,10 @@
                         .Where(userTweet => userTweet.IdString == tweet.TweetTwitterId.ToString())
                         .FirstOrDefault();
 
-                    storedTweet.HasStored = true;
+                    if (storedTweet != null)
+                    {
+                        storedTweet.HasStored = true;
+                    }
                 }
 
                 return Ok(userViewModel);
