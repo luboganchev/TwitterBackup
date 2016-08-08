@@ -55,7 +55,7 @@
                 FriendsCount = 100,
                 FollowersCount = 23,
                 ProfileBannerUrl = null,
-                ProfileImageUrl = "http://pbs.twimg.com/profile_images/757546391426179072/bq3mi1XN_normal.jpg",
+                ProfileImageUrl = "http://pbs.twimg.com/profile_images/547143081602990080/MMNUAz4C_normal.jpeg",
                 ProfileLinkColor = "1B95E0"
             }
         };

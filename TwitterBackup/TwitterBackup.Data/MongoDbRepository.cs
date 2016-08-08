@@ -29,11 +29,6 @@
             return values.AsQueryable();
         }
 
-        public T GetById(object id)
-        {
-            throw new NotImplementedException();
-        }
-
         public T Add(T entity)
         {
             var valueAsBson = entity.ToBsonDocument();
@@ -41,11 +36,6 @@
             var values = valueAsBson.Select(bsonValue => BsonSerializer.Deserialize<T>(valueAsBson)).FirstOrDefault();
 
             return values;
-        }
-
-        public void Add(IEnumerable<T> entities)
-        {
-            throw new NotImplementedException();
         }
 
         T IRepository<T>.Update(T entity)

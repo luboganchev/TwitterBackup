@@ -37,6 +37,8 @@
                         $scope.userProfile = response;
                         $scope.bannerValue = vm.getBannerValue($scope.userProfile.ProfileBannerUrl, $scope.userProfile.ProfileLinkColor);
                         cacheService.set(vm.userDetailsCacheKey, response);
+                    }, function (error) {
+                        $location.path('/');
                     });
             }
         }

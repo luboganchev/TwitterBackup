@@ -39,7 +39,6 @@
 
                 if (authorizationDataJson != null)
                 {
-
                     var authorizationData = JsonConvert.DeserializeObject<AuthorizationData>(authorizationDataJson);
                     var userCredentials = AuthFlow.CreateCredentialsFromVerifierCode(authorizationData.VerifierCode, authorizationData.AuthorizationKey, authorizationData.AuthorizationSecret, ConsumerKey, ConsumerSecret);
                     if (userCredentials != null)
