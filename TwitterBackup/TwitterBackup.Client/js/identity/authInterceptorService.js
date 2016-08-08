@@ -3,7 +3,7 @@
 
     var authorizationStarted = false;
 
-    function authInterceptor($q, $injector, $location, $timeout, identity, authorization) {
+    function authInterceptor($q, $injector, $location, $timeout, identity) {
         return {
             request: function (config) {
                 config.headers = config.headers || {};
@@ -38,5 +38,5 @@
     }
 
     angular.module('myApp.services')
-        .factory('authInterceptorService', ['$q', '$injector', '$location', '$timeout', 'identity', 'authorization', authInterceptor]);
+        .factory('authInterceptorService', ['$q', '$injector', '$location', '$timeout', 'identity', authInterceptor]);
 }());

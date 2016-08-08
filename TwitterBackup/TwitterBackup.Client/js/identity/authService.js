@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    function authService($http, $q, $window, identity, authorization, baseServiceUrl, $rootScope) {
+    function authService($http, $q, $window, identity, baseServiceUrl, $rootScope) {
         var twitterApi = baseServiceUrl + '/api/Twitter';
 
         return {
@@ -40,5 +40,5 @@
     }
 
     angular.module('myApp.services')
-        .factory('authService', ['$http', '$q', '$window', 'identity', 'authorization', 'baseServiceUrl', '$rootScope', authService]);
+        .factory('authService', ['$http', '$q', '$window', 'identity', 'baseServiceUrl', '$rootScope', authService]);
 }());

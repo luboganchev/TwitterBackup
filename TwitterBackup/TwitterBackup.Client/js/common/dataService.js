@@ -1,8 +1,9 @@
 ﻿(function () {
     'use strict';
 
-    function dataService($http, $q, authorization, notifier, baseServiceUrl) {
+    function dataService($http, $q, notifier, baseServiceUrl) {
         var $loaderDiv = $('#loaderDiv');
+
         function get(url, queryParams) {
             var defered = $q.defer();
             $loaderDiv.show();
@@ -38,10 +39,6 @@
             return defered.promise;
         }
 
-        function put() {
-            throw new Error('Not implemented!');
-        }
-
         function getErrorMessage(response) {
             var error = response.data.modelState;
             if (error && error[Object.keys(error)[0]][0]) {
@@ -56,11 +53,10 @@
 
         return {
             get: get,
-            post: post,
-            put: put
+            post: post
         };
     }
 
     angular.module('myApp.services')
-        .factory('dataService', ['$http', '$q', 'authorization', 'notifier', 'baseServiceUrl', dataService]);
+        .factory('dataService', ['$http', '$q', 'notifier', 'baseServiceUrl', dataService]);
 }());

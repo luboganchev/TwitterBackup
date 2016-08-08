@@ -81,7 +81,6 @@
     <Content Include="js\home\homeController.js" />
     <Content Include="js\home\homeService.js" />
     <Content Include="js\identity\authInterceptorService.js" />
-    <Content Include="js\identity\twitter-login-directive.js" />
     <Content Include="js\user\rateExceededController.js" />
     <Content Include="js\user\userProfileController.js" />
     <Content Include="js\user\userService.js" />
@@ -117,10 +116,8 @@
     <Content Include="js\app.js" />
     <Content Include="js\common\notifier.js" />
     <Content Include="js\identity\authService.js" />
-    <Content Include="js\identity\authorization.js" />
     <Content Include="js\identity\identity.js" />
-    <Content Include="js\identity\login-controller.js" />
-    <Content Include="js\identity\register-controller.js" />
+    <Content Include="js\login\loginController.js" />
     <Content Include="libs\bootstrap\bootstrap.js" />
     <Content Include="libs\bootstrap\bootstrap.min.js" />
     <Content Include="libs\jquery\jquery.min.js" />
@@ -140,9 +137,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="js\login\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
